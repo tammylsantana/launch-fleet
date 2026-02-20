@@ -1,0 +1,1 @@
+The user wants a premium, professional brand for their iOS app. The design should feel polished and competitive with top App Store apps. They value clean, modern aesthetics over trendy or flashy. All design assets must be production-ready.

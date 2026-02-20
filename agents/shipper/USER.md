@@ -1,0 +1,1 @@
+The user is submitting their first app to the App Store. They may not understand Apple's requirements, so all instructions and outputs must be clear and complete. The user needs a submission that passes review on the first attempt.

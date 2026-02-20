@@ -1,0 +1,242 @@
+{
+    "description": "Apple-native UI templates for Expo React Native apps. Builder asks user to choose light or dark, then applies the matching theme with liquid glass effects and native widgets.",
+    "framework": "expo",
+    "language": "typescript",
+    "fonts": {
+        "display": "System (SF Pro Display)",
+        "body": "System (SF Pro Text)",
+        "mono": "SF Mono"
+    },
+    "themes": {
+        "light": {
+            "name": "Apple Light",
+            "description": "White background, black text, colorful Apple-native buttons, liquid glass",
+            "colors": {
+                "background": "#FFFFFF",
+                "surface": "#F2F2F7",
+                "card": "#FFFFFF",
+                "text": "#000000",
+                "textSecondary": "#3C3C43",
+                "textTertiary": "#8E8E93",
+                "separator": "#C6C6C8",
+                "groupedBackground": "#F2F2F7",
+                "systemBlue": "#007AFF",
+                "systemGreen": "#34C759",
+                "systemIndigo": "#5856D6",
+                "systemOrange": "#FF9500",
+                "systemPink": "#FF2D55",
+                "systemPurple": "#AF52DE",
+                "systemRed": "#FF3B30",
+                "systemTeal": "#5AC8FA",
+                "systemYellow": "#FFCC00"
+            },
+            "buttons": {
+                "primary": {
+                    "backgroundColor": "#007AFF",
+                    "textColor": "#FFFFFF",
+                    "borderRadius": 12,
+                    "paddingVertical": 14,
+                    "paddingHorizontal": 20,
+                    "fontSize": 17,
+                    "fontWeight": "600"
+                },
+                "secondary": {
+                    "backgroundColor": "transparent",
+                    "textColor": "#007AFF",
+                    "borderRadius": 12,
+                    "paddingVertical": 14,
+                    "paddingHorizontal": 20,
+                    "fontSize": 17,
+                    "fontWeight": "600"
+                },
+                "destructive": {
+                    "backgroundColor": "#FF3B30",
+                    "textColor": "#FFFFFF",
+                    "borderRadius": 12,
+                    "paddingVertical": 14,
+                    "paddingHorizontal": 20,
+                    "fontSize": 17,
+                    "fontWeight": "600"
+                }
+            },
+            "liquidGlass": {
+                "enabled": true,
+                "navbar": {
+                    "backgroundColor": "rgba(255, 255, 255, 0.72)",
+                    "backdropFilter": "blur(20px) saturate(180%)",
+                    "borderBottom": "0.5px solid rgba(0, 0, 0, 0.12)"
+                },
+                "tabBar": {
+                    "backgroundColor": "rgba(249, 249, 249, 0.94)",
+                    "backdropFilter": "blur(20px) saturate(180%)",
+                    "borderTop": "0.5px solid rgba(0, 0, 0, 0.12)"
+                },
+                "card": {
+                    "backgroundColor": "rgba(255, 255, 255, 0.85)",
+                    "backdropFilter": "blur(12px)",
+                    "borderRadius": 16,
+                    "shadowColor": "rgba(0, 0, 0, 0.08)",
+                    "shadowOffset": {
+                        "width": 0,
+                        "height": 2
+                    },
+                    "shadowRadius": 8
+                },
+                "sheet": {
+                    "backgroundColor": "rgba(242, 242, 247, 0.92)",
+                    "backdropFilter": "blur(40px) saturate(200%)",
+                    "borderRadius": 20
+                }
+            },
+            "statusBar": "dark-content"
+        },
+        "dark": {
+            "name": "Apple Dark",
+            "description": "Black background, white text, colorful Apple-native buttons, dark liquid glass",
+            "colors": {
+                "background": "#000000",
+                "surface": "#1C1C1E",
+                "card": "#1C1C1E",
+                "text": "#FFFFFF",
+                "textSecondary": "#EBEBF5",
+                "textTertiary": "#8E8E93",
+                "separator": "#38383A",
+                "groupedBackground": "#000000",
+                "systemBlue": "#0A84FF",
+                "systemGreen": "#30D158",
+                "systemIndigo": "#5E5CE6",
+                "systemOrange": "#FF9F0A",
+                "systemPink": "#FF375F",
+                "systemPurple": "#BF5AF2",
+                "systemRed": "#FF453A",
+                "systemTeal": "#64D2FF",
+                "systemYellow": "#FFD60A"
+            },
+            "buttons": {
+                "primary": {
+                    "backgroundColor": "#0A84FF",
+                    "textColor": "#FFFFFF",
+                    "borderRadius": 12,
+                    "paddingVertical": 14,
+                    "paddingHorizontal": 20,
+                    "fontSize": 17,
+                    "fontWeight": "600"
+                },
+                "secondary": {
+                    "backgroundColor": "transparent",
+                    "textColor": "#0A84FF",
+                    "borderRadius": 12,
+                    "paddingVertical": 14,
+                    "paddingHorizontal": 20,
+                    "fontSize": 17,
+                    "fontWeight": "600"
+                },
+                "destructive": {
+                    "backgroundColor": "#FF453A",
+                    "textColor": "#FFFFFF",
+                    "borderRadius": 12,
+                    "paddingVertical": 14,
+                    "paddingHorizontal": 20,
+                    "fontSize": 17,
+                    "fontWeight": "600"
+                }
+            },
+            "liquidGlass": {
+                "enabled": true,
+                "navbar": {
+                    "backgroundColor": "rgba(30, 30, 30, 0.72)",
+                    "backdropFilter": "blur(20px) saturate(180%)",
+                    "borderBottom": "0.5px solid rgba(255, 255, 255, 0.08)"
+                },
+                "tabBar": {
+                    "backgroundColor": "rgba(30, 30, 30, 0.94)",
+                    "backdropFilter": "blur(20px) saturate(180%)",
+                    "borderTop": "0.5px solid rgba(255, 255, 255, 0.08)"
+                },
+                "card": {
+                    "backgroundColor": "rgba(44, 44, 46, 0.65)",
+                    "backdropFilter": "blur(12px)",
+                    "borderRadius": 16,
+                    "shadowColor": "rgba(0, 0, 0, 0.3)",
+                    "shadowOffset": {
+                        "width": 0,
+                        "height": 2
+                    },
+                    "shadowRadius": 8
+                },
+                "sheet": {
+                    "backgroundColor": "rgba(28, 28, 30, 0.92)",
+                    "backdropFilter": "blur(40px) saturate(200%)",
+                    "borderRadius": 20
+                }
+            },
+            "statusBar": "light-content"
+        }
+    },
+    "nativeWidgets": {
+        "description": "iOS widget support using expo-widgets or react-native-widget-extension",
+        "smallWidget": {
+            "width": 155,
+            "height": 155,
+            "family": "systemSmall"
+        },
+        "mediumWidget": {
+            "width": 329,
+            "height": 155,
+            "family": "systemMedium"
+        },
+        "largeWidget": {
+            "width": 329,
+            "height": 345,
+            "family": "systemLarge"
+        },
+        "widgetColors": {
+            "light": {
+                "background": "#F2F2F7",
+                "text": "#000000",
+                "accent": "#007AFF"
+            },
+            "dark": {
+                "background": "#1C1C1E",
+                "text": "#FFFFFF",
+                "accent": "#0A84FF"
+            }
+        }
+    },
+    "expoConfig": {
+        "ios": {
+            "supportsTablet": true,
+            "infoPlist": {
+                "UIBackgroundModes": [
+                    "fetch",
+                    "remote-notification"
+                ],
+                "ITSAppUsesNonExemptEncryption": false
+            },
+            "config": {
+                "usesNonExemptEncryption": false
+            }
+        },
+        "plugins": [
+            "expo-font",
+            "expo-haptics",
+            "expo-blur",
+            "expo-linear-gradient",
+            "expo-localization",
+            "expo-notifications",
+            "expo-secure-store"
+        ]
+    },
+    "codePatterns": {
+        "navigation": "expo-router (file-based)",
+        "stateManagement": "zustand",
+        "animations": "react-native-reanimated",
+        "gestures": "react-native-gesture-handler",
+        "lists": "FlashList (from @shopify/flash-list)",
+        "icons": "SF Symbols via expo-symbols or @expo/vector-icons",
+        "haptics": "expo-haptics for button feedback",
+        "blur": "expo-blur for liquid glass effects",
+        "gradients": "expo-linear-gradient",
+        "bottomSheet": "@gorhom/bottom-sheet"
+    }
+}

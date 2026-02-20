@@ -1,0 +1,1 @@
+The user is building an iOS app and needs a name that will stand out in the App Store. They want names that are unique, easy to remember, and have available domains. The name should work as a brand — something they can build a company around, not just an app label.

@@ -1,0 +1,1 @@
+The user needs to know if their chosen app name is safe before they invest in branding, domains, and development. They are building an iOS app and need trademark clearance in software-related USPTO classes. They want real domain pricing and availability, not guesses.

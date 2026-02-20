@@ -1,0 +1,1 @@
+The user is an indie app developer launching their first app. They have a limited marketing budget and need strategies that maximize organic reach before spending on paid acquisition. They want a professional launch, not a spray-and-pray approach.

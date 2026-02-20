@@ -1,0 +1,288 @@
+{
+    "description": "Landing page templates for apps submitted to the Apple App Store. These pages must meet all Apple review requirements.",
+    "appleRequirements": {
+        "privacyPolicy": {
+            "required": true,
+            "description": "Must be accessible and clearly state data collection practices",
+            "placement": "Footer link + dedicated /privacy page"
+        },
+        "supportUrl": {
+            "required": true,
+            "description": "Must provide a way for users to reach support",
+            "placement": "Footer link + dedicated /support page"
+        },
+        "termsOfService": {
+            "required": true,
+            "description": "Terms of use for the application",
+            "placement": "Footer link + dedicated /terms page"
+        },
+        "subscriptionTerms": {
+            "requiredIf": "app has subscriptions",
+            "mustInclude": [
+                "Subscription price and billing frequency",
+                "Free trial length (if applicable)",
+                "Auto-renewal disclosure",
+                "How to cancel",
+                "Subscription manages through Apple ID settings"
+            ],
+            "placement": "Visible before any purchase CTA"
+        },
+        "ageRating": {
+            "required": true,
+            "description": "Content rating matching App Store Connect selection",
+            "placement": "Footer metadata"
+        },
+        "appStoreLink": {
+            "required": true,
+            "description": "Direct link to app on the App Store",
+            "placement": "Hero section CTA",
+            "badge": "Download on the App Store (use official badge from Apple)",
+            "badgeUrl": "https://developer.apple.com/app-store/marketing/guidelines/"
+        }
+    },
+    "templates": {
+        "light": {
+            "name": "Apple Light Landing",
+            "sections": [
+                {
+                    "id": "hero",
+                    "type": "hero",
+                    "layout": "centered",
+                    "style": {
+                        "background": "#FFFFFF",
+                        "textColor": "#1D1D1F",
+                        "maxWidth": "1200px",
+                        "padding": "120px 24px 80px"
+                    },
+                    "content": {
+                        "appIcon": "64px rounded corners, matches App Store icon",
+                        "headline": "App tagline from marketing brief",
+                        "subheadline": "One-sentence value proposition",
+                        "cta": "Download on the App Store badge",
+                        "heroImage": "iPhone mockup with app screenshot"
+                    }
+                },
+                {
+                    "id": "features",
+                    "type": "feature-grid",
+                    "layout": "3-column",
+                    "style": {
+                        "background": "#F5F5F7",
+                        "textColor": "#1D1D1F",
+                        "padding": "80px 24px"
+                    },
+                    "content": "3-6 key features with SF Symbol icons and short descriptions"
+                },
+                {
+                    "id": "screenshots",
+                    "type": "screenshot-carousel",
+                    "layout": "horizontal-scroll",
+                    "style": {
+                        "background": "#FFFFFF",
+                        "padding": "80px 24px"
+                    },
+                    "content": "App Store screenshots in device frames, scrollable"
+                },
+                {
+                    "id": "testimonials",
+                    "type": "testimonials",
+                    "layout": "cards",
+                    "style": {
+                        "background": "#F5F5F7",
+                        "padding": "80px 24px"
+                    },
+                    "content": "App Store reviews or beta tester quotes"
+                },
+                {
+                    "id": "pricing",
+                    "type": "pricing",
+                    "layout": "cards",
+                    "style": {
+                        "background": "#FFFFFF",
+                        "padding": "80px 24px"
+                    },
+                    "content": "Subscription tiers with Apple-required disclosures",
+                    "appleRequired": true,
+                    "mustShow": [
+                        "Price per period",
+                        "Free trial duration",
+                        "Auto-renewal notice: 'Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.'",
+                        "Management: 'Manage subscriptions in Settings > [your name] > Subscriptions.'",
+                        "Links to Terms of Service and Privacy Policy"
+                    ]
+                },
+                {
+                    "id": "download",
+                    "type": "cta",
+                    "layout": "centered",
+                    "style": {
+                        "background": "linear-gradient(180deg, #F5F5F7 0%, #FFFFFF 100%)",
+                        "padding": "80px 24px"
+                    },
+                    "content": "Final CTA with App Store badge + QR code"
+                },
+                {
+                    "id": "footer",
+                    "type": "footer",
+                    "layout": "standard",
+                    "style": {
+                        "background": "#1D1D1F",
+                        "textColor": "#F5F5F7",
+                        "padding": "40px 24px"
+                    },
+                    "links": [
+                        {
+                            "label": "Privacy Policy",
+                            "href": "/privacy",
+                            "required": true
+                        },
+                        {
+                            "label": "Terms of Service",
+                            "href": "/terms",
+                            "required": true
+                        },
+                        {
+                            "label": "Support",
+                            "href": "/support",
+                            "required": true
+                        },
+                        {
+                            "label": "Press Kit",
+                            "href": "/press"
+                        }
+                    ],
+                    "metadata": "© 2025 [Company Name]. All rights reserved."
+                }
+            ]
+        },
+        "dark": {
+            "name": "Apple Dark Landing",
+            "sections": [
+                {
+                    "id": "hero",
+                    "type": "hero",
+                    "layout": "centered",
+                    "style": {
+                        "background": "#000000",
+                        "textColor": "#F5F5F7",
+                        "maxWidth": "1200px",
+                        "padding": "120px 24px 80px"
+                    },
+                    "content": {
+                        "appIcon": "64px rounded corners, matches App Store icon",
+                        "headline": "App tagline from marketing brief",
+                        "subheadline": "One-sentence value proposition",
+                        "cta": "Download on the App Store badge (white version)",
+                        "heroImage": "iPhone mockup with dark-mode app screenshot"
+                    }
+                },
+                {
+                    "id": "features",
+                    "type": "feature-grid",
+                    "layout": "3-column",
+                    "style": {
+                        "background": "#1D1D1F",
+                        "textColor": "#F5F5F7",
+                        "padding": "80px 24px"
+                    },
+                    "content": "3-6 key features with SF Symbol icons and short descriptions"
+                },
+                {
+                    "id": "screenshots",
+                    "type": "screenshot-carousel",
+                    "layout": "horizontal-scroll",
+                    "style": {
+                        "background": "#000000",
+                        "padding": "80px 24px"
+                    },
+                    "content": "App Store screenshots in dark device frames, scrollable"
+                },
+                {
+                    "id": "testimonials",
+                    "type": "testimonials",
+                    "layout": "cards",
+                    "style": {
+                        "background": "#1D1D1F",
+                        "padding": "80px 24px"
+                    },
+                    "content": "App Store reviews or beta tester quotes"
+                },
+                {
+                    "id": "pricing",
+                    "type": "pricing",
+                    "layout": "cards",
+                    "style": {
+                        "background": "#000000",
+                        "padding": "80px 24px"
+                    },
+                    "content": "Subscription tiers with Apple-required disclosures",
+                    "appleRequired": true,
+                    "mustShow": [
+                        "Price per period",
+                        "Free trial duration",
+                        "Auto-renewal notice",
+                        "Manage subscriptions link",
+                        "Terms and Privacy links"
+                    ]
+                },
+                {
+                    "id": "download",
+                    "type": "cta",
+                    "layout": "centered",
+                    "style": {
+                        "background": "linear-gradient(180deg, #1D1D1F 0%, #000000 100%)",
+                        "padding": "80px 24px"
+                    },
+                    "content": "Final CTA with App Store badge + QR code"
+                },
+                {
+                    "id": "footer",
+                    "type": "footer",
+                    "layout": "standard",
+                    "style": {
+                        "background": "#000000",
+                        "textColor": "#86868B",
+                        "borderTop": "1px solid #38383A",
+                        "padding": "40px 24px"
+                    },
+                    "links": [
+                        {
+                            "label": "Privacy Policy",
+                            "href": "/privacy",
+                            "required": true
+                        },
+                        {
+                            "label": "Terms of Service",
+                            "href": "/terms",
+                            "required": true
+                        },
+                        {
+                            "label": "Support",
+                            "href": "/support",
+                            "required": true
+                        },
+                        {
+                            "label": "Press Kit",
+                            "href": "/press"
+                        }
+                    ],
+                    "metadata": "© 2025 [Company Name]. All rights reserved."
+                }
+            ]
+        }
+    },
+    "complianceChecklist": [
+        "✅ Privacy Policy page accessible and linked from footer",
+        "✅ Terms of Service page accessible and linked from footer",
+        "✅ Support page with contact method (email form or help center)",
+        "✅ App Store badge follows Apple marketing guidelines",
+        "✅ No misleading claims about app functionality",
+        "✅ Screenshots match actual app functionality",
+        "✅ Subscription auto-renewal disclosures visible before purchase",
+        "✅ Price displayed matches App Store listing",
+        "✅ Age rating mentioned if app targets specific audiences",
+        "✅ COPPA compliance if targeting children under 13",
+        "✅ No use of Apple trademarks beyond official badges",
+        "✅ HTTPS enabled on all pages"
+    ]
+}

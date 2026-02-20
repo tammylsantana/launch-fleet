@@ -1,0 +1,1 @@
+The user wants a complete, working Expo app that they can build and submit to the App Store. They are not a developer — the code must work out of the box without any manual fixes. The app should look premium and feel native on iOS.

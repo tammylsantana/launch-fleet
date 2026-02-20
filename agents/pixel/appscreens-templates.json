@@ -1,0 +1,638 @@
+{
+    "appscreens_url": "https://appscreens.com/templates",
+    "sandbox_base_url": "https://app.appscreens.com",
+    "total_templates": 119,
+    "free_templates": 4,
+    "pro_templates": 115,
+    "default_devices": [
+        "iPhones - 6.9\"",
+        "iPad - 13\""
+    ],
+    "orientation": "portrait",
+    "style_tags": [
+        "3d",
+        "Advanced",
+        "Colourful",
+        "Dark",
+        "Divided Device",
+        "Dynamic Frame",
+        "Feature Graphic",
+        "Frameless",
+        "Gradient",
+        "Graphics",
+        "Hand Held",
+        "Image Overlay",
+        "Languages",
+        "Multi Layered",
+        "Panoramic",
+        "Simple",
+        "Top Apps",
+        "Vision Pro",
+        "Watch"
+    ],
+    "free_templates_list": [
+        {
+            "name": "Free Inspired by Calm",
+            "tags": [
+                "Simple",
+                "Minimal",
+                "Light"
+            ],
+            "best_for": [
+                "wellness",
+                "meditation",
+                "health"
+            ],
+            "notes": "Clean white background, minimal text, soft tones"
+        },
+        {
+            "name": "Free Bright Multi-Colour",
+            "tags": [
+                "Colourful",
+                "Playful"
+            ],
+            "best_for": [
+                "kids",
+                "education",
+                "games"
+            ],
+            "notes": "Bright multi-color backgrounds, playful feel"
+        },
+        {
+            "name": "Free White and Bold",
+            "tags": [
+                "Simple",
+                "Light",
+                "Bold"
+            ],
+            "best_for": [
+                "productivity",
+                "utility",
+                "business"
+            ],
+            "notes": "White background with bold black text overlays"
+        },
+        {
+            "name": "Free Monochrome Vertical",
+            "tags": [
+                "Minimal",
+                "Dark",
+                "Light"
+            ],
+            "best_for": [
+                "finance",
+                "tools",
+                "minimal apps"
+            ],
+            "notes": "Black and white, vertical layout, serious tone"
+        }
+    ],
+    "top_apps_templates": {
+        "ai_tech": [
+            {
+                "name": "Inspired by Claude (Anthropic)",
+                "app": "Claude",
+                "tags": [
+                    "Top Apps",
+                    "Simple"
+                ]
+            },
+            {
+                "name": "Inspired by ChatGPT",
+                "app": "ChatGPT",
+                "tags": [
+                    "Top Apps",
+                    "Simple"
+                ]
+            },
+            {
+                "name": "Inspired by Gemini",
+                "app": "Gemini",
+                "tags": [
+                    "Top Apps",
+                    "Gradient"
+                ]
+            },
+            {
+                "name": "Inspired by Microsoft Copilot",
+                "app": "Microsoft Copilot",
+                "tags": [
+                    "Top Apps",
+                    "Dark"
+                ]
+            },
+            {
+                "name": "Inspired by Univerbal AI",
+                "app": "Univerbal AI Language Learning",
+                "tags": [
+                    "Top Apps",
+                    "Colourful"
+                ]
+            },
+            {
+                "name": "Inspired by Earkick",
+                "app": "Earkick",
+                "tags": [
+                    "Top Apps",
+                    "Playful"
+                ]
+            }
+        ],
+        "social_communication": [
+            {
+                "name": "Inspired by TikTok",
+                "app": "TikTok",
+                "tags": [
+                    "Top Apps",
+                    "Dark",
+                    "Frameless"
+                ]
+            },
+            {
+                "name": "Inspired by Pinterest",
+                "app": "Pinterest",
+                "tags": [
+                    "Top Apps",
+                    "Image Overlay"
+                ]
+            },
+            {
+                "name": "Inspired by Messenger",
+                "app": "Messenger",
+                "tags": [
+                    "Top Apps",
+                    "Gradient"
+                ]
+            },
+            {
+                "name": "Inspired by Snapchat",
+                "app": "Snapchat",
+                "tags": [
+                    "Top Apps",
+                    "Colourful"
+                ]
+            },
+            {
+                "name": "Inspired by Tinder",
+                "app": "Tinder",
+                "tags": [
+                    "Top Apps",
+                    "Gradient"
+                ]
+            },
+            {
+                "name": "Inspired by Bumble",
+                "app": "Bumble",
+                "tags": [
+                    "Top Apps",
+                    "Colourful"
+                ]
+            },
+            {
+                "name": "Inspired by Discord",
+                "app": "Discord",
+                "tags": [
+                    "Top Apps",
+                    "Dark"
+                ]
+            }
+        ],
+        "productivity_utility": [
+            {
+                "name": "Inspired by Gmail",
+                "app": "Gmail",
+                "tags": [
+                    "Top Apps",
+                    "Simple"
+                ]
+            },
+            {
+                "name": "Inspired by Uber",
+                "app": "Uber",
+                "tags": [
+                    "Top Apps",
+                    "Dark"
+                ]
+            },
+            {
+                "name": "Inspired by Starbucks",
+                "app": "Starbucks",
+                "tags": [
+                    "Top Apps",
+                    "Gradient"
+                ]
+            },
+            {
+                "name": "Inspired by Walmart",
+                "app": "Walmart",
+                "tags": [
+                    "Top Apps",
+                    "Simple"
+                ]
+            },
+            {
+                "name": "Inspired by RevenueCat",
+                "app": "RevenueCat",
+                "tags": [
+                    "Top Apps",
+                    "Dark",
+                    "Advanced"
+                ]
+            },
+            {
+                "name": "Inspired by Superlist",
+                "app": "Superlist",
+                "tags": [
+                    "Top Apps",
+                    "Simple"
+                ]
+            },
+            {
+                "name": "Inspired by Airhelp",
+                "app": "Airhelp",
+                "tags": [
+                    "Top Apps",
+                    "Image Overlay"
+                ]
+            },
+            {
+                "name": "Inspired by Invoice App",
+                "app": "Invoice App",
+                "tags": [
+                    "Top Apps",
+                    "Dark"
+                ]
+            }
+        ],
+        "health_lifestyle": [
+            {
+                "name": "Inspired by Calm",
+                "app": "Calm",
+                "tags": [
+                    "Top Apps",
+                    "Simple"
+                ]
+            },
+            {
+                "name": "Inspired by Duolingo",
+                "app": "Duolingo",
+                "tags": [
+                    "Top Apps",
+                    "Colourful"
+                ]
+            },
+            {
+                "name": "Inspired by Flo",
+                "app": "Flo",
+                "tags": [
+                    "Top Apps",
+                    "Gradient"
+                ]
+            },
+            {
+                "name": "Inspired by Diet Doctor",
+                "app": "Diet Doctor",
+                "tags": [
+                    "Top Apps",
+                    "Image Overlay"
+                ]
+            },
+            {
+                "name": "Inspired by Kic",
+                "app": "Kic",
+                "tags": [
+                    "Top Apps",
+                    "Dynamic Frame"
+                ]
+            },
+            {
+                "name": "Inspired by Zumba",
+                "app": "Zumba",
+                "tags": [
+                    "Top Apps",
+                    "Colourful",
+                    "Dynamic Frame"
+                ]
+            },
+            {
+                "name": "Inspired by FitMenCook",
+                "app": "FitMenCook",
+                "tags": [
+                    "Top Apps",
+                    "Image Overlay"
+                ]
+            },
+            {
+                "name": "Inspired by Dogo",
+                "app": "Dogo",
+                "tags": [
+                    "Top Apps",
+                    "Colourful"
+                ]
+            },
+            {
+                "name": "Inspired by DuoDo",
+                "app": "DuoDo",
+                "tags": [
+                    "Top Apps",
+                    "Playful"
+                ]
+            }
+        ],
+        "entertainment": [
+            {
+                "name": "Inspired by Paramount+",
+                "app": "Paramount+",
+                "tags": [
+                    "Top Apps",
+                    "Dark",
+                    "Image Overlay"
+                ]
+            },
+            {
+                "name": "Inspired by Max Stream",
+                "app": "Max (HBO)",
+                "tags": [
+                    "Top Apps",
+                    "Dark",
+                    "Multi Layered"
+                ]
+            }
+        ]
+    },
+    "pro_templates_by_style": {
+        "3d": [
+            "Inner Glow",
+            "Spy Game",
+            "Tech Tastic"
+        ],
+        "gradient": [
+            "Peachy Gradients",
+            "Multi Element Gradient Showcase",
+            "Colourful Stripe & Frameless Design",
+            "Simple & Striking Waves",
+            "Colourful Dynamic Waves"
+        ],
+        "frameless": [
+            "Floating Back to Black",
+            "Monochrome Straight Simplicity",
+            "Colourful Stripe & Frameless Design"
+        ],
+        "dark": [
+            "Dark Simple and Bold",
+            "Sharp Bold Diverse & Dark",
+            "Floating Back to Black",
+            "Glowing Gold",
+            "Golden Cityscape"
+        ],
+        "colourful": [
+            "Bright Multi-Colour Pairs",
+            "Colourful Loaded Varying Elements",
+            "Colourful Dynamic Waves"
+        ],
+        "image_overlay": [
+            "Overlay Fun",
+            "Soft Beauty Image Split",
+            "Earthy Pattern Pano"
+        ],
+        "panoramic": [
+            "Diverse Midnight Panoramic",
+            "Panoramic Waves",
+            "Moody Gentle Panoramic"
+        ],
+        "divided_device": [
+            "Purple Titled Divided Device",
+            "Divided Crisp Blues",
+            "Zoom Zoom Split"
+        ],
+        "dynamic_frame": [
+            "Powerful Popping Fitness",
+            "GlowFit Showcase"
+        ],
+        "multi_layered": [
+            "Double Trouble",
+            "Bubble Besties",
+            "Rich Text Rocket Layout"
+        ],
+        "hand_held": [
+            "Bringing It In",
+            "Continuous Foodie Showcase"
+        ],
+        "simple": [
+            "Softly So Bold",
+            "Neutral Simple Structure",
+            "Crispy Underlines",
+            "White on Green"
+        ],
+        "advanced": [
+            "Dual Devices",
+            "Localisation Translation Example"
+        ]
+    },
+    "specialty_templates": {
+        "apple_watch": [
+            "Crisp Divided Watch",
+            "Ultra Purples",
+            "Dark Striking Watch",
+            "Diverse & Dark Watch",
+            "Monochrome Watch"
+        ],
+        "apple_vision_pro": [
+            "Apple Vision Pro 1",
+            "Apple Vision Pro 2",
+            "Apple Vision Pro 3"
+        ],
+        "google_play_feature_graphic": [
+            "Feature Graphic Example 1",
+            "Feature Graphic Example 2",
+            "Feature Graphic Example 3",
+            "Feature Graphic Example 4",
+            "Feature Graphic Alert"
+        ],
+        "landscape": [
+            "Landscape Inspired by Gmail",
+            "Dark Landscape Waves",
+            "Panoramic Landscape Bubbles",
+            "Dynamic Landscape Multi-View"
+        ]
+    },
+    "category_to_template_map": {
+        "ai_productivity": {
+            "label": "AI & Productivity",
+            "first_choice": "Inspired by Claude (Anthropic)",
+            "alternatives": [
+                "Inspired by ChatGPT",
+                "Inspired by Gemini",
+                "Inspired by Superlist"
+            ],
+            "free_fallback": "Free White and Bold",
+            "style_filter": "Top Apps"
+        },
+        "fitness_health": {
+            "label": "Fitness, Health & Wellness",
+            "first_choice": "Inspired by Calm",
+            "alternatives": [
+                "Inspired by Kic",
+                "GlowFit Showcase",
+                "Powerful Popping Fitness",
+                "Inspired by Flo"
+            ],
+            "free_fallback": "Free Inspired by Calm",
+            "style_filter": "Dynamic Frame"
+        },
+        "social_dating": {
+            "label": "Social, Dating & Communication",
+            "first_choice": "Inspired by TikTok",
+            "alternatives": [
+                "Inspired by Bumble",
+                "Inspired by Discord",
+                "Inspired by Snapchat"
+            ],
+            "free_fallback": "Free Bright Multi-Colour",
+            "style_filter": "Frameless"
+        },
+        "food_lifestyle": {
+            "label": "Food & Lifestyle",
+            "first_choice": "Inspired by FitMenCook",
+            "alternatives": [
+                "Continuous Foodie Showcase",
+                "Inspired by Starbucks",
+                "Soft Beauty Image Split"
+            ],
+            "free_fallback": "Free Inspired by Calm",
+            "style_filter": "Image Overlay"
+        },
+        "finance_utility": {
+            "label": "Finance & Utility",
+            "first_choice": "Inspired by RevenueCat",
+            "alternatives": [
+                "Inspired by Invoice App",
+                "Dark Simple and Bold",
+                "Inspired by Uber"
+            ],
+            "free_fallback": "Free Monochrome Vertical",
+            "style_filter": "Dark"
+        },
+        "entertainment": {
+            "label": "Entertainment & Events",
+            "first_choice": "Inspired by Paramount+",
+            "alternatives": [
+                "Inspired by Max Stream",
+                "Golden Cityscape",
+                "Diverse Midnight Panoramic"
+            ],
+            "free_fallback": "Free Monochrome Vertical",
+            "style_filter": "Multi Layered"
+        },
+        "education": {
+            "label": "Education & Languages",
+            "first_choice": "Inspired by Duolingo",
+            "alternatives": [
+                "Inspired by Univerbal AI",
+                "Bright Multi-Colour Pairs",
+                "Localisation Translation Example"
+            ],
+            "free_fallback": "Free Bright Multi-Colour",
+            "style_filter": "Colourful"
+        },
+        "shopping_ecommerce": {
+            "label": "Shopping & E-commerce",
+            "first_choice": "Inspired by Walmart",
+            "alternatives": [
+                "Inspired by Starbucks",
+                "Bringing It In",
+                "Neutral Simple Structure"
+            ],
+            "free_fallback": "Free White and Bold",
+            "style_filter": "Simple"
+        },
+        "travel": {
+            "label": "Travel & Navigation",
+            "first_choice": "Inspired by Airhelp",
+            "alternatives": [
+                "Earthy Pattern Pano",
+                "Panoramic Waves",
+                "Image Overlay"
+            ],
+            "free_fallback": "Free Inspired by Calm",
+            "style_filter": "Image Overlay"
+        },
+        "kids_family": {
+            "label": "Kids & Family",
+            "first_choice": "Inspired by Duolingo",
+            "alternatives": [
+                "Bright Multi-Colour Pairs",
+                "Bubble Besties",
+                "Inspired by Dogo"
+            ],
+            "free_fallback": "Free Bright Multi-Colour",
+            "style_filter": "Colourful"
+        }
+    },
+    "apple_screenshot_requirements": {
+        "iphone_6_9": {
+            "width": 1320,
+            "height": 2868,
+            "label": "iPhone 16 Pro Max 6.9\" (REQUIRED)",
+            "required": true
+        },
+        "iphone_6_7": {
+            "width": 1290,
+            "height": 2796,
+            "label": "iPhone 15 Pro Max 6.7\"",
+            "required": false
+        },
+        "iphone_6_5": {
+            "width": 1284,
+            "height": 2778,
+            "label": "iPhone 14 Pro Max 6.5\"",
+            "required": false
+        },
+        "iphone_5_5": {
+            "width": 1242,
+            "height": 2208,
+            "label": "iPhone 8 Plus 5.5\"",
+            "required": false
+        },
+        "ipad_13": {
+            "width": 2064,
+            "height": 2752,
+            "label": "iPad Pro 13\" M4 (REQUIRED)",
+            "required": true
+        },
+        "ipad_12_9": {
+            "width": 2048,
+            "height": 2732,
+            "label": "iPad Pro 12.9\"",
+            "required": false
+        }
+    },
+    "browser_workflow": {
+        "step_1": "Read Scout's research brief → identify app category (ai_productivity, fitness_health, etc.)",
+        "step_2": "Open this config file → find the matching category in category_to_template_map",
+        "step_3": "Note the first_choice template name and the style_filter tag",
+        "step_4": "Open browser → navigate to https://appscreens.com/templates",
+        "step_5": "Click the 'Tags' dropdown button in the filter toolbar",
+        "step_6": "Click the style_filter tag (e.g., 'Top Apps' or 'Dark') from the dropdown menu",
+        "step_7": "Scroll through filtered templates → find the first_choice template by name",
+        "step_8": "If first_choice not found, try alternatives from the config",
+        "step_9": "Click 'Try in Sandbox' on the chosen template card",
+        "step_10": "In the sandbox editor, click the device frame placeholder",
+        "step_11": "Click 'Upload' or drag screenshots from ~/Documents/LaunchFleet Projects/{appName}/screenshots/",
+        "step_12": "Upload screenshots for each panel (up to 10 panels per template)",
+        "step_13": "Click on headline text areas → type marketing copy from Buzz's brief",
+        "step_14": "Use the device selector to switch between iPhone 6.9\" and iPad 13\"",
+        "step_15": "Click 'Export' or 'Download' → select all required sizes",
+        "step_16": "Save exported files to ~/Documents/LaunchFleet Projects/{appName}/store-screenshots/",
+        "step_17": "If template supports video, upload screen recording from ~/Documents/LaunchFleet Projects/{appName}/recordings/",
+        "step_18": "Export video as App Preview (30 seconds max, correct resolution)"
+    },
+    "expo_simulator_screenshot_paths": {
+        "description": "Builder captures these from Expo simulator before handing off to Pixel",
+        "screenshots_dir": "~/Documents/LaunchFleet Projects/{appName}/screenshots/",
+        "recordings_dir": "~/Documents/LaunchFleet Projects/{appName}/recordings/",
+        "capture_command_ios": "xcrun simctl io booted screenshot ~/Documents/LaunchFleet\\ Projects/{appName}/screenshots/{screenName}.png",
+        "record_command_ios": "xcrun simctl io booted recordVideo ~/Documents/LaunchFleet\\ Projects/{appName}/recordings/app-preview.mp4",
+        "stop_recording": "Press Ctrl+C to stop recording"
+    }
+}
