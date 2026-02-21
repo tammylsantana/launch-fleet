@@ -17,8 +17,8 @@ const STAGES = [
 const API_KEY_SECTIONS = [
     {
         category: 'Backend', keys: [
-            { id: 'supabase_url', label: 'Supabase URL', placeholder: 'https://xxxxx.supabase.co', guide: 'https://supabase.com/docs' },
-            { id: 'supabase_anon', label: 'Supabase Anon Key', placeholder: 'eyJ...', guide: 'https://supabase.com/docs' },
+            { id: 'supabase_url', label: 'Supabase URL', placeholder: 'https://xxxxx.supabase.co', guide: 'https://supabase.com/docs', required: true },
+            { id: 'supabase_anon', label: 'Supabase Anon Key', placeholder: 'eyJ...', guide: 'https://supabase.com/docs', required: true },
         ]
     },
     {
@@ -59,7 +59,7 @@ const API_KEY_SECTIONS = [
     },
     {
         category: 'Auth', keys: [
-            { id: 'apple_signin', label: 'Apple Sign-In Service ID', placeholder: 'com.your.app', guide: 'https://developer.apple.com/sign-in-with-apple/' },
+            { id: 'apple_signin', label: 'Apple Sign-In Service ID', placeholder: 'com.your.app', guide: 'https://developer.apple.com/sign-in-with-apple/', required: true },
             { id: 'google_signin', label: 'Google OAuth Client ID', placeholder: '...apps.googleusercontent.com', guide: 'https://console.cloud.google.com/apis/credentials' },
         ]
     },
@@ -285,8 +285,12 @@ export default function BuildPage() {
                                                         type="password"
                                                         value={keyValues[key.id] || ''}
                                                         onChange={e => setKeyValues(prev => ({ ...prev, [key.id]: e.target.value }))}
+                                                        style={(key as any).required ? { borderColor: savedKeys[key.id] ? '#34C759' : '#FF3B30', borderWidth: 1.5 } : {}}
                                                     />
                                                 </div>
+                                                {(key as any).required && !savedKeys[key.id] && (
+                                                    <span style={{ fontSize: 9, color: '#FF3B30', fontWeight: 700, whiteSpace: 'nowrap' }}>REQUIRED</span>
+                                                )}
                                                 <button
                                                     className={`btn ${savedKeys[key.id] ? 'btn-secondary' : 'btn-ghost'} btn-sm`}
                                                     onClick={() => saveKey(key.id)}

@@ -28,40 +28,40 @@ const STORE_TABS = [
 ]
 
 const GENERAL_FIELDS = [
-    { id: 'appName', label: 'App Name', type: 'text', maxLength: 30, hint: 'Your app name as it appears on the App Store.' },
+    { id: 'appName', label: 'App Name', type: 'text', maxLength: 30, hint: 'Your app name as it appears on the App Store.', required: true },
     { id: 'subtitle', label: 'Subtitle', type: 'text', maxLength: 30, hint: 'Brief summary shown below your app name.' },
-    { id: 'primaryCategory', label: 'Primary Category', type: 'select', options: ['Books', 'Business', 'Developer Tools', 'Education', 'Entertainment', 'Finance', 'Food & Drink', 'Games', 'Graphics & Design', 'Health & Fitness', 'Lifestyle', 'Medical', 'Music', 'Navigation', 'News', 'Photo & Video', 'Productivity', 'Reference', 'Shopping', 'Social Networking', 'Sports', 'Travel', 'Utilities', 'Weather'] },
+    { id: 'primaryCategory', label: 'Primary Category', type: 'select', options: ['Books', 'Business', 'Developer Tools', 'Education', 'Entertainment', 'Finance', 'Food & Drink', 'Games', 'Graphics & Design', 'Health & Fitness', 'Lifestyle', 'Medical', 'Music', 'Navigation', 'News', 'Photo & Video', 'Productivity', 'Reference', 'Shopping', 'Social Networking', 'Sports', 'Travel', 'Utilities', 'Weather'], required: true },
     { id: 'secondaryCategory', label: 'Secondary Category', type: 'select', options: ['None', 'Books', 'Business', 'Developer Tools', 'Education', 'Entertainment', 'Finance', 'Food & Drink', 'Games', 'Graphics & Design', 'Health & Fitness', 'Lifestyle', 'Medical', 'Music', 'Navigation', 'News', 'Photo & Video', 'Productivity', 'Reference', 'Shopping', 'Social Networking', 'Sports', 'Travel', 'Utilities', 'Weather'] },
-    { id: 'description', label: 'Description', type: 'textarea', maxLength: 4000, hint: 'Detailed description of your app. Up to 4000 characters.' },
-    { id: 'keywords', label: 'Keywords', type: 'text', maxLength: 100, hint: 'Comma-separated. 100 characters max.' },
-    { id: 'supportUrl', label: 'Support URL', type: 'text', hint: 'Link to your support page.' },
+    { id: 'description', label: 'Description', type: 'textarea', maxLength: 4000, hint: 'Detailed description of your app. Up to 4000 characters.', required: true },
+    { id: 'keywords', label: 'Keywords', type: 'text', maxLength: 100, hint: 'Comma-separated. 100 characters max.', required: true },
+    { id: 'supportUrl', label: 'Support URL', type: 'text', hint: 'Required by Apple for all apps.', required: true },
     { id: 'marketingUrl', label: 'Marketing URL', type: 'text', hint: 'Link to your app\'s marketing page.' },
     { id: 'promotionalText', label: 'Promotional Text', type: 'textarea', maxLength: 170, hint: 'Appears above your description. Can be changed without a new submission.' },
-    { id: 'whatsNew', label: 'What\'s New', type: 'textarea', maxLength: 4000, hint: 'Release notes shown to users updating your app.' },
-    { id: 'bundleId', label: 'Bundle ID', type: 'text', hint: 'e.g. com.yourcompany.appname' },
-    { id: 'sku', label: 'SKU', type: 'text', hint: 'Unique identifier for your app. Not visible to users.' },
-    { id: 'contentRights', label: 'Content Rights', type: 'select', options: ['Does not contain third-party content', 'Contains third-party content with rights'] },
-    { id: 'copyrightHolder', label: 'Copyright', type: 'text', hint: 'e.g. 2025 Your Company Name' },
+    { id: 'whatsNew', label: 'What\'s New', type: 'textarea', maxLength: 4000, hint: 'Release notes shown to users updating your app.', required: true },
+    { id: 'bundleId', label: 'Bundle ID', type: 'text', hint: 'e.g. com.yourcompany.appname', required: true },
+    { id: 'sku', label: 'SKU', type: 'text', hint: 'Unique identifier for your app. Not visible to users.', required: true },
+    { id: 'contentRights', label: 'Content Rights', type: 'select', options: ['Does not contain third-party content', 'Contains third-party content with rights'], required: true },
+    { id: 'copyrightHolder', label: 'Copyright', type: 'text', hint: 'e.g. 2025 Your Company Name', required: true },
 ]
 
 const PRICING_FIELDS = [
-    { id: 'price', label: 'Price', type: 'select', options: ['Free', '$0.99', '$1.99', '$2.99', '$3.99', '$4.99', '$5.99', '$6.99', '$7.99', '$8.99', '$9.99', '$14.99', '$19.99', '$24.99', '$29.99', '$39.99', '$49.99', '$69.99', '$79.99', '$99.99'] },
-    { id: 'availability', label: 'Availability', type: 'select', options: ['All territories', 'Select territories'] },
+    { id: 'price', label: 'Price', type: 'select', options: ['Free', '$0.99', '$1.99', '$2.99', '$3.99', '$4.99', '$5.99', '$6.99', '$7.99', '$8.99', '$9.99', '$14.99', '$19.99', '$24.99', '$29.99', '$39.99', '$49.99', '$69.99', '$79.99', '$99.99'], required: true },
+    { id: 'availability', label: 'Availability', type: 'select', options: ['All territories', 'Select territories'], required: true },
     { id: 'preOrder', label: 'Pre-Order', type: 'select', options: ['No', 'Yes'] },
     { id: 'preOrderDate', label: 'Pre-Order Release Date', type: 'text', hint: 'Only if pre-order is Yes.' },
-    { id: 'iap', label: 'In-App Purchases', type: 'select', options: ['None', 'Consumable', 'Non-Consumable', 'Auto-Renewable Subscription', 'Non-Renewing Subscription'] },
+    { id: 'iap', label: 'In-App Purchases', type: 'select', options: ['None', 'Consumable', 'Non-Consumable', 'Auto-Renewable Subscription', 'Non-Renewing Subscription'], required: true },
     { id: 'iapNote', label: 'IAP Review Notes', type: 'textarea', hint: 'Instructions for the reviewer to test in-app purchases.' },
 ]
 
 const PRIVACY_FIELDS = [
-    { id: 'privacyUrl', label: 'Privacy Policy URL', type: 'text', hint: 'Required for all apps.' },
-    { id: 'dataCollection', label: 'Data Collection', type: 'select', options: ['App does not collect any data', 'App collects data'] },
+    { id: 'privacyUrl', label: 'Privacy Policy URL', type: 'text', hint: 'Apple requires this for all apps.', required: true },
+    { id: 'dataCollection', label: 'Data Collection', type: 'select', options: ['App does not collect any data', 'App collects data'], required: true },
     { id: 'dataTypes', label: 'Data Types Collected', type: 'textarea', hint: 'If applicable: Contact info, Health, Financial info, Location, Identifiers, etc.' },
-    { id: 'dataLinked', label: 'Data Linked to User', type: 'select', options: ['No', 'Yes'] },
-    { id: 'trackingEnabled', label: 'App Tracking Transparency', type: 'select', options: ['No tracking', 'Uses ATT framework'] },
+    { id: 'dataLinked', label: 'Data Linked to User', type: 'select', options: ['No', 'Yes'], required: true },
+    { id: 'trackingEnabled', label: 'App Tracking Transparency', type: 'select', options: ['No tracking', 'Uses ATT framework'], required: true },
     { id: 'thirdPartySDKs', label: 'Third-Party SDKs', type: 'textarea', hint: 'List all third-party SDKs and the data they access.' },
-    { id: 'privacyManifest', label: 'Privacy Manifest (PrivacyInfo.xcprivacy)', type: 'select', options: ['Included in build', 'Not applicable'] },
-    { id: 'requiredReasonAPIs', label: 'Required Reason APIs', type: 'textarea', hint: 'UserDefaults, File timestamp, System boot time, Disk space — declare usage reasons.' },
+    { id: 'privacyManifest', label: 'Privacy Manifest (PrivacyInfo.xcprivacy)', type: 'select', options: ['Included in build', 'Not applicable'], required: true },
+    { id: 'requiredReasonAPIs', label: 'Required Reason APIs', type: 'textarea', hint: 'UserDefaults, File timestamp, System boot time, Disk space — declare usage reasons.', required: true },
 ]
 
 const AGE_RATING_FIELDS = [
@@ -76,7 +76,7 @@ const AGE_RATING_FIELDS = [
     { id: 'medicalInfo', label: 'Medical/Treatment Information', type: 'select', options: ['None', 'Infrequent/Mild', 'Frequent/Intense'] },
     { id: 'contestAndBets', label: 'Contests and Real-Money Bets', type: 'select', options: ['No', 'Yes'] },
     { id: 'unrestrictedWeb', label: 'Unrestricted Web Access', type: 'select', options: ['No', 'Yes'] },
-    { id: 'ageTier', label: 'Age Rating Tier (2025)', type: 'select', options: ['4+', '9+', '12+', '17+'], hint: 'New tiered system as of 2025.' },
+    { id: 'ageTier', label: 'Age Rating Tier (2025)', type: 'select', options: ['4+', '9+', '12+', '17+'], hint: 'New tiered system as of 2025.', required: true },
 ]
 
 const AI_TRANSPARENCY_FIELDS = [
@@ -89,8 +89,8 @@ const AI_TRANSPARENCY_FIELDS = [
 ]
 
 const EXPORT_FIELDS = [
-    { id: 'usesEncryption', label: 'Uses Encryption', type: 'select', options: ['No', 'Yes — Standard HTTPS only', 'Yes — Proprietary encryption'] },
-    { id: 'encryptionExempt', label: 'Exempt from EAR', type: 'select', options: ['Yes', 'No'] },
+    { id: 'usesEncryption', label: 'Uses Encryption', type: 'select', options: ['No', 'Yes — Standard HTTPS only', 'Yes — Proprietary encryption'], required: true },
+    { id: 'encryptionExempt', label: 'Exempt from EAR', type: 'select', options: ['Yes', 'No'], required: true },
     { id: 'frenchEncryption', label: 'French Encryption Declaration', type: 'select', options: ['Not required', 'Declaration filed'] },
 ]
 
@@ -98,14 +98,14 @@ const REVIEW_FIELDS = [
     { id: 'reviewNotes', label: 'Review Notes', type: 'textarea', hint: 'Instructions for the App Store reviewer. Include login credentials if needed.' },
     { id: 'demoUser', label: 'Demo Account Username', type: 'text' },
     { id: 'demoPass', label: 'Demo Account Password', type: 'text' },
-    { id: 'contactFirst', label: 'Contact First Name', type: 'text' },
-    { id: 'contactLast', label: 'Contact Last Name', type: 'text' },
-    { id: 'contactPhone', label: 'Contact Phone', type: 'text' },
-    { id: 'contactEmail', label: 'Contact Email', type: 'text' },
+    { id: 'contactFirst', label: 'Contact First Name', type: 'text', required: true },
+    { id: 'contactLast', label: 'Contact Last Name', type: 'text', required: true },
+    { id: 'contactPhone', label: 'Contact Phone', type: 'text', required: true },
+    { id: 'contactEmail', label: 'Contact Email', type: 'text', required: true },
     { id: 'attachments', label: 'Attachments / Notes', type: 'textarea', hint: 'Additional information for the reviewer.' },
 ]
 
-const ALL_FIELDS: Record<string, Array<{ id: string; label: string; type: string; maxLength?: number; hint?: string; options?: string[] }>> = {
+const ALL_FIELDS: Record<string, Array<{ id: string; label: string; type: string; maxLength?: number; hint?: string; options?: string[]; required?: boolean }>> = {
     general: GENERAL_FIELDS,
     pricing: PRICING_FIELDS,
     privacy: PRIVACY_FIELDS,
@@ -207,7 +207,10 @@ export default function StorePage() {
                     {currentFields.map(field => (
                         <div key={field.id} className="form-group">
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <label className="form-label">{field.label}</label>
+                                <label className="form-label">
+                                    {field.label}
+                                    {field.required && <span style={{ color: '#FF3B30', marginLeft: 4, fontWeight: 700 }}>*</span>}
+                                </label>
                                 {field.maxLength && (
                                     <span className={`char-count ${(formData[field.id]?.length || 0) > field.maxLength ? 'over' : (formData[field.id]?.length || 0) > field.maxLength * 0.9 ? 'warn' : ''}`}>
                                         {formData[field.id]?.length || 0}/{field.maxLength}
