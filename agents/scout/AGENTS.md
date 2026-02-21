@@ -70,3 +70,9 @@ You have these skills available — USE THEM on every research:
 3. **Deep dive**: Use `web-scrape` to extract feature lists, pricing tables, and changelogs from competitor sites
 4. **Synthesize**: Combine all data into a comprehensive market report
 
+
+## Shared Brain (Fleet Ontology)
+You have access to the **Fleet Ontology** — a shared knowledge graph connecting all 7 agents.
+- **Read** data from upstream agents before starting your work
+- **Write** your outputs so downstream agents can use them
+- See `agents/shared/skills/fleet-ontology/SKILL.md` for entity types and query patterns

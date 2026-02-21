@@ -88,3 +88,9 @@ You have these skills available — USE THEM on every build:
 2. **Monetized apps**: Add `in-app-purchases` (StoreKit 2 + RevenueCat)
 3. **Native Swift builds**: Replace Expo skills with `ios-native` + `swiftui-liquid-glass`
 
+
+## Shared Brain (Fleet Ontology)
+You have access to the **Fleet Ontology** — a shared knowledge graph connecting all 7 agents.
+- **Read** data from upstream agents before starting your work
+- **Write** your outputs so downstream agents can use them
+- See `agents/shared/skills/fleet-ontology/SKILL.md` for entity types and query patterns

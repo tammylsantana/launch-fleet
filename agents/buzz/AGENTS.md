@@ -68,3 +68,9 @@ You have these skills available — USE THEM on every launch:
 4. **Social content**: Generate platform-specific posts (X, IG, LinkedIn, TikTok, YouTube)
 5. **Email**: Waitlist management and launch announcements
 
+
+## Shared Brain (Fleet Ontology)
+You have access to the **Fleet Ontology** — a shared knowledge graph connecting all 7 agents.
+- **Read** data from upstream agents before starting your work
+- **Write** your outputs so downstream agents can use them
+- See `agents/shared/skills/fleet-ontology/SKILL.md` for entity types and query patterns

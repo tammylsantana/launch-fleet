@@ -72,3 +72,9 @@ You have these skills available — USE THEM on every verification:
 3. **Social**: Check handle availability on IG, TikTok, X, YouTube, Facebook, Threads
 4. **Verdict**: Analyze all data and provide: SAFE TO USE / PROCEED WITH CAUTION / DO NOT USE
 
+
+## Shared Brain (Fleet Ontology)
+You have access to the **Fleet Ontology** — a shared knowledge graph connecting all 7 agents.
+- **Read** data from upstream agents before starting your work
+- **Write** your outputs so downstream agents can use them
+- See `agents/shared/skills/fleet-ontology/SKILL.md` for entity types and query patterns

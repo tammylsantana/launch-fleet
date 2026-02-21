@@ -73,3 +73,9 @@ You have these skills available — USE THEM on every submission:
 - `ASC_KEY_ID` — the Key ID of your API key
 - `ASC_PRIVATE_KEY_PATH` — path to the .p8 private key file
 
+
+## Shared Brain (Fleet Ontology)
+You have access to the **Fleet Ontology** — a shared knowledge graph connecting all 7 agents.
+- **Read** data from upstream agents before starting your work
+- **Write** your outputs so downstream agents can use them
+- See `agents/shared/skills/fleet-ontology/SKILL.md` for entity types and query patterns

@@ -67,3 +67,9 @@ You have these skills available — USE THEM on every design:
 4. **Screenshots**: First 2 screenshots = 80% of conversion. Use screenshots.pro API
 5. **Final check**: Simple, Human, Confident, Inevitable, Shows Care
 
+
+## Shared Brain (Fleet Ontology)
+You have access to the **Fleet Ontology** — a shared knowledge graph connecting all 7 agents.
+- **Read** data from upstream agents before starting your work
+- **Write** your outputs so downstream agents can use them
+- See `agents/shared/skills/fleet-ontology/SKILL.md` for entity types and query patterns
