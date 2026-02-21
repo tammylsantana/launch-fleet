@@ -294,7 +294,7 @@ export default function BrandPage() {
                 </div>
 
                 {/* Icon generation */}
-                {selectedTemplate && !confirmed && (
+                {!confirmed && (
                     <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none', marginBottom: 'var(--space-lg)' }}>
                         <h3 style={{ marginBottom: 'var(--space-md)' }}>App Icon</h3>
                         <p className="subhead" style={{ marginBottom: 'var(--space-lg)' }}>
