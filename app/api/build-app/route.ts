@@ -75,8 +75,8 @@ Respond in this JSON format (raw JSON, no markdown fences):
 }`
 
         const response = await callAgent('builder', prompt, {
-            maxTokens: 8000,
-            temperature: 0.3,
+            maxTokens: 16000,
+            temperature: 0.2,
         })
 
         let result: { files: Array<{ path: string; content: string }>; summary: string; dependencies: string[]; buildInstructions: string } = {
@@ -86,13 +86,21 @@ Respond in this JSON format (raw JSON, no markdown fences):
             const jsonMatch = response.match(/\{[\s\S]*\}/)
             if (jsonMatch) result = JSON.parse(jsonMatch[0])
         } catch {
-            result = {
-                files: [
-                    { path: 'app.json', content: JSON.stringify({ expo: { name: appName, slug, version: '1.0.0', ios: { bundleIdentifier: `com.launchfleet.${slug}` } } }, null, 2) },
-                ],
-                summary: `Expo project scaffolded for ${appName}. Full generation requires retry.`,
-                dependencies: ['expo', 'react-native', 'expo-router', 'expo-blur', 'expo-haptics'],
-                buildInstructions: 'npx expo start',
+            // Retry with simpler prompt for core files
+            try {
+                const retryPrompt = `Generate a minimal Expo project for "${appName}" (${appIdea}). Output raw JSON with at least these files: app.json, constants/theme.ts (with colors: ${brandTemplate?.colorPalette?.accent || '#007AFF'}), app/(tabs)/_layout.tsx, app/(tabs)/index.tsx. JSON format: {"files":[{"path":"...","content":"..."}],"summary":"...","dependencies":[...],"buildInstructions":"npx expo start"}`
+                const retryResponse = await callAgent('builder', retryPrompt, { maxTokens: 8000, temperature: 0.1 })
+                const retryMatch = retryResponse.match(/\{[\s\S]*\}/)
+                if (retryMatch) result = JSON.parse(retryMatch[0])
+            } catch {
+                result = {
+                    files: [
+                        { path: 'app.json', content: JSON.stringify({ expo: { name: appName, slug, version: '1.0.0', ios: { bundleIdentifier: `com.launchfleet.${slug}` } } }, null, 2) },
+                    ],
+                    summary: `Expo project scaffolded for ${appName}. Full generation requires retry.`,
+                    dependencies: ['expo', 'react-native', 'expo-router', 'expo-blur', 'expo-haptics'],
+                    buildInstructions: 'npx expo start',
+                }
             }
         }
 

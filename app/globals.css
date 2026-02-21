@@ -901,3 +901,149 @@ h3 {
 .page-header .subhead {
   max-width: 600px;
 }
+
+/* ── Mobile Responsive ─────────────────────────────────────────────── */
+/* Webapp is also deployed to Apple App Store — must be fully mobile-friendly */
+
+@media (max-width: 768px) {
+  :root {
+    --fs-hero: 36px;
+    --fs-h1: 28px;
+    --fs-h2: 22px;
+    --fs-h3: 18px;
+    --fs-body: 16px;
+    --space-2xl: 32px;
+    --space-3xl: 48px;
+  }
+
+  .container,
+  .container-sm,
+  .container-xs {
+    padding: 0 var(--space-md);
+  }
+
+  /* Header stacks on mobile */
+  header {
+    flex-direction: column !important;
+    gap: var(--space-sm) !important;
+    padding: var(--space-sm) var(--space-md) !important;
+  }
+
+  /* Stage nav scrolls horizontally */
+  .stage-nav {
+    padding: var(--space-sm) 0;
+    gap: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .stage-pill {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .stage-pill .stage-num {
+    width: 18px;
+    height: 18px;
+    font-size: 9px;
+  }
+
+  /* Page header */
+  .page-header {
+    padding: var(--space-lg) 0 var(--space-md);
+  }
+
+  /* Cards */
+  .card {
+    padding: var(--space-md);
+  }
+
+  /* Name cards */
+  .name-card {
+    padding: var(--space-md);
+  }
+
+  .name-card .name-title {
+    font-size: var(--fs-h3);
+  }
+
+  .handle-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Template cards */
+  .template-preview {
+    aspect-ratio: 16/9;
+  }
+
+  /* Forms */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Chat */
+  .chat-bubble {
+    max-width: 90%;
+    font-size: var(--fs-body);
+  }
+
+  .chat-container {
+    height: calc(100vh - 140px);
+  }
+
+  /* Device mockup — hide on mobile */
+  .device-showcase {
+    display: none;
+  }
+
+  /* Buttons — full width on mobile */
+  .btn-lg {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Custom name check — stack */
+  .card[style*="flex"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  /* Section spacing */
+  .section {
+    padding: var(--space-xl) 0;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --fs-hero: 28px;
+    --fs-h1: 24px;
+    --fs-h2: 20px;
+  }
+
+  .handle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stage-pill span:not(.stage-num) {
+    display: none;
+  }
+
+  .stage-pill {
+    padding: 6px 8px;
+  }
+}
+
+/* Safe area for notched phones (iPhone X+) */
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  header {
+    padding-top: env(safe-area-inset-top) !important;
+  }
+
+  .chat-input-bar {
+    padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+  }
+}

@@ -145,6 +145,8 @@ async function verifyName(name: string, idea: string, brandScore?: number) {
     const domains = domainResults.map((d: any) => ({
         ext: '.' + d.domain.split('.').pop(),
         available: d.available,
+        parked: d.parked,
+        parkingProvider: d.parkingProvider,
         price: d.price ? `$${d.price}/yr` : undefined,
         purchaseUrl: d.purchaseUrl || `https://vercel.com/domains/${d.domain}`,
     }))
@@ -156,12 +158,33 @@ async function verifyName(name: string, idea: string, brandScore?: number) {
         signupUrl: s.signupUrl,
     }))
 
+    // Checker AI analyzes the full picture and gives a professional verdict
+    let checkerVerdict = ''
+    try {
+        const availDomains = domains.filter((d: any) => d.available).map((d: any) => d.ext).join(', ') || 'none'
+        const takenDomains = domains.filter((d: any) => !d.available).map((d: any) => `${d.ext}${d.parked ? ' (parked)' : ''}`).join(', ') || 'none'
+        const availSocials = socials.filter((s: any) => s.available).length
+        const checkerPrompt = `Analyze this name verification for "${name}" (app idea: ${idea}):
+
+Trademark: ${trademark.status} — ${trademark.class}
+Domains available: ${availDomains}
+Domains taken: ${takenDomains}
+Social handles: ${availSocials}/6 available
+
+Give a 1-2 sentence professional verdict. Should we proceed? Flag any concerns.`
+
+        checkerVerdict = await callAgent('checker', checkerPrompt, { maxTokens: 120, temperature: 0.3 })
+    } catch {
+        // Checker unavailable — verdict remains empty
+    }
+
     return {
         name,
         brandScore: brandScore || 7,
         domains,
         trademark,
         socials,
+        checkerVerdict,
     }
 }
 

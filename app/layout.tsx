@@ -1,9 +1,22 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+}
 
 export const metadata: Metadata = {
   title: 'LaunchFleet — From Idea to App Store',
   description: 'The AI-powered platform that takes your app from concept to Apple App Store submission. 18 agents, 8 stages, zero code.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'LaunchFleet',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
