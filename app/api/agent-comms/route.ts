@@ -91,6 +91,72 @@ Respond naturally, in your agent personality. Be specific and actionable. Keep i
                 return NextResponse.json({ success: true, action: 'notify' })
             }
 
+            /* ── Roll Call: all agents check in with status ─────────── */
+            case 'rollcall': {
+                const agents: AgentId[] = ['scout', 'namer', 'checker', 'pixel', 'builder', 'shipper', 'buzz']
+                const headcount: { agent: string; status: 'online' | 'offline'; role: string; report: string; responseMs: number }[] = []
+
+                const agentRoles: Record<AgentId, string> = {
+                    scout: 'Market Research',
+                    namer: 'Name Generation & Brandability',
+                    checker: 'Trademark & Domain Verification',
+                    pixel: 'Visual Design & App Icon',
+                    builder: 'Code Generation (Expo)',
+                    shipper: 'App Store Submission',
+                    buzz: 'Social Media & Marketing',
+                }
+
+                await Promise.allSettled(agents.map(async (agentId) => {
+                    const start = Date.now()
+                    try {
+                        const report = await callAgent(agentId, `Roll call! Report your current status in one sentence. What are you ready to work on? Include your name and role.`, {
+                            maxTokens: 80,
+                            temperature: 0.5,
+                        })
+                        headcount.push({
+                            agent: agentId,
+                            status: 'online',
+                            role: agentRoles[agentId],
+                            report: report.trim().slice(0, 120),
+                            responseMs: Date.now() - start,
+                        })
+                    } catch {
+                        headcount.push({
+                            agent: agentId,
+                            status: 'offline',
+                            role: agentRoles[agentId],
+                            report: 'No response — Groq key may be missing',
+                            responseMs: Date.now() - start,
+                        })
+                    }
+                }))
+
+                const online = headcount.filter(a => a.status === 'online').length
+                const offline = headcount.filter(a => a.status === 'offline').length
+
+                // Send headcount summary to Telegram
+                const rollcallMsg = `🎯 *Agent Roll Call*\n\n` +
+                    `✅ Online: ${online} | ❌ Offline: ${offline}\n\n` +
+                    headcount.map(a =>
+                        `${a.status === 'online' ? '✅' : '❌'} *${a.agent}* (${a.role})\n   ${a.report}\n   _${a.responseMs}ms_`
+                    ).join('\n\n')
+
+                // Send via first available agent's Telegram
+                const firstOnline = headcount.find(a => a.status === 'online')
+                if (firstOnline) {
+                    await sendAgentTelegram(firstOnline.agent as AgentId, rollcallMsg)
+                }
+
+                return NextResponse.json({
+                    success: true,
+                    action: 'rollcall',
+                    online,
+                    offline,
+                    total: agents.length,
+                    headcount,
+                })
+            }
+
             default:
                 return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 })
         }
