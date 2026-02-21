@@ -119,8 +119,32 @@ export async function POST(req: NextRequest) {
         // Vet each candidate
         for (const candidate of candidates) {
             try {
-                // Check domains (.com is required, .ai and .app are bonus)
                 const slug = candidate.name.toLowerCase().replace(/\s+/g, '')
+
+                // STEP 1: Namer brandability pre-screen (before wasting API calls)
+                try {
+                    const brandCheck = await callAgent('namer', `Rate this app name for the ${candidate.category} industry: "${candidate.name}"
+
+Is this name TRULY brandable? Consider:
+- Would a real company use this name? (Think Calm, Notion, Stripe, Arc)
+- Does it evoke the right emotion/meaning for ${candidate.category}?
+- Is it memorable — would someone remember it after hearing it once?
+- Is it a real word, evocative metaphor, or elegant invented word? (NOT a random mashup like "AppTaskify" or "FitZoneX")
+- Could you build an entire brand identity around it?
+
+Reply with ONLY "PASS" or "FAIL" followed by a one-line reason.`, {
+                        maxTokens: 60,
+                        temperature: 0.2,
+                    })
+                    if (brandCheck.toUpperCase().startsWith('FAIL')) {
+                        results.push({ name: candidate.name, passed: false, reason: `Not brandable: ${brandCheck.slice(5).trim().slice(0, 60)}` })
+                        continue
+                    }
+                } catch {
+                    // Namer unavailable — skip pre-screen, continue with checks
+                }
+
+                // STEP 2: Domain check (.com required)
                 const domainResults = await checkDomains(slug)
                 const comAvailable = domainResults.find(d => d.domain.endsWith('.com'))?.available ?? false
 
