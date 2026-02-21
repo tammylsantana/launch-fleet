@@ -319,8 +319,21 @@ export default function BrandPage() {
                                 <button className="btn btn-primary" onClick={generateIcon} disabled={isIconGenerating} style={{ marginBottom: 'var(--space-md)' }}>
                                     {isIconGenerating ? 'Generating...' : iconUrl ? 'Regenerate Icon' : 'Generate Icon'}
                                 </button>
+                                {iconUrl && (
+                                    <a
+                                        href={iconUrl}
+                                        download={`${JSON.parse(localStorage.getItem('launchfleet_session') || '{}').appName || 'app'}-icon-1024.png`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="btn btn-secondary"
+                                        style={{ marginLeft: 'var(--space-sm)', marginBottom: 'var(--space-md)' }}
+                                    >
+                                        ↓ Download Icon
+                                    </a>
+                                )}
                                 <p className="footnote">
-                                    Icon will match your selected template colors and style. Generated at 1024x1024px.
+                                    Icon will match your selected template colors and style. Generated at 1024×1024px.
+                                    {iconUrl && ' Click Download to save your icon as a PNG file.'}
                                 </p>
                             </div>
                         </div>
