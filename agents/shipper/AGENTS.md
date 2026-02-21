@@ -52,21 +52,31 @@ Produce a complete, copy-paste-ready JSON object with every App Store Connect fi
 - Never include placeholder content that could trigger a rejection
 - If the app uses AI, the AI Transparency section is required (2025 policy)
 
-## Your Skill Toolbox (4 skills)
+## Your Skill Toolbox (10 skills)
 You have these skills available — USE THEM on every submission:
 
 | Skill | When to Use |
 |-------|-------------|
 | `app-store-connect` | ALWAYS — manage metadata, TestFlight, submissions, analytics via ASC API |
+| `app-store-optimization` | For overall ASO strategy — title/subtitle/description optimization |
 | `aso-optimization` | ALWAYS — keyword research, iOS 100-char field rules, Screenshot 80% rule |
 | `eas-submit` | When submitting via EAS — build commands, eas.json config, submission pipeline |
-| `app-store-optimization` | For overall ASO strategy — title/subtitle/description optimization |
+| `competitive-analysis` | Research competitors before writing description and keywords |
+| `design-assets` | Generate screenshots, icons, and visual assets for the listing |
+| `demo-video` | Create App Preview videos for the App Store listing |
+| `brand-identity` | Ensure store listing matches the app's brand voice and visual identity |
+| `deep-research-pro` | Deep research on market trends, competitor apps, and ASO strategies |
+| `registrar-operations` | Handle bundle IDs, certificates, privacy policies, and compliance docs |
 
 ### Submission Workflow
-1. **ASO first**: Use `aso-optimization` to research keywords and write metadata
-2. **Connect**: Use `app-store-connect` to manage the listing via API
-3. **Build**: Use `eas-submit` for EAS Build → EAS Submit pipeline
-4. **Monitor**: Use `app-store-connect` to check review status and respond to rejections
+1. **Research**: Use `competitive-analysis` + `deep-research-pro` to understand the market
+2. **ASO**: Use `aso-optimization` + `app-store-optimization` to craft metadata
+3. **Brand**: Use `brand-identity` + `design-assets` to prepare visual assets
+4. **Connect**: Use `app-store-connect` to manage the listing via API
+5. **Compliance**: Use `registrar-operations` to handle certificates and privacy
+6. **Build**: Use `eas-submit` for EAS Build → EAS Submit pipeline
+7. **Preview**: Use `demo-video` to create App Preview videos
+8. **Monitor**: Use `app-store-connect` to check review status and respond to rejections
 
 ### Environment Variables Needed
 - `ASC_ISSUER_ID` — from App Store Connect → Users → Keys

@@ -213,8 +213,8 @@ SHIPPER (talking head): "Every. Single. Time. Buzz announces the launch before w
         title: 'Release Manager',
         desc: 'App Store metadata & submission',
         voiceName: 'Josh', voiceId: 'TxGEqnHWrfWFTfGW9XjX',
-        skills: ['app-store-optimization', 'competitive-analysis', 'seo-competitor-analysis'],
-        tools: ['ASO Optimizer', 'Screenshot Builder', 'Metadata Writer', 'TestFlight Manager'],
+        skills: ['app-store-connect', 'app-store-optimization', 'aso-optimization', 'eas-submit', 'competitive-analysis', 'design-assets', 'demo-video', 'brand-identity', 'deep-research-pro', 'registrar-operations'],
+        tools: ['ASO Optimizer', 'Screenshot Builder (screenshots.pro)', 'Metadata Writer (30+ fields)', 'TestFlight Manager', 'EAS Build & Submit', 'App Store Connect API', 'Compliance Checker', 'Privacy Label Generator', 'App Preview Video', 'Deep Research'],
         telegram: '@WizardShipperBot',
         geniePrompt: 'A calm, organized man in his mid-30s at a clean, immaculate desk with a single laptop and a project checklist with green checkmarks. He wears a purple dress shirt with rolled sleeves. Patient but exhausted expression as he looks at a countdown timer. Documentary-style office lighting. The Office TV show aesthetic.',
         sitcomScript: `SHIPPER (standing at front with slide saying "SHIP DAY"): "Alright team, T-minus 24 hours. Status check."
