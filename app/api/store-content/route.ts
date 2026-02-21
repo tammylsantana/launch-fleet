@@ -165,19 +165,47 @@ Include ALL of these field IDs:
       const jsonMatch = response.match(/\{[\s\S]*\}/)
       if (jsonMatch) fields = JSON.parse(jsonMatch[0])
     } catch {
-      // Fallback with intelligent defaults
-      fields = {
-        appName,
-        subtitle: appIdea.length > 30 ? appIdea.slice(0, 27) + '...' : appIdea,
-        bundleId: `com.launchfleet.${slug}`,
-        sku: `LF-${slug}-${year}`,
-        supportUrl: deployUrl || `https://${slug}.app/support`,
-        marketingUrl: deployUrl || `https://${slug}.app`,
-        copyrightHolder: `${year} LaunchFleet`,
-        privacyUrl: deployUrl ? `${deployUrl}/privacy` : `https://${slug}.app/privacy`,
-        whatsNew: 'Initial release.',
-        usesEncryption: 'Yes — Standard HTTPS only',
-        encryptionExempt: 'Yes',
+      // Parse failed — fallbacks below will fill everything
+    }
+
+    // Intelligent defaults — merged with whatever the agent returned
+    const defaults: Record<string, string> = {
+      appName,
+      subtitle: appIdea.length > 30 ? appIdea.slice(0, 27) + '...' : (appIdea || appName),
+      primaryCategory: category || 'Utilities',
+      secondaryCategory: 'Productivity',
+      description: `${appName} — ${appIdea}\n\nKey Features:\n• Smart, intuitive design\n• Built for iOS with native performance\n• Modern ${brandName || 'clean'} aesthetic\n\nDownload ${appName} today.`,
+      keywords: appIdea ? appIdea.split(/[\s,]+/).filter((w: string) => w.length > 3).slice(0, 15).join(',') : appName.toLowerCase(),
+      bundleId: `com.launchfleet.${slug}`,
+      sku: `LF-${slug}-${year}`,
+      supportUrl: deployUrl || `https://${slug}.app/support`,
+      marketingUrl: deployUrl || `https://${slug}.app`,
+      copyrightHolder: `${year} LaunchFleet`,
+      privacyUrl: deployUrl ? `${deployUrl}/privacy` : `https://${slug}.app/privacy`,
+      promotionalText: `Try ${appName} — ${appIdea.slice(0, 120)}`,
+      whatsNew: `Welcome to ${appName} v1.0!\n\n• Initial release\n• Full feature set\n• Optimized for latest iOS`,
+      usesEncryption: 'Yes — Standard HTTPS only',
+      encryptionExempt: 'Yes',
+      frenchEncryption: 'Not required',
+      ageTier: '4+',
+      price: 'Free',
+      availability: 'All territories',
+      preOrder: 'No',
+      trackingEnabled: 'No tracking',
+      deepfakeProtection: 'Not applicable',
+      privacyManifest: 'Included in build',
+      contentRights: 'Does not contain third-party content',
+      reviewNotes: `${appName} is ${appIdea}. Test by launching the app and exploring the main features. No special configuration needed.`,
+      contactFirst: 'LaunchFleet',
+      contactLast: 'Support',
+      contactPhone: '+1-555-0100',
+      contactEmail: 'support@launchfleet.app',
+    }
+
+    // Merge: AI fields win, defaults fill any gaps
+    for (const [key, val] of Object.entries(defaults)) {
+      if (!fields[key] || fields[key].trim() === '') {
+        fields[key] = val
       }
     }
 

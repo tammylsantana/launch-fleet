@@ -44,10 +44,14 @@ export default function PresentPage() {
             if (session.qrCode) setQrCode(session.qrCode)
             if (session.presentComplete) setConfirmed(true)
 
-            // Generate QR code if we have a name
+            // Generate QR code if we have a deploy URL or app name
             const appName = session?.appName || session?.selectedName || 'app'
+            const deployUrl = session?.deployUrl || session?.landingUrl || ''
             if (!session.qrCode) {
-                const qr = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(`https://${appName.toLowerCase().replace(/\s+/g, '')}.app`)}`
+                // Use actual deploy URL, or Expo project preview, or TestFlight link
+                const qrTarget = deployUrl
+                    || `https://www.launchfleet.ai/preview/${appName.toLowerCase().replace(/\s+/g, '-')}`
+                const qr = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrTarget)}`
                 setQrCode(qr)
             }
         } catch { /* first visit */ }
