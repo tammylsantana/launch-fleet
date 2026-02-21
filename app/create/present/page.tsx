@@ -1,7 +1,7 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { ChevronRight, Check, Download, Upload, Play, Plus, X, Lightbulb, Tag, Palette, Wrench, Monitor, Globe, Store, Rocket, AlertTriangle, Smartphone, Tablet, Laptop, MonitorIcon } from 'lucide-react'
+import { ChevronRight, Check, Download, Upload, Play, Plus, X, Lightbulb, Tag, Palette, Wrench, Monitor, Globe, Store, Rocket, AlertTriangle, Smartphone, Tablet, Laptop, MonitorIcon, Wand2, Loader2, Image as ImageIcon } from 'lucide-react'
 
 const STAGES = [
     { id: 'idea', label: 'Idea', icon: Lightbulb, path: '/create/idea' },
@@ -31,6 +31,10 @@ export default function PresentPage() {
     const [qrCode, setQrCode] = useState<string | null>(null)
     const [confirmed, setConfirmed] = useState(false)
     const fileInputRefs = useRef<(HTMLInputElement | null)[]>([])
+    const [generating, setGenerating] = useState(false)
+    const [storeScreenshots, setStoreScreenshots] = useState<(string | null)[]>([])
+    const [generateError, setGenerateError] = useState<string | null>(null)
+    const [generateProgress, setGenerateProgress] = useState(0)
 
     // Load saved state from localStorage
     useEffect(() => {
@@ -98,6 +102,124 @@ export default function PresentPage() {
         })
     }
 
+    // Template styles for screenshots.pro
+    const TEMPLATE_STYLES = [
+        { id: 'apple', name: 'Apple Native', description: 'Clean white, SF-style', gradient: 'linear-gradient(180deg, #FFFFFF 0%, #F5F5F7 100%)', text: '#1D1D1F', tag: 'Classic' },
+        { id: 'dark', name: 'Dark Premium', description: 'Deep black, pro feel', gradient: 'linear-gradient(135deg, #1D1D1F 0%, #000000 100%)', text: '#FFFFFF', tag: 'Classic' },
+        { id: 'brand', name: 'Brand Colors', description: 'Your app\'s palette', gradient: `linear-gradient(135deg, ${brandColors.primary || '#007AFF'} 0%, ${brandColors.accent || '#5856D6'} 100%)`, text: '#FFFFFF', tag: 'Auto' },
+        { id: 'sunset', name: 'Sunset Glow', description: 'Warm orange-pink', gradient: 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)', text: '#FFFFFF', tag: 'Bright' },
+        { id: 'ocean', name: 'Ocean Blue', description: 'Cool blues, top-seller style', gradient: 'linear-gradient(135deg, #0093E9 0%, #80D0C7 100%)', text: '#FFFFFF', tag: 'Top Seller' },
+        { id: 'neon', name: 'Neon Pop', description: 'Bold pink-purple', gradient: 'linear-gradient(135deg, #FF0099 0%, #493240 100%)', text: '#FFFFFF', tag: 'Bright' },
+        { id: 'midnight', name: 'Midnight Bloom', description: 'Dark with violet', gradient: 'linear-gradient(135deg, #0F0C29 0%, #302B63 50%, #24243E 100%)', text: '#FFFFFF', tag: 'Top Seller' },
+        { id: 'coral', name: 'Electric Coral', description: 'Energetic fitness style', gradient: 'linear-gradient(135deg, #FF512F 0%, #F09819 100%)', text: '#FFFFFF', tag: 'Bright' },
+    ]
+    const [selectedTemplate, setSelectedTemplate] = useState('brand')
+
+    // Upload a single screenshot to Supabase Storage for a public URL
+    const uploadToStorage = async (base64Data: string, index: number): Promise<string | null> => {
+        try {
+            const sessionId = session?.sessionId || Date.now().toString()
+            const response = await fetch('/api/upload-screenshot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    imageData: base64Data,
+                    filename: `screenshot-${index + 1}.png`,
+                    sessionId,
+                }),
+            })
+            const data = await response.json()
+            if (data.error) {
+                console.error('[Upload]', data.error)
+                return null
+            }
+            return data.publicUrl
+        } catch {
+            return null
+        }
+    }
+
+    // Generate App Store screenshots via screenshots.pro
+    const generateStoreScreenshots = async () => {
+        const uploaded = screenshots.filter(Boolean)
+        if (uploaded.length === 0) return
+
+        setGenerating(true)
+        setGenerateError(null)
+        setGenerateProgress(0)
+
+        try {
+            const session = JSON.parse(localStorage.getItem('launchfleet_session') || '{}')
+            const tagline = session?.tagline || session?.selectedTagline || ''
+
+            // Step 1: Upload screenshots to Supabase Storage for public URLs
+            setGenerateProgress(10)
+            const publicUrls: (string | null)[] = []
+            for (let i = 0; i < screenshots.length; i++) {
+                if (screenshots[i]) {
+                    const url = await uploadToStorage(screenshots[i]!, i)
+                    publicUrls.push(url)
+                    setGenerateProgress(10 + Math.round((i / screenshots.length) * 30))
+                } else {
+                    publicUrls.push(null)
+                }
+            }
+
+            // Step 2: Build screenshot requests with public URLs
+            setGenerateProgress(45)
+            const screenshotRequests = publicUrls
+                .map((url, i) => {
+                    if (!url) return null
+                    return {
+                        screenshotUrl: url,
+                        title: SCREENSHOT_SLOTS[i]?.label || `Feature ${i + 1}`,
+                        subtitle: i === 0 ? tagline : SCREENSHOT_SLOTS[i]?.description || '',
+                        deviceSize: '6.7' as const,
+                        templateStyle: selectedTemplate,
+                    }
+                })
+                .filter(Boolean)
+
+            if (screenshotRequests.length === 0) {
+                setGenerateError('Failed to upload screenshots. Check your Supabase Storage configuration.')
+                return
+            }
+
+            // Step 3: Send to screenshots.pro API
+            setGenerateProgress(50)
+            const response = await fetch('/api/generate-screenshots', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    screenshots: screenshotRequests,
+                    session,
+                }),
+            })
+
+            setGenerateProgress(75)
+            const data = await response.json()
+
+            if (data.error) {
+                setGenerateError(data.error)
+            } else {
+                const generated = data.results.map((r: { downloadUrl?: string }) => r.downloadUrl || null)
+                setStoreScreenshots(generated)
+                setGenerateProgress(100)
+
+                // Save to session
+                localStorage.setItem('launchfleet_session', JSON.stringify({
+                    ...session,
+                    storeScreenshots: generated,
+                }))
+            }
+        } catch (err) {
+            setGenerateError(err instanceof Error ? err.message : 'Failed to generate screenshots')
+        } finally {
+            setGenerating(false)
+        }
+    }
+
+
     const uploadedCount = screenshots.filter(Boolean).length
     const requiredCount = SCREENSHOT_SLOTS.filter(s => s.required).length
     const hasRequiredScreenshots = screenshots.slice(0, requiredCount).every(Boolean)
@@ -111,7 +233,7 @@ export default function PresentPage() {
         setConfirmed(true)
     }
 
-    const TABS = ['screenshots', 'showcase', 'mockups']
+    const TABS = ['screenshots', 'store-ready', 'showcase', 'mockups']
 
     return (
         <div style={{ minHeight: '100vh', background: '#fff' }}>
@@ -162,7 +284,7 @@ export default function PresentPage() {
                 <div className="tabs" style={{ marginBottom: 'var(--space-xl)' }}>
                     {TABS.map(tab => (
                         <button key={tab} className={`tab ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>
-                            {tab === 'screenshots' ? `Screenshots (${uploadedCount}/5)` : tab === 'showcase' ? 'Device Showcase' : 'Mockups & QR'}
+                            {tab === 'screenshots' ? `Screenshots (${uploadedCount}/5)` : tab === 'store-ready' ? '✨ Store Ready' : tab === 'showcase' ? 'Device Showcase' : 'Mockups & QR'}
                         </button>
                     ))}
                 </div>
@@ -322,6 +444,239 @@ export default function PresentPage() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                )}
+
+                {/* ═══ Store-Ready Screenshots via screenshots.pro ═══ */}
+                {activeTab === 'store-ready' && (
+                    <div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-lg)' }}>
+                            <div>
+                                <h2>Store-Ready Screenshots</h2>
+                                <p className="subhead" style={{ marginTop: 4 }}>
+                                    Generate professional App Store screenshots with device frames, backgrounds, and text overlays.
+                                </p>
+                            </div>
+                            {storeScreenshots.length > 0 && (
+                                <button className="btn btn-ghost btn-sm" onClick={() => {
+                                    storeScreenshots.forEach((url, i) => {
+                                        if (url) {
+                                            const link = document.createElement('a')
+                                            link.href = url
+                                            link.download = `store-screenshot-${i + 1}.png`
+                                            link.target = '_blank'
+                                            setTimeout(() => link.click(), i * 500)
+                                        }
+                                    })
+                                }}>
+                                    <Download size={14} /> Download All
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Powered by badge */}
+                        <div style={{
+                            display: 'inline-flex', alignItems: 'center', gap: 6,
+                            background: '#F0F5FF', border: '1px solid #BFDBFE',
+                            borderRadius: 20, padding: '4px 12px',
+                            fontSize: 11, color: '#3B82F6', fontWeight: 500,
+                            marginBottom: 'var(--space-lg)',
+                        }}>
+                            <Wand2 size={12} /> Powered by screenshots.pro API
+                        </div>
+
+                        {uploadedCount === 0 ? (
+                            <div className="card" style={{ padding: 'var(--space-xl)', textAlign: 'center' }}>
+                                <Upload size={32} color="#8E8E93" style={{ marginBottom: 'var(--space-sm)' }} />
+                                <p className="subhead" style={{ marginBottom: 'var(--space-md)' }}>
+                                    Upload raw screenshots first, then generate store-ready versions.
+                                </p>
+                                <button className="btn btn-ghost" onClick={() => setActiveTab('screenshots')}>
+                                    Go to Screenshots tab
+                                </button>
+                            </div>
+                        ) : (
+                            <>
+                                {/* Template picker */}
+                                {storeScreenshots.length === 0 && (
+                                    <div style={{ marginBottom: 'var(--space-xl)' }}>
+                                        <h3 style={{ marginBottom: 'var(--space-sm)' }}>Choose a Style</h3>
+                                        <p className="subhead" style={{ marginBottom: 'var(--space-md)' }}>Pick a background style for your App Store screenshots.</p>
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--space-sm)' }}>
+                                            {TEMPLATE_STYLES.map(style => (
+                                                <div
+                                                    key={style.id}
+                                                    onClick={() => setSelectedTemplate(style.id)}
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                        borderRadius: 12,
+                                                        border: selectedTemplate === style.id ? '2px solid #007AFF' : '2px solid transparent',
+                                                        overflow: 'hidden',
+                                                        transition: 'all 0.2s ease',
+                                                        boxShadow: selectedTemplate === style.id ? '0 0 0 2px rgba(0,122,255,0.3)' : '0 1px 4px rgba(0,0,0,0.08)',
+                                                    }}
+                                                >
+                                                    {/* Preview swatch with mini phone silhouette */}
+                                                    <div style={{
+                                                        background: style.gradient,
+                                                        height: 80,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        position: 'relative',
+                                                    }}>
+                                                        {/* Mini phone shape */}
+                                                        <div style={{
+                                                            width: 24, height: 44, borderRadius: 6,
+                                                            background: 'rgba(255,255,255,0.25)',
+                                                            border: '1px solid rgba(255,255,255,0.4)',
+                                                        }} />
+                                                        {selectedTemplate === style.id && (
+                                                            <div style={{
+                                                                position: 'absolute', top: 6, right: 6,
+                                                                width: 18, height: 18, borderRadius: '50%',
+                                                                background: '#007AFF', display: 'flex',
+                                                                alignItems: 'center', justifyContent: 'center',
+                                                            }}>
+                                                                <Check size={10} color="#fff" />
+                                                            </div>
+                                                        )}
+                                                        {/* Tag */}
+                                                        {'tag' in style && (
+                                                            <span style={{
+                                                                position: 'absolute', bottom: 4, right: 4,
+                                                                fontSize: 8, fontWeight: 600,
+                                                                background: 'rgba(0,0,0,0.3)', color: '#fff',
+                                                                padding: '1px 5px', borderRadius: 6,
+                                                                textTransform: 'uppercase', letterSpacing: 0.3,
+                                                            }}>{style.tag}</span>
+                                                        )}
+                                                    </div>
+                                                    <div style={{ padding: '8px 10px', background: '#fff' }}>
+                                                        <span style={{ fontSize: 11, fontWeight: 600, color: '#1D1D1F', display: 'block' }}>
+                                                            {style.name}
+                                                        </span>
+                                                        <span style={{ fontSize: 9, color: '#8E8E93' }}>
+                                                            {style.description}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Generate button */}
+                                {storeScreenshots.length === 0 && (
+                                    <div style={{
+                                        background: 'linear-gradient(135deg, #667EEA 0%, #764BA2 100%)',
+                                        borderRadius: 'var(--radius-xl)',
+                                        padding: 'var(--space-2xl)',
+                                        textAlign: 'center',
+                                        color: '#fff',
+                                        marginBottom: 'var(--space-xl)',
+                                    }}>
+                                        <Wand2 size={40} style={{ marginBottom: 'var(--space-md)', opacity: 0.9 }} />
+                                        <h3 style={{ fontSize: 'var(--fs-h3)', color: '#fff', marginBottom: 'var(--space-sm)' }}>
+                                            Transform Your Screenshots
+                                        </h3>
+                                        <p style={{ fontSize: 'var(--fs-body)', opacity: 0.85, maxWidth: 420, margin: '0 auto var(--space-lg)', lineHeight: 1.6 }}>
+                                            Takes your {uploadedCount} raw screenshot{uploadedCount !== 1 ? 's' : ''} and adds professional device frames,
+                                            brand-colored backgrounds, and headline text — ready for App Store Connect.
+                                        </p>
+
+                                        {generating ? (
+                                            <div>
+                                                <div style={{
+                                                    width: 200, height: 6, background: 'rgba(255,255,255,0.2)',
+                                                    borderRadius: 3, margin: '0 auto var(--space-sm)', overflow: 'hidden',
+                                                }}>
+                                                    <div style={{
+                                                        width: `${generateProgress}%`, height: '100%',
+                                                        background: '#fff', borderRadius: 3,
+                                                        transition: 'width 0.5s ease',
+                                                    }} />
+                                                </div>
+                                                <span style={{ fontSize: 'var(--fs-footnote)', opacity: 0.8 }}>
+                                                    <Loader2 size={14} style={{ display: 'inline', animation: 'spin 1s linear infinite' }} />
+                                                    {' '}Generating {generateProgress < 50 ? 'device frames...' : 'text overlays...'}
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                className="btn btn-lg"
+                                                onClick={generateStoreScreenshots}
+                                                style={{
+                                                    background: '#fff', color: '#764BA2',
+                                                    fontWeight: 700, fontSize: 'var(--fs-body)',
+                                                    padding: '12px 32px', borderRadius: 12,
+                                                    border: 'none', cursor: 'pointer',
+                                                    boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+                                                }}
+                                            >
+                                                <Wand2 size={18} /> Generate Store Screenshots
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+
+                                {generateError && (
+                                    <div style={{
+                                        background: '#FEF2F2', border: '1px solid #FECACA',
+                                        borderRadius: 'var(--radius-md)', padding: 'var(--space-md)',
+                                        color: '#991B1B', fontSize: 'var(--fs-footnote)',
+                                        marginBottom: 'var(--space-lg)',
+                                    }}>
+                                        <strong>Note:</strong> {generateError}
+                                        <br />
+                                        <span style={{ opacity: 0.7 }}>Make sure you&apos;ve created templates at screenshots.pro and set template IDs in your environment.</span>
+                                    </div>
+                                )}
+
+                                {/* Generated screenshots grid */}
+                                {storeScreenshots.length > 0 && (
+                                    <div>
+                                        <h3 style={{ marginBottom: 'var(--space-md)' }}>
+                                            <Check size={16} color="#34C759" style={{ display: 'inline', marginRight: 6 }} />
+                                            {storeScreenshots.filter(Boolean).length} Store-Ready Screenshots Generated
+                                        </h3>
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 'var(--space-md)' }}>
+                                            {storeScreenshots.map((url, i) => (
+                                                <div key={i} style={{ textAlign: 'center' }}>
+                                                    {url ? (
+                                                        <div style={{
+                                                            aspectRatio: '9/19.5', borderRadius: 12,
+                                                            overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                                                            border: '2px solid #34C759',
+                                                        }}>
+                                                            <img src={url} alt={`Store screenshot ${i + 1}`}
+                                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                    ) : (
+                                                        <div style={{
+                                                            aspectRatio: '9/19.5', borderRadius: 12,
+                                                            border: '2px dashed #D1D1D6', background: '#FAFAFA',
+                                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                        }}>
+                                                            <ImageIcon size={24} color="#D1D1D6" />
+                                                        </div>
+                                                    )}
+                                                    <span style={{ fontSize: 10, color: '#8E8E93', marginTop: 4, display: 'block' }}>
+                                                        {SCREENSHOT_SLOTS[i]?.label || `Screenshot ${i + 1}`}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div style={{ textAlign: 'center', marginTop: 'var(--space-xl)' }}>
+                                            <button className="btn btn-ghost" onClick={() => { setStoreScreenshots([]); setGenerateProgress(0) }}>
+                                                Regenerate
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )}
                     </div>
                 )}
 
