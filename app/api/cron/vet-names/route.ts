@@ -30,36 +30,39 @@ export async function GET(req: Request) {
         log.push(`[${new Date().toISOString()}] Daily name vetting started`)
         log.push(`Name bank size: ${getNameBankSize()} candidates across ${CURATED_NAME_BANK.length} categories`)
 
-        // Step 1: Ask Namer to generate fresh candidates for categories that need more
+        // Step 1: Namer generates ~100 fresh candidates (8 per category × 13 = 104)
         const categories = CURATED_NAME_BANK.map(c => c.category)
         let newCandidates = 0
 
         for (const category of categories) {
             try {
-                const namerPrompt = `Generate 5 new brandable app name candidates for the "${category}" industry.
+                const namerPrompt = `Generate 8 new brandable app name candidates for the "${category}" industry.
 
 Each name must be:
-- 1-2 words, easy to spell and pronounce
-- Evocative of the category's core benefit (like how Calm evokes meditation, Robinhood evokes democratized finance)
-- NOT an existing well-known app name
-- Suitable for .com domain registration
+- 1-2 words, easy to spell and pronounce globally
+- Evocative of the category's core benefit or emotion
+- NOT an existing well-known app or brand name
+- Suitable for .com domain registration (short, no hyphens)
+- Would work as a social media handle (@name)
+- Sounds premium and trustworthy
+
+Think like the best naming agencies: Robinhood (finance), Calm (meditation), Headspace (mindfulness), Notion (productivity), Stripe (payments), Figma (design).
 
 Respond as a JSON array (no markdown, raw JSON only):
 [
-  { "name": "ExampleName", "tagline": "Short compelling tagline", "vibe": "one-word-vibe", "why": "Why this name works for ${category}" }
+  { "name": "ExampleName", "tagline": "Short compelling tagline", "vibe": "one-word-vibe", "why": "Why this works for ${category}" }
 ]`
 
                 const response = await callAgent('namer', namerPrompt, {
-                    maxTokens: 1000,
-                    temperature: 0.8,
+                    maxTokens: 1500,
+                    temperature: 0.85,
                 })
 
-                // Parse Namer's suggestions
                 const jsonMatch = response.match(/\[[\s\S]*\]/)
                 if (jsonMatch) {
                     const suggestions = JSON.parse(jsonMatch[0])
                     newCandidates += suggestions.length
-                    log.push(`Namer generated ${suggestions.length} candidates for ${category}`)
+                    log.push(`Namer: ${suggestions.length} candidates for ${category}`)
                 }
             } catch (err) {
                 log.push(`Namer failed for ${category}: ${err instanceof Error ? err.message : 'unknown'}`)

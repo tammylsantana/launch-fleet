@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { CURATED_NAME_BANK, getNameBankSize } from '@/lib/name-bank'
 import { checkDomains, checkSocialHandles } from '@/lib/vercel-domains'
+import { callAgent, sendAgentTelegram } from '@/lib/ai'
 import fs from 'fs'
 import path from 'path'
 
@@ -128,9 +129,25 @@ export async function POST(req: NextRequest) {
                     continue
                 }
 
-                // Check social handles (need at least 3 of 6 available)
+                // Buzz (social media team) vets handle availability
                 const socialResults = await checkSocialHandles(slug)
                 const availableSocials = socialResults.filter(s => s.available).length
+
+                // Buzz reviews: is this name good for social media branding?
+                let buzzApproved = true
+                try {
+                    const buzzReview = await callAgent('buzz', `Quick check: is the handle "@${slug}" good for social media branding? Consider: is it easy to type, not easily confused with another brand, and professional enough for ${candidate.category}. Reply with just YES or NO and a one-line reason.`, {
+                        maxTokens: 100,
+                        temperature: 0.3,
+                    })
+                    if (buzzReview.toUpperCase().startsWith('NO')) {
+                        buzzApproved = false
+                        results.push({ name: candidate.name, passed: false, reason: `Buzz flagged: ${buzzReview.slice(0, 80)}` })
+                        continue
+                    }
+                } catch {
+                    // Buzz unavailable — continue with raw check
+                }
 
                 if (availableSocials < 3) {
                     results.push({ name: candidate.name, passed: false, reason: `Only ${availableSocials}/6 social handles available` })
