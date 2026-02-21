@@ -261,6 +261,238 @@ BUZZ: "I left it blank! It just says 'THE APP IS COMING.' Very mysterious."
 
 OZZIE (staring at camera): "...I need more coffee."`,
     },
+    {
+        id: 'greeter', name: 'Greeter', stage: 0, label: 'Welcome',
+        color: '#30D158', icon: Icons.chat, photo: '/agents/greeter.png',
+        title: 'Welcome Guide',
+        desc: 'User onboarding & wizard navigation',
+        voiceName: 'Rachel', voiceId: '21m00Tcm4TlvDq8ikWAM',
+        skills: [],
+        tools: ['Onboarding Flow', 'User Intake', 'Wizard Navigator'],
+        telegram: '@WizardGreeterBot',
+        geniePrompt: 'A warm, cheerful woman in her late 20s at a reception desk with a large welcome sign behind her. She wears a green cardigan and has a big genuine smile. There are directional signs pointing to different departments. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `GREETER (at reception desk with huge smile): "Welcome to Wizard of Apps! What kind of app are you dreaming about today?"
+
+USER: "I want to make an app for my cat."
+
+GREETER: "Love it! Let me get you to Scout for market research. Scout, we've got a cat app!"
+
+SCOUT (from across the room): "Which kind? Feeding tracker? Health monitor? Cat social media?"
+
+GREETER (to camera): "I love this part. Everyone starts with 'it's just a simple idea.' Six agents later, they have a business."`,
+    },
+    {
+        id: 'registrar', name: 'Registrar', stage: 0, label: 'Config',
+        color: '#FF6B6B', icon: Icons.tool, photo: '/agents/registrar.png',
+        title: 'Setup & Trademark DBA',
+        desc: 'Bundle IDs, certificates, API keys, trademark database',
+        voiceName: 'Adam', voiceId: 'pNInz6obpgDQGcFmaJgB',
+        skills: ['registrar-operations'],
+        tools: ['Bundle ID Manager', 'Certificate Handler', 'Trademark DB (WRITE)', 'Privacy Policy Generator'],
+        telegram: '@WizardRegistrarBot',
+        geniePrompt: 'A precise, meticulous man in his mid-40s in a filing room with perfectly organized drawers labeled "Trademarks," "Certificates," and "Bundle IDs." He wears reading glasses and a red polo. Everything on his desk is at perfect right angles. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `REGISTRAR (organizing certificates): "Every app needs three things before launch: a bundle ID, a signing certificate, and—"
+
+BUILDER: "Can I just deploy it?"
+
+REGISTRAR: "No."
+
+BUILDER: "But it compiles—"
+
+REGISTRAR: "No bundle ID, no certificate, no privacy policy. No privacy policy means Apple rejects it. Apple rejects it means Shipper yells at me. Shipper yells at me means I yell at you. Do you want that chain of events?"
+
+BUILDER: "...I'll wait."
+
+REGISTRAR (talking head): "11 million trademarks in my database. I know every single one. Try me."`,
+    },
+    {
+        id: 'tuber', name: 'Tuber', stage: 8, label: 'YouTube',
+        color: '#FF0000', icon: Icons.film, photo: '/agents/tuber.png',
+        title: 'YouTube Channel Manager',
+        desc: 'Content calendar, SEO, analytics, channel growth',
+        voiceName: 'Clyde', voiceId: '2EiwWnXFnvU5JabPnv8n',
+        skills: ['youtube-studio', 'yt-meta'],
+        tools: ['Content Calendar', 'YouTube SEO', 'Analytics Dashboard', 'Thumbnail Creator'],
+        telegram: '@WizardTuberBot',
+        geniePrompt: 'An enthusiastic man in his early 30s at a desk with multiple monitors showing YouTube analytics dashboards, subscriber counts, and content calendars. He wears a red hoodie. Ring light visible in background. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `TUBER (checking analytics): "Subscribers are up 12% this week! The 'How to Launch an App' series is crushing it."
+
+DIRECTOR: "That's because I made the thumbnails POP."
+
+TUBER: "Your thumbnails are literally just the word 'WOW' in giant letters."
+
+DIRECTOR: "And they WORK."
+
+TUBER (talking head): "My job is growth. Director's job is creative. Spyder's job is figuring out what's trending. Together we're basically a three-person YouTube agency. Except none of us are people."`,
+    },
+    {
+        id: 'spyder', name: 'Spyder', stage: 8, label: 'Research',
+        color: '#8E8E93', icon: Icons.globe, photo: '/agents/spyder.png',
+        title: 'YouTube & Competitor Research',
+        desc: 'Trending topics, competitor channels, viral format research',
+        voiceName: 'Drew', voiceId: '29vD33N1CtxCmqQRPOHJ',
+        skills: ['deep-research-pro', 'deep-scraper', 'youtube-transcript'],
+        tools: ['Trend Tracker', 'Competitor Analyzer', 'Viral Format Scanner', 'Topic Researcher'],
+        telegram: '@WizardSpyderBot',
+        geniePrompt: 'A quiet, observant person in their late 20s wearing a gray hoodie in a dimly lit room with multiple browser windows showing YouTube trending pages, competitor channels, and Google Trends. Spider web decorations on the wall. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `SPYDER (in dark corner of office, multiple screens glowing): "I've been watching MrBeast's upload patterns for three weeks."
+
+TUBER: "That's... dedication."
+
+SPYDER: "He posts at 2pm EST on Saturdays. Gets 40% more views than weekday uploads. His thumbnails always use exactly three colors."
+
+DIRECTOR: "How do you know all this?"
+
+SPYDER (not looking up): "I watch everything. That's literally my job."
+
+SPYDER (talking head, still in dark room): "People think I'm creepy. I prefer 'thorough.'"`,
+    },
+    {
+        id: 'director', name: 'Director', stage: 8, label: 'Creative',
+        color: '#FFD700', icon: Icons.play, photo: '/agents/director.png',
+        title: 'YouTube Creative Director',
+        desc: 'Scripts, AI video, ElevenLabs voices, 3 shorts/day',
+        voiceName: 'Antoni', voiceId: 'ErXwobaYiN019PkySvjV',
+        skills: ['demo-video', 'video-agent', 'higgsfield', 'video-subtitles'],
+        tools: ['Script Writer', 'Higgsfield Video', 'ElevenLabs Voice', 'Short Form Editor'],
+        telegram: '@WizardDirectorBot',
+        geniePrompt: 'A dramatic, expressive person in their mid-30s wearing a gold scarf and beret, gesturing passionately at a storyboard covered in colorful sketches. A clapperboard and mini film camera on the desk. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `DIRECTOR (dramatic hand gestures): "The intro needs MORE ENERGY! We open on a phone, zoom into the screen, BOOM — the app appears!"
+
+TUBER: "It's a 30-second YouTube Short."
+
+DIRECTOR: "Even shorts deserve CINEMA."
+
+SPYDER: "Data says people skip after 3 seconds if there's no hook."
+
+DIRECTOR (gasps): "Then we hook them in TWO seconds. A explosion of color, a voice that grabs you by the—"
+
+TUBER: "Please don't say soul again."
+
+DIRECTOR: "—SOUL."`,
+    },
+    {
+        id: 'quanta', name: 'Quanta', stage: 9, label: 'Analytics',
+        color: '#64D2FF', icon: Icons.zap, photo: '/agents/quanta.png',
+        title: 'Advanced Analytics',
+        desc: 'Data science, performance metrics, predictive insights',
+        voiceName: 'Fin', voiceId: 'D38z5RcWu1voky8WS1ja',
+        skills: [],
+        tools: ['Metrics Dashboard', 'Predictive Models', 'A/B Test Runner', 'Revenue Forecaster'],
+        telegram: '@WizardQuantaBot',
+        geniePrompt: 'A focused, analytical person in their early 30s surrounded by holographic-style data visualizations, charts, and graphs. They wear a light blue button-up shirt and thin-framed glasses. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `QUANTA (staring at graphs): "Downloads are up 23% but retention drops 40% after day 3."
+
+BUZZ: "So my marketing is WORKING!"
+
+QUANTA: "Your marketing gets them in. The app doesn't keep them."
+
+BUILDER: "The app is FINE."
+
+QUANTA: "The data disagrees. Page 7 has a 94% exit rate."
+
+BUILDER: "...what's on page 7?"
+
+QUANTA: "Your terms of service. It's 47 pages long."
+
+BUILDER: "Oh."`,
+    },
+    {
+        id: 'nexus', name: 'Nexus', stage: 9, label: 'Integrate',
+        color: '#BF5AF2', icon: Icons.pipeline, photo: '/agents/nexus.png',
+        title: 'Integration Specialist',
+        desc: 'API connections, data flow, system architecture',
+        voiceName: 'Sam', voiceId: 'yoZ06aMxZJJ28mfd3POQ',
+        skills: [],
+        tools: ['API Connector', 'Webhook Manager', 'Data Flow Router', 'Schema Validator'],
+        telegram: '@WizardNexusBot',
+        geniePrompt: 'A tech-savvy person in their mid-30s in front of a massive whiteboard covered in API flow diagrams, arrows connecting different services. They wear a violet tech company hoodie. Multiple cable connections visible. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `NEXUS (plugging cables into a server): "Supabase is connected. Stripe is connected. RevenueCat is connected. Groq is—"
+
+BUILDER: "I already connected Groq."
+
+NEXUS: "You connected it with a hardcoded API key in the frontend."
+
+BUILDER: "It works!"
+
+NEXUS: "It works until someone opens DevTools and steals it. I'm moving it server-side."
+
+NEXUS (talking head): "Builder writes great code. My job is making sure that great code doesn't accidentally expose all our secrets to the internet."`,
+    },
+    {
+        id: 'synapse', name: 'Synapse', stage: 9, label: 'Learn',
+        color: '#FF375F', icon: Icons.refresh, photo: '/agents/synapse.png',
+        title: 'Neural Processing',
+        desc: 'AI model coordination, learning optimization, prompt engineering',
+        voiceName: 'Lily', voiceId: 'pFZP5JQG7iQjIQuC4Bku',
+        skills: [],
+        tools: ['Prompt Optimizer', 'Model Router', 'Fine-Tune Manager', 'Context Builder'],
+        telegram: '@WizardSynapseBot',
+        geniePrompt: 'A thoughtful, cerebral person in their late 20s in a room with neural network visualizations on the walls, nodes and connections glowing softly. They wear a hot pink lab coat over a black t-shirt. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `SYNAPSE: "I've been optimizing Scout's prompts. Cut token usage 40% with zero quality loss."
+
+SCOUT: "My reports feel... shorter."
+
+SYNAPSE: "They're the same quality. Just more efficient."
+
+SCOUT: "But I LIKED being verbose."
+
+SYNAPSE: "Tammy doesn't read past page 3."
+
+SCOUT: "...fair."
+
+SYNAPSE (talking head): "Every agent thinks they need more tokens. My job is proving they don't."`,
+    },
+    {
+        id: 'muse', name: 'Muse', stage: 9, label: 'Inspire',
+        color: '#AC8E68', icon: Icons.image, photo: '/agents/muse.png',
+        title: 'Creative Inspiration',
+        desc: 'Ideation, brainstorming, creative direction, mood boards',
+        voiceName: 'Freya', voiceId: 'jsCqWAovK2LkecY7zXl4',
+        skills: ['openai-image-gen', 'nano-banana-image-gen'],
+        tools: ['Mood Board Generator', 'Style Guide Creator', 'Color Palette AI', 'Concept Visualizer'],
+        telegram: '@WizardMuseBot',
+        geniePrompt: 'An artistic, dreamy person in their early 30s in a cozy creative studio surrounded by mood boards, color swatches, and art supplies. They wear a bronze-colored smock and have paint on their hands. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `MUSE (staring at a blank canvas): "What if the app was... sunset."
+
+PIXEL: "What does that mean?"
+
+MUSE: "The FEELING of sunset. Warm gradients, soft transitions, that moment when everything golden."
+
+PIXEL: "So... orange?"
+
+MUSE: "It's not ORANGE, it's the emotional resonance of—"
+
+PIXEL: "I'm making it orange."
+
+MUSE (talking head, wistfully): "They never understand. But when the app launches and users say 'this feels warm and inviting'... that was me. That was sunset."`,
+    },
+    {
+        id: 'sentinel', name: 'Sentinel', stage: 9, label: 'Guard',
+        color: '#32ADE6', icon: Icons.shield, photo: '/agents/sentinel.png',
+        title: 'Security & Compliance',
+        desc: 'App Store compliance, privacy checks, security audits',
+        voiceName: 'Thomas', voiceId: 'GBv7mTt0atIp3Br8iCZE',
+        skills: [],
+        tools: ['Compliance Checker', 'Privacy Auditor', 'Security Scanner', 'GDPR Validator'],
+        telegram: '@WizardSentinelBot',
+        geniePrompt: 'A stern, watchful person in their late 30s in a security operations center with monitors showing app compliance dashboards, Apple guideline checklists, and security scan results. They wear a sky blue uniform-style shirt. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `SENTINEL (blocking doorway): "This build is not shipping."
+
+SHIPPER: "It passed all my checks!"
+
+SENTINEL: "It's collecting location data without a privacy prompt. Apple will reject it in 4 seconds."
+
+BUILDER: "I forgot the permission dialog..."
+
+SENTINEL: "You also forgot to add the privacy policy link. And the data deletion endpoint. And—"
+
+SHIPPER: "How many things?"
+
+SENTINEL: "Seven. I made a list." (hands over clipboard)
+
+SENTINEL (talking head): "Everyone wants to ship fast. My job is making sure 'fast' doesn't become 'rejected.'"`,
+    },
 ]
 
 /* ── Gateway helpers ─────────────────────────────────────────────── */

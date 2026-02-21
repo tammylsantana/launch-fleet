@@ -11,6 +11,17 @@ const AGENT_VOICES: Record<string, { voiceId: string; voiceName: string }> = {
     builder: { voiceId: 'ErXwobaYiN019PkySvjV', voiceName: 'Antoni' },     // Male, natural
     buzz: { voiceId: 'MF3mGyEYCl7XYWbV9V6O', voiceName: 'Elli' },      // Female, upbeat
     shipper: { voiceId: 'TxGEqnHWrfWFTfGW9XjX', voiceName: 'Josh' },     // Male, professional
+    ozzie: { voiceId: 'onwK4e9ZLuTAKqWW03F9', voiceName: 'Daniel' },     // Male, calm authority
+    greeter: { voiceId: 'jBpfuIE2acCO8z3wKNLl', voiceName: 'Gigi' },     // Female, warm, welcoming
+    registrar: { voiceId: 'N2lVS1w4EoAxEhPVu2ub', voiceName: 'Callum' },  // Male, precise
+    tuber: { voiceId: '2EiwWnXFnvU5JabPnv8n', voiceName: 'Clyde' },      // Male, enthusiastic
+    spyder: { voiceId: 'SOYHLrjzK2X1ezoPC6cr', voiceName: 'Harry' },     // Male, quiet, observant
+    director: { voiceId: 'IKne3meq5aSn9XLyUdCD', voiceName: 'Charlie' },  // Male, dramatic
+    quanta: { voiceId: 'XB0fDUnXU5powFXDhCwa', voiceName: 'Charlotte' },  // Female, analytical
+    nexus: { voiceId: 'yoZ06aMxZJJ28mfd3POQ', voiceName: 'Sam' },        // Male, tech-savvy
+    synapse: { voiceId: 'pFZP5JQG7iQjIQuC4Bku', voiceName: 'Lily' },     // Female, cerebral
+    muse: { voiceId: 'jsCqWAovK2LkecY7zXl4', voiceName: 'Freya' },       // Female, dreamy
+    sentinel: { voiceId: 'GBv7mTt0atIp3Br8iCZE', voiceName: 'Thomas' },   // Male, stern, watchful
 }
 
 // Text-to-Speech
