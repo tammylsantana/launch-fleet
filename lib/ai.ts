@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync, statSync } from 'fs'
 import { join } from 'path'
 
-export type AgentId = 'scout' | 'namer' | 'checker' | 'pixel' | 'builder' | 'shipper' | 'buzz'
+export type AgentId = 'scout' | 'namer' | 'checker' | 'pixel' | 'builder' | 'shipper' | 'buzz' | 'ozzie'
 
 interface AgentCallOptions {
     maxTokens?: number
@@ -25,6 +25,7 @@ const AGENT_KEYS: Record<AgentId, string> = {
     builder: 'GROQ_API_KEY_BUILDER',
     shipper: 'GROQ_API_KEY_SHIPPER',
     buzz: 'GROQ_API_KEY_BUZZ',
+    ozzie: 'GROQ_API_KEY_OZZIE',
 }
 
 // Map agent IDs to their Telegram bot token env var names
@@ -36,6 +37,7 @@ const AGENT_TELEGRAM: Record<AgentId, string> = {
     builder: 'TELEGRAM_BOT_TOKEN_BUILDER',
     shipper: 'TELEGRAM_BOT_TOKEN_SHIPPER',
     buzz: 'TELEGRAM_BOT_TOKEN_BUZZ',
+    ozzie: 'TELEGRAM_BOT_TOKEN_OZZIE',
 }
 
 // Cache loaded instructions
