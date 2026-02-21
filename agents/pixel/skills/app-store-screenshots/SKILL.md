@@ -1,125 +1,147 @@
 ---
 name: app-store-screenshots
-description: Generate App Store screenshot sets that follow the 80% rule and Apple's requirements
+description: Professional App Store screenshots via screenshots.pro API, AppScreens, and @ivangdavila's automation workflow
 ---
 
 # App Store Screenshots Skill
 
-Create screenshot sets that convert browsers into downloaders. Screenshots are the #1 factor in App Store conversion after the icon.
+Generate professional App Store screenshot sets using screenshots.pro API and AppScreens.
 
-## Apple Requirements
+## Pro Tools Available
+
+### screenshots.pro (API)
+- **API endpoint**: `https://api.screenshots.pro/v1/render`
+- **Auth**: API key via `SCREENSHOTS_PRO_API_KEY` env var
+- **Capabilities**: Device frames, text overlays, backgrounds, batch rendering
+- **Output**: PNG at any required App Store resolution
+
+### AppScreens (Web Tool)
+- **URL**: https://appscreens.com
+- **Capabilities**: Template editor, drag-and-drop, localization, batch export
+- **Use for**: Quick iterations and visual template design
+
+## Apple Screenshot Requirements
 
 ### Required Device Sizes
-| Device | Resolution | Required? |
-|--------|-----------|-----------|
-| iPhone 6.7" (15 Pro Max) | 1290 × 2796 | ✅ Yes |
-| iPhone 6.5" (11 Pro Max) | 1242 × 2688 | ✅ Yes |
-| iPhone 5.5" (8 Plus) | 1242 × 2208 | ✅ Yes |
-| iPad Pro 12.9" (6th gen) | 2048 × 2732 | If iPad app |
-| iPad Pro 12.9" (2nd gen) | 2048 × 2732 | If iPad app |
+| Device | Resolution | Required |
+|--------|-----------|----------|
+| iPhone 6.7" (15 Pro Max) | 1290 × 2796 | ✅ |
+| iPhone 6.5" (11 Pro Max) | 1242 × 2688 | ✅ |
+| iPhone 5.5" (8 Plus) | 1242 × 2208 | ✅ |
+| iPad Pro 12.9" (6th gen) | 2048 × 2732 | If iPad |
 
-### Rules
-- Minimum 1, maximum 10 screenshots per localization
-- First 3 are visible without scrolling — make them count
-- Can include text overlays and device frames
-- Video previews: 15-30 seconds, same device sizes
+### Format Rules
+- PNG or JPEG, sRGB or P3 color space
+- Under 500KB per image
+- No transparency
+- 1-10 screenshots per localization
+
+### Safe Zones (Apple UI)
+- **Top 44px**: Status bar — avoid placing content here
+- **Bottom 34px**: Home indicator — keep clear
+- **Corners**: Rounded clip region — no critical content
 
 ## The 80% Rule
-**The first 2 screenshots provide 80% of the conversion impact.**
+First 2 screenshots = 80% of conversion impact.
 
-### Screenshot 1: The Hero
-- Show the app's #1 value proposition
-- Big, bold headline text overlay
-- The "money shot" — what makes someone download THIS app
-- Example: "Track your fitness goals in 10 seconds"
+### Screenshot 1 (Hero)
+- App's #1 value proposition
+- Bold headline, 5-8 words max
+- The "money shot" that makes someone download
 
-### Screenshot 2: The Proof
-- Show the core feature in action
-- Real-looking data, not placeholder text
-- Demonstrate the "aha moment"
-- Example: The beautiful dashboard with actual metrics
+### Screenshot 2 (Proof)
+- Core feature in action with real-looking data
+- The "aha moment" — demonstrate value
 
-### Screenshots 3-5: Feature Tour
+### Screenshots 3-5 (Feature Tour)
 - One feature per screenshot
-- Benefits, not features ("Never miss a workout" vs "Notification system")
-- Progressive disclosure — build the story
+- Benefits over features ("Never miss a workout" vs "Notifications")
 
-### Screenshots 6-10 (Optional): Social Proof & Details
-- Settings/customization options
-- Widget on home screen
-- Apple Watch companion
-- Dark mode variant
+### Screenshots 6-10 (Optional)
+- Widget on home screen, Dark mode, Apple Watch, Settings
 
-## Design Principles
+## Device Frame Styles
+| Style | Use When |
+|-------|----------|
+| Modern iPhone | Professional/business apps |
+| Frameless | Clean, minimal aesthetic |
+| Floating Angle | Dynamic marketing feel |
+| Full Bleed | Maximum screen real estate |
 
-### Text Overlays
-- **Font**: Bold sans-serif, 48-72pt equivalent
-- **Position**: Top or bottom 30% of frame (don't cover the app UI)
-- **Colors**: Match brand palette — accent color for emphasis
-- **Length**: 5-8 words max per screenshot
-- **Hierarchy**: One headline, one optional subline
+## Text Overlay Rules
+- **Headlines**: Bold sans-serif, 48-72pt
+- **Position**: Top or bottom 30% — don't cover app UI
+- **Length**: 5-8 words max
+- **Thumbnail test**: Must be readable at search result size
+- **One message per screenshot**: Don't overload
 
-### Device Frames
-- Use official Apple device frames (iPhone 15 Pro)
-- Consistent frame style across all screenshots
-- Can show without frames for more screen real estate
+## 7-Phase Automation Workflow (@ivangdavila)
 
-### Background
-- Subtle gradient matching brand palette
-- NOT pure white (looks cheap)
-- NOT busy patterns (distracts from app)
-- Consistent across all screenshots
+### Phase 1: Project Setup
+Create `config.md` with brand colors, fonts, and style preferences.
 
-### Layout Template
+### Phase 2: Raw Capture
+- Use iPhone 15 Pro Max simulator (highest res)
+- Clean status bar (9:41, full signal, full battery)
+- Capture each key screen with realistic data
+
+### Phase 3: Size Generation
+Scale raw captures to all required store dimensions:
 ```
-┌─────────────────────┐
-│                     │
-│   HEADLINE TEXT     │  ← Bold, 5-8 words
-│   Subtext optional  │
-│                     │
-│  ┌───────────────┐  │
-│  │               │  │
-│  │   APP SCREEN  │  │  ← Real app UI with real data
-│  │               │  │
-│  │               │  │
-│  │               │  │
-│  └───────────────┘  │
-│                     │
-└─────────────────────┘
+ios/6.7/en/01-hero.png    (1290×2796)
+ios/6.5/en/01-hero.png    (1242×2688)
+ios/5.5/en/01-hero.png    (1242×2208)
 ```
 
-## Generation with AI
+### Phase 4: Visual Polish
+- Apply device frames and background gradients
+- Add text overlays with brand fonts
+- Use screenshots.pro API for batch rendering
 
-### DALL-E Prompt for Screenshots
+### Phase 5: Vision Quality Check
+- Verify text readability at thumbnail size
+- Check visual consistency across the set
+- Confirm safe zones are respected
+
+### Phase 6: User Review
+Present full set for approval. Handle iterative changes.
+
+### Phase 7: Export & Delivery
+Organize by `store/device/language/`:
 ```
-Create an App Store screenshot for "[App Name]", a [category] app.
-
-LAYOUT:
-- [resolution] portrait orientation
-- Subtle [brand color] gradient background
-- Bold white headline at top: "[benefit statement]"
-- iPhone 15 Pro frame in center showing the app's [screen name]
-
-APP UI INSIDE THE PHONE:
-- [describe the actual screen: dashboard, list, chart, etc.]
-- Use realistic mock data, NOT "Lorem ipsum"
-- Match brand colors: bg [hex], accent [hex], text [hex]
-
-QUALITY: Apple marketing material quality, clean rendering
+ios/6.7/en/01-hero.png
+ios/6.7/en/02-feature.png
+ios/6.7/es/01-hero.png
+ios/6.7/es/02-feature.png
 ```
 
-## Screenshot Content by App Category
-
-| Category | Screenshot 1 (Hero) | Screenshot 2 (Proof) | Screenshot 3+ |
-|----------|--------------------|--------------------|----------------|
-| Fitness | "Your personal trainer" | Workout dashboard | Progress charts, social features |
-| Finance | "Money made simple" | Account overview | Budgets, goals, insights |
-| Productivity | "Get more done" | Task list in action | Calendar, widgets, notifications |
-| Social | "Connect your way" | Feed/messages | Profiles, discovery, stories |
-| Education | "Learn anything" | Course/lesson view | Progress, certificates, community |
+## screenshots.pro API Usage
+```javascript
+const response = await fetch('https://api.screenshots.pro/v1/render', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${process.env.SCREENSHOTS_PRO_API_KEY}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    template: 'iphone-15-pro',
+    screenshot: screenshotUrl,
+    title: 'Track Your Goals',
+    subtitle: 'AI-powered fitness companion',
+    background: { type: 'gradient', colors: ['#1a1a2e', '#16213e'] },
+    device: { frame: 'modern', shadow: true },
+    output: { width: 1290, height: 2796, format: 'png' },
+  }),
+})
+const { url } = await response.json()
+```
 
 ## Localization
-For each target market, create localized screenshots:
-- Translate text overlays (don't just swap text — adapt messaging)
-- Use culturally appropriate imagery and data
 - Top markets: EN, ES, PT, FR, DE, JA, KO, ZH
+- Don't just translate — adapt messaging for each culture
+- Test text length (German expands ~30%, Japanese compresses)
+
+## ClawHub Source
+- Skill: `screenshots` by @ivangdavila
+- Install: `clawhub install screenshots`
+- Files: SKILL.md + specs.md + templates.md + text-style.md
