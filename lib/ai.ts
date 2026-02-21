@@ -71,6 +71,7 @@ export function loadAgentInstructions(agentId: AgentId): string {
     if (instructionCache[agentId]) return instructionCache[agentId]
 
     const agentDir = join(process.cwd(), 'agents', agentId)
+    const sharedDir = join(process.cwd(), 'agents', 'shared')
     const parts: string[] = []
 
     // Load SOUL.md (core identity)
@@ -83,10 +84,17 @@ export function loadAgentInstructions(agentId: AgentId): string {
         parts.push(readFileSync(join(agentDir, 'AGENTS.md'), 'utf-8'))
     } catch { /* no agents file */ }
 
-    // Load USER.md (user context)
+    // Load USER.md (user context) — agent-specific first, fall back to shared
+    let hasUserContext = false
     try {
         parts.push(readFileSync(join(agentDir, 'USER.md'), 'utf-8'))
-    } catch { /* no user file */ }
+        hasUserContext = true
+    } catch { /* no agent-specific user file */ }
+    if (!hasUserContext) {
+        try {
+            parts.push(readFileSync(join(sharedDir, 'USER.md'), 'utf-8'))
+        } catch { /* no shared user file either */ }
+    }
 
     const content = parts.filter(Boolean).join('\n\n---\n\n')
     if (content) instructionCache[agentId] = content
