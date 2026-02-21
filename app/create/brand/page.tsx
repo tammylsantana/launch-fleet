@@ -21,6 +21,8 @@ interface TemplateOption {
     colorPalette: { primary: string; secondary: string; accent: string; bg: string; text: string; card: string }
     fonts: { headline: string; body: string }
     description: string
+    preview: string
+    bestFor: string[]
 }
 
 const TEMPLATES: TemplateOption[] = [
@@ -28,174 +30,66 @@ const TEMPLATES: TemplateOption[] = [
         id: 'minimal', name: 'Clean Minimal', style: 'Light',
         colorPalette: { primary: '#1D1D1F', secondary: '#F2F2F7', accent: '#007AFF', bg: '#FFFFFF', text: '#1D1D1F', card: '#F2F2F7' },
         fonts: { headline: 'Inter', body: 'Inter' },
-        description: 'White backgrounds, clean typography, subtle shadows. Inspired by Apple Health, Notion, and Things 3.',
+        description: 'The #1 design pattern in Productivity and Utilities. White space + system blue = instant trust.',
+        preview: '/brand-previews/minimal.png',
+        bestFor: ['Productivity', 'Utilities', 'Education', 'Health & Fitness'],
     },
     {
         id: 'dark-bold', name: 'Bold Dark', style: 'Dark',
         colorPalette: { primary: '#F5F5F7', secondary: '#2C2C2E', accent: '#FF9500', bg: '#1C1C1E', text: '#F5F5F7', card: '#2C2C2E' },
         fonts: { headline: 'Outfit', body: 'Inter' },
-        description: 'Dark backgrounds, high-contrast, vibrant orange. Inspired by Spotify, Netflix, and SoundCloud.',
+        description: 'Dominant in Entertainment and Music categories. Dark mode + warm accents = premium engagement.',
+        preview: '/brand-previews/dark.png',
+        bestFor: ['Entertainment', 'Music', 'Social Media', 'Photo & Video'],
     },
     {
         id: 'ocean', name: 'Ocean Calm', style: 'Light',
         colorPalette: { primary: '#0A2540', secondary: '#E8F4FD', accent: '#0070F3', bg: '#F8FBFE', text: '#0A2540', card: '#E8F4FD' },
         fonts: { headline: 'Inter', body: 'Inter' },
-        description: 'Cool blue tones, trustworthy and professional. Inspired by Stripe, Linear, and Copilot.',
+        description: 'Standard for Finance and B2B SaaS. Navy + blue conveys security and professionalism.',
+        preview: '/brand-previews/ocean.png',
+        bestFor: ['Finance', 'Business', 'Shopping', 'Travel'],
     },
     {
         id: 'sunset', name: 'Sunset Glow', style: 'Light',
         colorPalette: { primary: '#1A1A2E', secondary: '#FFF5F0', accent: '#FF6B35', bg: '#FFFAF7', text: '#1A1A2E', card: '#FFF0E8' },
         fonts: { headline: 'Outfit', body: 'Inter' },
-        description: 'Warm gradient energy, friendly and engaging. Inspired by Headspace, Duolingo, and Strava.',
+        description: 'Top performer in Health & Wellness. Warm tones = approachable, energizing, habit-building.',
+        preview: '/brand-previews/sunset.png',
+        bestFor: ['Health & Wellness', 'Food & Drink', 'Lifestyle', 'Kids & Family'],
     },
     {
         id: 'emerald', name: 'Emerald Pro', style: 'Dark',
         colorPalette: { primary: '#E8F5E9', secondary: '#1B3A2D', accent: '#00C853', bg: '#0D1F17', text: '#E8F5E9', card: '#1B3A2D' },
         fonts: { headline: 'Inter', body: 'Inter' },
-        description: 'Deep greens, premium feel, finance-grade trust. Inspired by Robinhood, Cash App, and Mint.',
+        description: 'Proven in Fintech and Trading apps. Green = growth, money, trust. Used by 8 of top 10 finance apps.',
+        preview: '/brand-previews/emerald.png',
+        bestFor: ['Fintech', 'Investing', 'Banking', 'Crypto'],
     },
     {
         id: 'purple-haze', name: 'Purple Haze', style: 'Dark',
         colorPalette: { primary: '#F3E8FF', secondary: '#2D1B4E', accent: '#A855F7', bg: '#1A0F2E', text: '#F3E8FF', card: '#2D1B4E' },
         fonts: { headline: 'Outfit', body: 'Inter' },
-        description: 'Deep purple, creative and bold. Inspired by Figma, Arc Browser, and Twitch.',
+        description: 'Rising in Creative and AI tools. Purple = innovation, imagination, premium positioning.',
+        preview: '/brand-previews/purple.png',
+        bestFor: ['AI & Machine Learning', 'Design Tools', 'Developer Tools', 'Gaming'],
     },
 ]
 
-/** Renders a realistic iPhone 15 frame with Apple-native app UI inside */
-function IPhoneMockup({ template, appName }: { template: TemplateOption; appName: string }) {
-    const c = template.colorPalette
-    const isDark = template.style === 'Dark'
-    const cellBg = isDark ? c.card : '#FFFFFF'
-    const sectionBg = c.bg
-    const subtleText = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)'
-    const divider = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'
-
+/** Renders a high-fidelity app preview image */
+function AppPreview({ template }: { template: TemplateOption }) {
     return (
         <div style={{
-            width: 170, height: 340, borderRadius: 32, border: '3px solid #3A3A3C',
-            background: '#000', padding: 3, position: 'relative', overflow: 'hidden', flexShrink: 0,
-            boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
+            width: '100%', maxWidth: 280, margin: '0 auto',
+            borderRadius: 24, overflow: 'hidden',
+            boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
         }}>
-            {/* Dynamic Island */}
-            <div style={{
-                position: 'absolute', top: 7, left: '50%', transform: 'translateX(-50%)',
-                width: 50, height: 14, borderRadius: 10, background: '#000', zIndex: 10,
-            }} />
-            {/* Screen */}
-            <div style={{
-                width: '100%', height: '100%', borderRadius: 28, overflow: 'hidden',
-                background: sectionBg, display: 'flex', flexDirection: 'column',
-            }}>
-                {/* Status bar */}
-                <div style={{ height: 24, padding: '0 14px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: 7, fontWeight: 700, color: c.text }}>9:41</span>
-                    <div style={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                        <svg width="8" height="6" viewBox="0 0 8 6"><rect x="0" y="4" width="2" height="2" rx="0.5" fill={c.text} opacity="0.5" /><rect x="2.5" y="2.5" width="2" height="3.5" rx="0.5" fill={c.text} opacity="0.5" /><rect x="5" y="0.5" width="2" height="5.5" rx="0.5" fill={c.text} opacity="0.5" /></svg>
-                        <svg width="12" height="6" viewBox="0 0 12 6"><rect x="0.5" y="0.5" width="10" height="5" rx="1.5" stroke={c.text} strokeWidth="0.7" fill="none" opacity="0.5" /><rect x="11" y="2" width="1" height="2" rx="0.5" fill={c.text} opacity="0.3" /><rect x="1.5" y="1.5" width="7" height="3" rx="0.8" fill={c.accent} /></svg>
-                    </div>
-                </div>
-
-                {/* iOS Large Title Nav */}
-                <div style={{ padding: '2px 12px 6px' }}>
-                    <span style={{ fontSize: 15, fontWeight: 800, color: c.text, fontFamily: template.fonts.headline, letterSpacing: -0.3 }}>{appName || 'MyApp'}</span>
-                </div>
-
-                {/* Scrollable content */}
-                <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 6, padding: '0 8px' }}>
-
-                    {/* Hero stats card */}
-                    <div style={{
-                        borderRadius: 12, background: `linear-gradient(135deg, ${c.accent}, ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'})`,
-                        padding: 10, display: 'flex', alignItems: 'center', gap: 8,
-                        boxShadow: `0 2px 8px ${c.accent}33`,
-                    }}>
-                        {/* Progress ring */}
-                        <svg width="32" height="32" viewBox="0 0 32 32">
-                            <circle cx="16" cy="16" r="13" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-                            <circle cx="16" cy="16" r="13" fill="none" stroke="#fff" strokeWidth="3" strokeDasharray="58 82" strokeLinecap="round" transform="rotate(-90 16 16)" />
-                            <text x="16" y="18" textAnchor="middle" fill="#fff" fontSize="7" fontWeight="700">72</text>
-                        </svg>
-                        <div>
-                            <div style={{ fontSize: 7, fontWeight: 700, color: '#fff' }}>Today&apos;s Progress</div>
-                            <div style={{ fontSize: 5.5, color: 'rgba(255,255,255,0.7)', marginTop: 1 }}>3 of 5 tasks complete</div>
-                        </div>
-                    </div>
-
-                    {/* iOS Segmented Control */}
-                    <div style={{
-                        display: 'flex', borderRadius: 7, background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
-                        padding: 2,
-                    }}>
-                        {['All', 'Active', 'Done'].map((label, i) => (
-                            <div key={label} style={{
-                                flex: 1, textAlign: 'center', fontSize: 6, fontWeight: 600,
-                                padding: '3px 0', borderRadius: 5, color: c.text,
-                                background: i === 0 ? cellBg : 'transparent',
-                                boxShadow: i === 0 ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                                opacity: i === 0 ? 1 : 0.5,
-                            }}>{label}</div>
-                        ))}
-                    </div>
-
-                    {/* Section header */}
-                    <div style={{ fontSize: 6, fontWeight: 600, color: subtleText, textTransform: 'uppercase', letterSpacing: 0.5, padding: '2px 4px 0' }}>
-                        Recent
-                    </div>
-
-                    {/* iOS grouped inset table */}
-                    <div style={{ borderRadius: 10, background: cellBg, overflow: 'hidden' }}>
-                        {[
-                            { color: c.accent, w: 75, label: 'Dashboard' },
-                            { color: isDark ? '#FF453A' : '#FF3B30', w: 60, label: 'Analytics' },
-                            { color: isDark ? '#30D158' : '#34C759', w: 50, label: 'Settings' },
-                        ].map((item, i, arr) => (
-                            <div key={i} style={{
-                                padding: '6px 8px', display: 'flex', alignItems: 'center', gap: 6,
-                                borderBottom: i < arr.length - 1 ? `0.5px solid ${divider}` : 'none',
-                            }}>
-                                {/* SF-style icon */}
-                                <div style={{
-                                    width: 18, height: 18, borderRadius: 5, background: item.color,
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                                }}>
-                                    <span style={{ fontSize: 8, color: '#fff' }}>{['◈', '◉', '⚙'][i]}</span>
-                                </div>
-                                <div style={{ flex: 1 }}>
-                                    <div style={{ fontSize: 7, fontWeight: 500, color: c.text }}>{item.label}</div>
-                                    <div style={{ height: 2.5, width: `${item.w}%`, borderRadius: 2, background: c.text, opacity: 0.1, marginTop: 2 }} />
-                                </div>
-                                {/* Chevron */}
-                                <span style={{ fontSize: 8, color: subtleText }}>›</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* iOS Tab Bar with frosted glass */}
-                <div style={{
-                    height: 34, borderTop: `0.5px solid ${divider}`,
-                    background: isDark ? 'rgba(28,28,30,0.85)' : 'rgba(255,255,255,0.85)',
-                    backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '0 8px',
-                }}>
-                    {[
-                        { icon: '⌂', label: 'Home', active: true },
-                        { icon: '◎', label: 'Search', active: false },
-                        { icon: '♡', label: 'Saved', active: false },
-                        { icon: '⊙', label: 'Profile', active: false },
-                    ].map((tab) => (
-                        <div key={tab.label} style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: 10, color: tab.active ? c.accent : subtleText, lineHeight: 1 }}>{tab.icon}</div>
-                            <div style={{ fontSize: 4.5, color: tab.active ? c.accent : subtleText, marginTop: 1, fontWeight: tab.active ? 600 : 400 }}>{tab.label}</div>
-                        </div>
-                    ))}
-                </div>
-                {/* Home indicator */}
-                <div style={{ height: 12, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', paddingBottom: 3, background: isDark ? 'rgba(28,28,30,0.85)' : 'rgba(255,255,255,0.85)' }}>
-                    <div style={{ width: 36, height: 3, borderRadius: 2, background: c.text, opacity: 0.15 }} />
-                </div>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+                src={template.preview}
+                alt={`${template.name} preview`}
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+            />
         </div>
     )
 }
@@ -299,7 +193,7 @@ export default function BrandPage() {
                                 padding: '24px 0', display: 'flex', justifyContent: 'center',
                                 background: '#F2F2F7',
                             }}>
-                                <IPhoneMockup template={template} appName={appName} />
+                                <AppPreview template={template} />
                             </div>
 
                             {/* Info section */}
@@ -314,7 +208,19 @@ export default function BrandPage() {
                                         fontWeight: 600,
                                     }}>{template.style}</span>
                                 </div>
-                                <p style={{ fontSize: 12, color: '#86868B', margin: '0 0 10px', lineHeight: 1.4 }}>{template.description}</p>
+                                <p style={{ fontSize: 12, color: '#86868B', margin: '0 0 8px', lineHeight: 1.4 }}>{template.description}</p>
+
+                                {/* Industry tags */}
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 10 }}>
+                                    {template.bestFor.map(industry => (
+                                        <span key={industry} style={{
+                                            fontSize: 9, padding: '2px 7px', borderRadius: 4,
+                                            background: `${template.colorPalette.accent}15`,
+                                            color: template.colorPalette.accent,
+                                            fontWeight: 600, whiteSpace: 'nowrap',
+                                        }}>{industry}</span>
+                                    ))}
+                                </div>
 
                                 {/* Color swatches */}
                                 <div style={{ display: 'flex', gap: 4 }}>
