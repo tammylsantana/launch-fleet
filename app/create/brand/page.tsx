@@ -43,12 +43,12 @@ const TEMPLATES: TemplateOption[] = [
         bestFor: ['Entertainment', 'Music', 'Social Media', 'Photo & Video'],
     },
     {
-        id: 'ocean', name: 'Ocean Calm', style: 'Light',
-        colorPalette: { primary: '#0A2540', secondary: '#E8F4FD', accent: '#0070F3', bg: '#F8FBFE', text: '#0A2540', card: '#E8F4FD' },
-        fonts: { headline: 'Inter', body: 'Inter' },
-        description: 'Standard for Finance and B2B SaaS. Navy + blue conveys security and professionalism.',
+        id: 'coral', name: 'Coral Rose', style: 'Light',
+        colorPalette: { primary: '#2D2D2D', secondary: '#FFF0F0', accent: '#E8445A', bg: '#FFFAFA', text: '#2D2D2D', card: '#FFF0F0' },
+        fonts: { headline: 'Outfit', body: 'Inter' },
+        description: 'Leading in Shopping and Social apps. Coral/rose tones drive engagement and impulse action.',
         preview: '/brand-previews/ocean.png',
-        bestFor: ['Finance', 'Business', 'Shopping', 'Travel'],
+        bestFor: ['Shopping', 'Social', 'Dating', 'Fashion & Beauty'],
     },
     {
         id: 'sunset', name: 'Sunset Glow', style: 'Light',
@@ -56,7 +56,7 @@ const TEMPLATES: TemplateOption[] = [
         fonts: { headline: 'Outfit', body: 'Inter' },
         description: 'Top performer in Health & Wellness. Warm tones = approachable, energizing, habit-building.',
         preview: '/brand-previews/sunset.png',
-        bestFor: ['Health & Wellness', 'Food & Drink', 'Lifestyle', 'Kids & Family'],
+        bestFor: ['Health & Wellness', 'Food & Drink', 'Lifestyle', 'Travel'],
     },
     {
         id: 'emerald', name: 'Emerald Pro', style: 'Dark',
@@ -73,6 +73,14 @@ const TEMPLATES: TemplateOption[] = [
         description: 'Rising in Creative and AI tools. Purple = innovation, imagination, premium positioning.',
         preview: '/brand-previews/purple.png',
         bestFor: ['AI & Machine Learning', 'Design Tools', 'Developer Tools', 'Gaming'],
+    },
+    {
+        id: 'kids', name: 'Playful Primary', style: 'Light',
+        colorPalette: { primary: '#1D1D1F', secondary: '#FFF8E1', accent: '#FF3B30', bg: '#FFFFFF', text: '#1D1D1F', card: '#FFF8E1' },
+        fonts: { headline: 'Outfit', body: 'Inter' },
+        description: 'Proven winner in Kids & Education. Bold primary colors = trust from parents, fun for children.',
+        preview: '/brand-previews/kids.png',
+        bestFor: ['Kids & Family', 'Preschool', 'Education Games', 'Parenting'],
     },
 ]
 
@@ -191,7 +199,7 @@ export default function BrandPage() {
                             {/* iPhone preview area */}
                             <div style={{
                                 padding: '24px 0', display: 'flex', justifyContent: 'center',
-                                background: '#F2F2F7',
+                                background: '#FFFFFF',
                             }}>
                                 <AppPreview template={template} />
                             </div>
