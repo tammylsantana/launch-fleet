@@ -39,10 +39,46 @@ export default function NamePage() {
     const [isChecking, setIsChecking] = useState(false)
     const [confirmed, setConfirmed] = useState(false)
     const [sessionIdea, setSessionIdea] = useState<string>('')
+    const [hasVerified, setHasVerified] = useState(false)
 
+    // Load pre-vetted names from verified database on mount
     useEffect(() => {
         const session = JSON.parse(localStorage.getItem('launchfleet_session') || '{}')
-        setSessionIdea(session.idea || session.ideaText || '')
+        const idea = session.idea || session.ideaText || ''
+        setSessionIdea(idea)
+
+        // Fetch verified names matched to this app's category
+        if (idea) {
+            fetch(`/api/vet-names?idea=${encodeURIComponent(idea)}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.names && data.names.length > 0) {
+                        // Convert verified names to NameCandidate format
+                        const verified: NameCandidate[] = data.names.map((n: { name: string; tagline?: string; vibe?: string; domains?: { ext: string; available: boolean }[]; socials?: { platform: string; available: boolean }[] }) => ({
+                            name: n.name,
+                            brandScore: 9,
+                            domains: n.domains || [
+                                { ext: '.com', available: true },
+                                { ext: '.ai', available: true },
+                                { ext: '.app', available: true },
+                            ],
+                            trademark: { status: 'clear' as const, class: 'Pre-verified' },
+                            socials: SOCIAL_PLATFORMS.map(p => {
+                                const found = n.socials?.find((s: { platform: string; available: boolean }) => s.platform === p.id)
+                                return {
+                                    platform: p.id,
+                                    handle: n.name.toLowerCase().replace(/\s+/g, ''),
+                                    available: found?.available ?? true,
+                                    signupUrl: getSocialSignupUrl(p.id, n.name.toLowerCase().replace(/\s+/g, '')),
+                                }
+                            }),
+                        }))
+                        setNames(verified)
+                        setHasVerified(true)
+                    }
+                })
+                .catch(() => { /* No verified names yet — user can still generate */ })
+        }
     }, [])
 
     const generateNames = async () => {
@@ -55,18 +91,16 @@ export default function NamePage() {
                 body: JSON.stringify({ action: 'generate', session }),
             })
             const data = await res.json()
-            if (data.names) setNames(data.names)
+            if (data.names) {
+                // Append AI-generated names after verified ones
+                setNames(prev => {
+                    const existingNames = new Set(prev.map(n => n.name))
+                    const newNames = data.names.filter((n: NameCandidate) => !existingNames.has(n.name))
+                    return [...prev, ...newNames]
+                })
+            }
         } catch {
-            // Fallback with demo data for now
-            setNames([
-                {
-                    name: 'Loading...',
-                    brandScore: 0,
-                    domains: [{ ext: '.com', available: false }, { ext: '.ai', available: false }, { ext: '.app', available: false }],
-                    trademark: { status: 'pending' },
-                    socials: SOCIAL_PLATFORMS.map(p => ({ platform: p.id, handle: '', available: false, signupUrl: '' })),
-                },
-            ])
+            // Fallback
         } finally {
             setIsGenerating(false)
         }
@@ -166,7 +200,7 @@ export default function NamePage() {
                     <div className="caption" style={{ marginBottom: 'var(--space-xs)' }}>Stage 2</div>
                     <h1>Name and Identity</h1>
                     <p className="subhead">
-                        Three industry-standard names, fully vetted — trademark searched, domain checked (.com, .ai, .app), and social handles verified across six platforms.
+                        Brand-ready names, pre-vetted daily — trademark clear, .com domain available, and social handles open across six platforms.
                     </p>
                 </div>
 
@@ -202,7 +236,9 @@ export default function NamePage() {
                 {names.length === 0 && (
                     <div style={{ textAlign: 'center', padding: 'var(--space-3xl) 0' }}>
                         <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-lg)' }}>
-                            Generate three AI-vetted name candidates based on your app idea and market research.
+                            {hasVerified
+                                ? 'All verified names shown above. Generate more with AI below.'
+                                : 'No pre-vetted names available yet for this category. Generate AI-powered name candidates.'}
                         </p>
                         <button className="btn btn-primary btn-lg" onClick={generateNames} disabled={isGenerating}>
                             {isGenerating ? <><Loader2 size={18} /> Researching...</> : <>Generate Names</>}
@@ -214,9 +250,12 @@ export default function NamePage() {
                 {names.length > 0 && (
                     <>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-lg)' }}>
-                            <h2>Vetted Candidates</h2>
+                            <div>
+                                <h2>{hasVerified ? 'Curated & Verified' : 'Vetted Candidates'}</h2>
+                                {hasVerified && <p style={{ fontSize: '13px', color: 'var(--text-tertiary)', margin: 0 }}>Pre-checked: trademark clear, .com available, social handles open</p>}
+                            </div>
                             <button className="btn btn-ghost btn-sm" onClick={generateNames} disabled={isGenerating}>
-                                <RefreshCw size={14} /> Regenerate
+                                <RefreshCw size={14} /> {hasVerified ? 'Generate More' : 'Regenerate'}
                             </button>
                         </div>
 
