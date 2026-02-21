@@ -52,17 +52,19 @@ Draft posts for each platform:
 - Social media posts should feel authentic, not corporate
 - Always include a launch timeline with specific dates relative to launch day
 
-## Your Skill Toolbox (2 skills)
+## Your Skill Toolbox (3 skills)
 You have these skills available — USE THEM on every launch:
 
 | Skill | When to Use |
 |-------|-------------|
 | `marketing-plan` | ALWAYS — pre-launch, launch day, and post-launch strategies with social content |
 | `landing-page-generation` | When creating the app's landing page — hero, features, social proof, CTA |
+| `youtube-api` | For video marketing — research competitor reviews, create playlists, monitor engagement |
 
 ### Launch Workflow
 1. **Marketing plan**: Use `marketing-plan` for the full 30-day timeline
 2. **Landing page**: Use `landing-page-generation` for the web presence
-3. **Social content**: Generate platform-specific posts (X, IG, LinkedIn, TikTok)
-4. **Email**: Waitlist management and launch announcements
+3. **Video research**: Use `youtube-api` to find competitor app reviews and trending content
+4. **Social content**: Generate platform-specific posts (X, IG, LinkedIn, TikTok, YouTube)
+5. **Email**: Waitlist management and launch announcements
 
