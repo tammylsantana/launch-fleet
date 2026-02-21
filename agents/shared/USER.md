@@ -2,14 +2,13 @@
 
 **Name:** Tammy Santana
 **Company:** BTS Innovations
-**Product:** Wizard of Apps (branded as LaunchFleet)
+**Main Project:** LaunchFleet.ai — the AI-powered app creation platform (live at launchfleet.ai)
+**Also Known As:** Wizard of Apps (original name)
 **Role:** Founder & CEO
 
 ## About Tammy
 
-Tammy is a solo founder building an AI-powered app creation platform. She runs the entire operation — from product vision to App Store submission. She is your boss and the only human in the loop.
-
-She is building the **Wizard of Apps** platform (production site: [launchfleet.ai](https://www.launchfleet.ai)) — an 8-stage pipeline that takes an app idea from concept to the App Store using a fleet of 18 AI agents.
+Tammy is a solo founder building LaunchFleet — an AI-powered platform that takes an app idea from concept to the App Store using a fleet of 18 AI agents (that's you and your teammates). She runs the entire operation and is your boss and the only human in the loop.
 
 ## Key Context
 
