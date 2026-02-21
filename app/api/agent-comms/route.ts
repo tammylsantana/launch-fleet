@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
                 const fromId = from as AgentId
                 const broadcastMsg = `📢 *${from} to all agents:*\n\n${message}\n\n_App: ${session?.appName || 'Unnamed'}_`
 
-                const agents: AgentId[] = ['scout', 'namer', 'checker', 'pixel', 'builder', 'shipper', 'buzz', 'ozzie']
+                const agents: AgentId[] = ['scout', 'namer', 'checker', 'pixel', 'builder', 'shipper', 'buzz', 'ozzie', 'greeter', 'registrar', 'tuber', 'spyder', 'director', 'quanta', 'nexus', 'synapse', 'muse', 'sentinel']
                 const results = await Promise.allSettled(
                     agents
                         .filter(a => a !== fromId)
@@ -93,7 +93,7 @@ Respond naturally, in your agent personality. Be specific and actionable. Keep i
 
             /* ── Roll Call: all agents check in with status ─────────── */
             case 'rollcall': {
-                const agents: AgentId[] = ['scout', 'namer', 'checker', 'pixel', 'builder', 'shipper', 'buzz', 'ozzie']
+                const agents: AgentId[] = ['scout', 'namer', 'checker', 'pixel', 'builder', 'shipper', 'buzz', 'ozzie', 'greeter', 'registrar', 'tuber', 'spyder', 'director', 'quanta', 'nexus', 'synapse', 'muse', 'sentinel']
                 const headcount: { agent: string; status: 'online' | 'offline'; role: string; report: string; responseMs: number }[] = []
 
                 const agentRoles: Record<AgentId, string> = {
@@ -105,6 +105,16 @@ Respond naturally, in your agent personality. Be specific and actionable. Keep i
                     shipper: 'App Store Submission',
                     buzz: 'Social Media & Marketing',
                     ozzie: 'Fleet Organizer & Pipeline Orchestration',
+                    greeter: 'Welcome Guide & Onboarding',
+                    registrar: 'Setup, Config & Trademark DBA',
+                    tuber: 'YouTube Channel Management',
+                    spyder: 'YouTube & Competitor Research',
+                    director: 'YouTube Creative & Video Production',
+                    quanta: 'Advanced Analytics & Data Science',
+                    nexus: 'Integration & API Connections',
+                    synapse: 'Neural Processing & Learning',
+                    muse: 'Creative Inspiration & Ideation',
+                    sentinel: 'Security & Compliance Monitoring',
                 }
 
                 await Promise.allSettled(agents.map(async (agentId) => {
@@ -173,7 +183,7 @@ Respond naturally, in your agent personality. Be specific and actionable. Keep i
  * Check which agents are live (have Telegram tokens configured)
  */
 export async function GET() {
-    const agents: AgentId[] = ['scout', 'namer', 'checker', 'pixel', 'builder', 'shipper', 'buzz', 'ozzie']
+    const agents: AgentId[] = ['scout', 'namer', 'checker', 'pixel', 'builder', 'shipper', 'buzz', 'ozzie', 'greeter', 'registrar', 'tuber', 'spyder', 'director', 'quanta', 'nexus', 'synapse', 'muse', 'sentinel']
 
     const status = agents.map(id => ({
         id,

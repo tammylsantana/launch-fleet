@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync, statSync } from 'fs'
 import { join } from 'path'
 
-export type AgentId = 'scout' | 'namer' | 'checker' | 'pixel' | 'builder' | 'shipper' | 'buzz' | 'ozzie'
+export type AgentId = 'scout' | 'namer' | 'checker' | 'pixel' | 'builder' | 'shipper' | 'buzz' | 'ozzie' | 'greeter' | 'registrar' | 'tuber' | 'spyder' | 'director' | 'quanta' | 'nexus' | 'synapse' | 'muse' | 'sentinel'
 
 interface AgentCallOptions {
     maxTokens?: number
@@ -26,6 +26,16 @@ const AGENT_KEYS: Record<AgentId, string> = {
     shipper: 'GROQ_API_KEY_SHIPPER',
     buzz: 'GROQ_API_KEY_BUZZ',
     ozzie: 'GROQ_API_KEY_OZZIE',
+    greeter: 'GROQ_API_KEY_GREETER',
+    registrar: 'GROQ_API_KEY_REGISTRAR',
+    tuber: 'GROQ_API_KEY_TUBER',
+    spyder: 'GROQ_API_KEY_SPYDER',
+    director: 'GROQ_API_KEY_DIRECTOR',
+    quanta: 'GROQ_API_KEY_QUANTA',
+    nexus: 'GROQ_API_KEY_NEXUS',
+    synapse: 'GROQ_API_KEY_SYNAPSE',
+    muse: 'GROQ_API_KEY_MUSE',
+    sentinel: 'GROQ_API_KEY_SENTINEL',
 }
 
 // Map agent IDs to their Telegram bot token env var names
@@ -38,6 +48,16 @@ const AGENT_TELEGRAM: Record<AgentId, string> = {
     shipper: 'TELEGRAM_BOT_TOKEN_SHIPPER',
     buzz: 'TELEGRAM_BOT_TOKEN_BUZZ',
     ozzie: 'TELEGRAM_BOT_TOKEN_OZZIE',
+    greeter: 'TELEGRAM_BOT_TOKEN_GREETER',
+    registrar: 'TELEGRAM_BOT_TOKEN_REGISTRAR',
+    tuber: 'TELEGRAM_BOT_TOKEN_TUBER',
+    spyder: 'TELEGRAM_BOT_TOKEN_SPYDER',
+    director: 'TELEGRAM_BOT_TOKEN_DIRECTOR',
+    quanta: 'TELEGRAM_BOT_TOKEN_QUANTA',
+    nexus: 'TELEGRAM_BOT_TOKEN_NEXUS',
+    synapse: 'TELEGRAM_BOT_TOKEN_SYNAPSE',
+    muse: 'TELEGRAM_BOT_TOKEN_MUSE',
+    sentinel: 'TELEGRAM_BOT_TOKEN_SENTINEL',
 }
 
 // Cache loaded instructions
