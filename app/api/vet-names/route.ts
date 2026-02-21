@@ -63,7 +63,7 @@ interface VerifiedName {
     tagline: string
     vibe: string
     why: string
-    domains: { ext: string; available: boolean }[]
+    domains: { ext: string; available: boolean; parked?: boolean; parkingProvider?: string }[]
     socials: { platform: string; available: boolean }[]
     trademark: { status: 'clear' | 'conflict' | 'pending' }
     verifiedAt: string
@@ -149,7 +149,9 @@ Reply with ONLY "PASS" or "FAIL" followed by a one-line reason.`, {
                 const comAvailable = domainResults.find(d => d.domain.endsWith('.com'))?.available ?? false
 
                 if (!comAvailable) {
-                    results.push({ name: candidate.name, passed: false, reason: '.com domain not available' })
+                    const comResult = domainResults.find(d => d.domain.endsWith('.com'))
+                    const parkedInfo = comResult?.parked ? ` (PARKED via ${comResult.parkingProvider})` : ''
+                    results.push({ name: candidate.name, passed: false, reason: `.com domain not available${parkedInfo}` })
                     continue
                 }
 
@@ -197,7 +199,7 @@ Reply with ONLY "PASS" or "FAIL" followed by a one-line reason.`, {
                     tagline: candidate.tagline,
                     vibe: candidate.vibe,
                     why: candidate.why,
-                    domains: domainResults.map(d => ({ ext: '.' + d.domain.split('.').pop(), available: d.available })),
+                    domains: domainResults.map(d => ({ ext: '.' + d.domain.split('.').pop(), available: d.available, parked: d.parked, parkingProvider: d.parkingProvider })),
                     socials: socialResults.map(s => ({ platform: s.platform, available: s.available })),
                     trademark,
                     verifiedAt: new Date().toISOString(),

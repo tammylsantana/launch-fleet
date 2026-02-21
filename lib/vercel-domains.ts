@@ -7,14 +7,16 @@ const VERCEL_API = 'https://api.vercel.com'
 interface DomainCheckResult {
     domain: string
     available: boolean
+    parked?: boolean
+    parkingProvider?: string
     price?: number
     period?: number
     purchaseUrl?: string
 }
 
 /**
- * Check if a domain is available using free DNS lookup via Cloudflare DoH
- * No DNS records = likely available. Purchase links go to Vercel.
+ * Check if a domain is available using DNS lookup via Cloudflare DoH
+ * If registered, also check if it's a parked/for-sale domain
  */
 export async function checkDomain(domain: string): Promise<DomainCheckResult> {
     try {
@@ -34,18 +36,85 @@ export async function checkDomain(domain: string): Promise<DomainCheckResult> {
         }
 
         const data = await res.json()
-        // If there are Answer records, the domain is registered (taken)
-        // If no answers or NXDOMAIN (Status 3), domain is likely available
         const available = !data.Answer || data.Answer.length === 0 || data.Status === 3
+
+        if (available) {
+            return { domain, available: true, purchaseUrl: `https://vercel.com/domains/${domain}` }
+        }
+
+        // Domain is taken — check if it's parked/for-sale
+        const parkResult = await checkIfParked(domain)
 
         return {
             domain,
-            available,
-            purchaseUrl: `https://vercel.com/domains/${domain}`,
+            available: false,
+            parked: parkResult.parked,
+            parkingProvider: parkResult.provider,
+            purchaseUrl: parkResult.parked
+                ? `https://www.dan.com/buy-domain/${domain}`
+                : `https://vercel.com/domains/${domain}`,
         }
     } catch {
-        // On error, assume available (optimistic)
         return { domain, available: true, purchaseUrl: `https://vercel.com/domains/${domain}` }
+    }
+}
+
+/**
+ * Check if a registered domain is parked (for-sale page, no real content)
+ * Fetches the page and looks for common parking indicators
+ */
+async function checkIfParked(domain: string): Promise<{ parked: boolean; provider?: string }> {
+    try {
+        const controller = new AbortController()
+        const timeout = setTimeout(() => controller.abort(), 5000)
+        const res = await fetch(`https://${domain}`, {
+            method: 'GET',
+            redirect: 'follow',
+            signal: controller.signal,
+            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; LaunchFleet/1.0)' },
+        })
+        clearTimeout(timeout)
+
+        const html = await res.text()
+        const lower = html.toLowerCase()
+
+        // Known parking/for-sale indicators
+        const parkingSignals: [string, string][] = [
+            ['sedoparking', 'Sedo'],
+            ['domainnamesales', 'Domain Name Sales'],
+            ['godaddy.com/domain', 'GoDaddy'],
+            ['afternic.com', 'Afternic'],
+            ['dan.com', 'Dan.com'],
+            ['hugedomains.com', 'HugeDomains'],
+            ['bodis.com', 'Bodis'],
+            ['parkingcrew', 'ParkingCrew'],
+            ['domainlane', 'DomainLane'],
+            ['this domain is for sale', 'For Sale'],
+            ['domain is for sale', 'For Sale'],
+            ['buy this domain', 'For Sale'],
+            ['domain may be for sale', 'For Sale'],
+            ['make an offer', 'Marketplace'],
+            ['domain parking', 'Parked'],
+            ['parked free', 'Parked'],
+            ['undeveloped.com', 'Undeveloped'],
+            ['squadhelp.com', 'Squadhelp'],
+        ]
+
+        for (const [signal, provider] of parkingSignals) {
+            if (lower.includes(signal)) {
+                return { parked: true, provider }
+            }
+        }
+
+        // If page is very short (< 2KB) and has no real content, likely parked
+        if (html.length < 2000 && !lower.includes('<article') && !lower.includes('<main')) {
+            return { parked: true, provider: 'Minimal content' }
+        }
+
+        return { parked: false }
+    } catch {
+        // Can't reach the site — might be parked or down
+        return { parked: false }
     }
 }
 
