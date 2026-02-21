@@ -78,12 +78,25 @@ const RESOURCE_RECS = [
 ]
 
 export default function BuildPage() {
-    const [activeTab, setActiveTab] = useState('template')
-    const [appTheme, setAppTheme] = useState<'light' | 'dark'>('light')
+    const [activeTab, setActiveTab] = useState('brief')
     const [savedKeys, setSavedKeys] = useState<Record<string, string>>({})
     const [keyValues, setKeyValues] = useState<Record<string, string>>({})
     const [isBuilding, setIsBuilding] = useState(false)
     const [buildComplete, setBuildComplete] = useState(false)
+    const [session, setSession] = useState<Record<string, unknown>>({})
+
+    // Load session on mount
+    useState(() => {
+        if (typeof window !== 'undefined') {
+            const s = JSON.parse(localStorage.getItem('launchfleet_session') || '{}')
+            setSession(s)
+        }
+    })
+
+    const appName = (session.appName as string) || (session.selectedName as string) || ''
+    const ideaText = (session.ideaText as string) || (session.idea as string) || ''
+    const brand = session.brandTemplate as { name?: string; style?: string; colorPalette?: Record<string, string>; fonts?: { headline: string; body: string }; bestFor?: string[]; description?: string } | undefined
+    const iconUrl = session.icon as string | undefined
 
     const saveKey = (id: string) => {
         if (!keyValues[id]) return
@@ -93,14 +106,14 @@ export default function BuildPage() {
     const startBuild = async () => {
         setIsBuilding(true)
         try {
-            const session = JSON.parse(localStorage.getItem('launchfleet_session') || '{}')
+            const current = JSON.parse(localStorage.getItem('launchfleet_session') || '{}')
             await fetch('/api/build-app', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ session, theme: appTheme, apiKeys: savedKeys }),
+                body: JSON.stringify({ session: current, theme: brand?.style?.toLowerCase() || 'light', apiKeys: savedKeys }),
             })
             setBuildComplete(true)
-            localStorage.setItem('launchfleet_session', JSON.stringify({ ...session, stage: 'build', buildComplete: true, appTheme }))
+            localStorage.setItem('launchfleet_session', JSON.stringify({ ...current, stage: 'build', buildComplete: true }))
         } catch {
             // Handle error
         } finally {
@@ -108,7 +121,7 @@ export default function BuildPage() {
         }
     }
 
-    const TABS = ['template', 'api-keys', 'resources', 'widget']
+    const TABS = ['brief', 'api-keys', 'resources', 'widget']
 
     return (
         <div style={{ minHeight: '100vh', background: '#fff' }}>
@@ -133,7 +146,7 @@ export default function BuildPage() {
                     <div className="caption" style={{ marginBottom: 'var(--space-xs)' }}>Stage 4</div>
                     <h1>Build</h1>
                     <p className="subhead">
-                        App template, API keys, native widget, and recommended resources.
+                        Review your app brief, add API keys, and configure resources before building.
                     </p>
                 </div>
 
@@ -141,60 +154,110 @@ export default function BuildPage() {
                 <div className="tabs" style={{ marginBottom: 'var(--space-xl)' }}>
                     {TABS.map(tab => (
                         <button key={tab} className={`tab ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>
-                            {tab === 'template' ? 'Template' : tab === 'api-keys' ? 'API Keys' : tab === 'resources' ? 'Resources' : 'Widget'}
+                            {tab === 'brief' ? 'App Brief' : tab === 'api-keys' ? 'API Keys' : tab === 'resources' ? 'Resources' : 'Widget'}
                         </button>
                     ))}
                 </div>
 
-                {/* Template tab */}
-                {activeTab === 'template' && (
+                {/* Brief tab — shows everything the user chose */}
+                {activeTab === 'brief' && (
                     <div>
-                        <h2 style={{ marginBottom: 'var(--space-lg)' }}>App Theme</h2>
+                        <h2 style={{ marginBottom: 'var(--space-lg)' }}>Your App Brief</h2>
                         <p className="subhead" style={{ marginBottom: 'var(--space-xl)' }}>
-                            Apple-native design. Choose light or dark as your base.
+                            Everything the builder will use to generate your app.
                         </p>
 
-                        <div className="grid grid-2" style={{ gap: 'var(--space-lg)', maxWidth: 700 }}>
-                            {/* Light */}
-                            <div
-                                className={`template-card ${appTheme === 'light' ? 'selected' : ''}`}
-                                onClick={() => setAppTheme('light')}
-                            >
-                                <div style={{ aspectRatio: '9/16', background: '#FFFFFF', color: '#1D1D1F', padding: 'var(--space-lg)', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
-                                    <div style={{ height: 20, background: '#F2F2F7', borderRadius: 6 }} />
-                                    <div style={{ flex: 1, background: '#F2F2F7', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <Smartphone size={40} color="#AEAEB2" />
-                                    </div>
-                                    <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
-                                        <div style={{ flex: 1, height: 36, background: '#007AFF', borderRadius: 8 }} />
-                                        <div style={{ flex: 1, height: 36, background: '#34C759', borderRadius: 8 }} />
-                                    </div>
-                                </div>
-                                <div className="template-info">
-                                    <h3>Light Mode</h3>
-                                    <p className="footnote">White background, black text, Apple system color buttons</p>
-                                </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)', maxWidth: 700 }}>
+
+                            {/* App Name */}
+                            <div className="card" style={{ padding: 'var(--space-lg)' }}>
+                                <div className="caption" style={{ marginBottom: 4 }}>App Name</div>
+                                <h3 style={{ fontSize: 'var(--fs-h2)', margin: 0 }}>{appName || '—'}</h3>
                             </div>
 
-                            {/* Dark */}
-                            <div
-                                className={`template-card ${appTheme === 'dark' ? 'selected' : ''}`}
-                                onClick={() => setAppTheme('dark')}
-                            >
-                                <div style={{ aspectRatio: '9/16', background: '#1D1D1F', color: '#F5F5F7', padding: 'var(--space-lg)', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
-                                    <div style={{ height: 20, background: '#2C2C2E', borderRadius: 6 }} />
-                                    <div style={{ flex: 1, background: '#2C2C2E', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <Smartphone size={40} color="#636366" />
+                            {/* App Idea */}
+                            <div className="card" style={{ padding: 'var(--space-lg)' }}>
+                                <div className="caption" style={{ marginBottom: 4 }}>App Idea</div>
+                                <p style={{ margin: 0, lineHeight: 1.5 }}>{ideaText || '—'}</p>
+                            </div>
+
+                            {/* Brand & Colors */}
+                            {brand && (
+                                <div className="card" style={{ padding: 'var(--space-lg)' }}>
+                                    <div className="caption" style={{ marginBottom: 8 }}>Brand Template</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)', marginBottom: 12 }}>
+                                        <h3 style={{ margin: 0 }}>{brand.name}</h3>
+                                        <span style={{
+                                            fontSize: 11, padding: '2px 8px', borderRadius: 4,
+                                            background: brand.style === 'Dark' ? '#1D1D1F' : '#F2F2F7',
+                                            color: brand.style === 'Dark' ? '#F5F5F7' : '#1D1D1F',
+                                            fontWeight: 600,
+                                        }}>{brand.style}</span>
                                     </div>
-                                    <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
-                                        <div style={{ flex: 1, height: 36, background: '#0A84FF', borderRadius: 8 }} />
-                                        <div style={{ flex: 1, height: 36, background: '#30D158', borderRadius: 8 }} />
-                                    </div>
+                                    {brand.description && (
+                                        <p className="footnote" style={{ marginBottom: 12 }}>{brand.description}</p>
+                                    )}
+
+                                    {/* Color swatches */}
+                                    {brand.colorPalette && (
+                                        <div style={{ marginBottom: 12 }}>
+                                            <div className="caption" style={{ marginBottom: 4 }}>Colors</div>
+                                            <div style={{ display: 'flex', gap: 6 }}>
+                                                {Object.entries(brand.colorPalette).map(([key, color]) => (
+                                                    <div key={key} style={{ textAlign: 'center' }}>
+                                                        <div style={{
+                                                            width: 32, height: 32, borderRadius: 8, background: color,
+                                                            border: '1px solid rgba(0,0,0,0.1)',
+                                                        }} />
+                                                        <div style={{ fontSize: 9, color: '#86868B', marginTop: 2 }}>{key}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Fonts */}
+                                    {brand.fonts && (
+                                        <div style={{ marginBottom: 12 }}>
+                                            <div className="caption" style={{ marginBottom: 4 }}>Fonts</div>
+                                            <p className="footnote" style={{ margin: 0 }}>{brand.fonts.headline} / {brand.fonts.body}</p>
+                                        </div>
+                                    )}
+
+                                    {/* Best For */}
+                                    {brand.bestFor && (
+                                        <div>
+                                            <div className="caption" style={{ marginBottom: 4 }}>Best For</div>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                                                {brand.bestFor.map(tag => (
+                                                    <span key={tag} style={{
+                                                        fontSize: 10, padding: '2px 8px', borderRadius: 4,
+                                                        background: '#F2F2F7', color: '#1D1D1F', fontWeight: 500,
+                                                    }}>{tag}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="template-info">
-                                    <h3>Dark Mode</h3>
-                                    <p className="footnote">Dark background, white text, Apple system color buttons</p>
+                            )}
+
+                            {/* Icon */}
+                            {iconUrl && (
+                                <div className="card" style={{ padding: 'var(--space-lg)' }}>
+                                    <div className="caption" style={{ marginBottom: 8 }}>App Icon</div>
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={iconUrl} alt="App Icon" style={{ width: 80, height: 80, borderRadius: 18, border: '1px solid rgba(0,0,0,0.08)' }} />
                                 </div>
+                            )}
+
+                            {/* API Keys Summary */}
+                            <div className="card" style={{ padding: 'var(--space-lg)' }}>
+                                <div className="caption" style={{ marginBottom: 4 }}>API Keys Configured</div>
+                                <p style={{ margin: 0 }}>
+                                    {Object.keys(savedKeys).length > 0
+                                        ? `${Object.keys(savedKeys).length} key(s) saved`
+                                        : 'None yet — add keys in the API Keys tab'}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -282,10 +345,10 @@ export default function BuildPage() {
                             <div style={{ textAlign: 'center' }}>
                                 <div style={{
                                     width: 155, height: 155, borderRadius: 22,
-                                    background: appTheme === 'dark' ? '#1D1D1F' : '#F2F2F7',
+                                    background: brand?.colorPalette?.bg || '#F2F2F7',
                                     border: '1px solid var(--separator)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: appTheme === 'dark' ? '#F5F5F7' : '#1D1D1F',
+                                    color: brand?.colorPalette?.text || '#1D1D1F',
                                     fontSize: 'var(--fs-footnote)',
                                 }}>
                                     Small (2x2)
@@ -297,10 +360,10 @@ export default function BuildPage() {
                             <div style={{ textAlign: 'center' }}>
                                 <div style={{
                                     width: 329, height: 155, borderRadius: 22,
-                                    background: appTheme === 'dark' ? '#1D1D1F' : '#F2F2F7',
+                                    background: brand?.colorPalette?.bg || '#F2F2F7',
                                     border: '1px solid var(--separator)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: appTheme === 'dark' ? '#F5F5F7' : '#1D1D1F',
+                                    color: brand?.colorPalette?.text || '#1D1D1F',
                                     fontSize: 'var(--fs-footnote)',
                                 }}>
                                     Medium (4x2)
@@ -312,10 +375,10 @@ export default function BuildPage() {
                             <div style={{ textAlign: 'center' }}>
                                 <div style={{
                                     width: 329, height: 345, borderRadius: 22,
-                                    background: appTheme === 'dark' ? '#1D1D1F' : '#F2F2F7',
+                                    background: brand?.colorPalette?.bg || '#F2F2F7',
                                     border: '1px solid var(--separator)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: appTheme === 'dark' ? '#F5F5F7' : '#1D1D1F',
+                                    color: brand?.colorPalette?.text || '#1D1D1F',
                                     fontSize: 'var(--fs-footnote)',
                                 }}>
                                     Large (4x4)
