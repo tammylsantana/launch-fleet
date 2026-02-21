@@ -41,9 +41,10 @@ Each agent needs skills (OpenClaw protocol) + professional APIs for launch readi
 ### Shipper (App Store Submission)
 | Built-in Skills | ClawHub Skills | Professional APIs |
 |---|---|---|
-| `app-store-optimization` | **Nano PDF** — privacy policy gen | App Store Connect API (submit) |
-| `eas-submit` | **Automation Workflows** (5.8K↓) | EAS Submit API (upload .ipa) |
-| | **API Gateway** (12.1K↓) — Stripe setup | RevenueCat API (subscriptions) |
+| `app-store-optimization` | **App Store Connect** (46↓) — full ASC API | App Store Connect API (submit) |
+| `eas-submit` | **Nano PDF** — privacy policy gen | EAS Submit API (upload .ipa) |
+| `app-store-connect` | **Automation Workflows** (5.8K↓) | RevenueCat API (subscriptions) |
+| | **API Gateway** (12.1K↓) — Stripe setup | |
 
 ### Buzz (Social Media & Marketing)
 | Built-in Skills | ClawHub Skills | Professional APIs |
