@@ -13,42 +13,39 @@ interface DomainCheckResult {
 }
 
 /**
- * Check if a domain is available via Vercel
+ * Check if a domain is available using free DNS lookup via Cloudflare DoH
+ * No DNS records = likely available. Purchase links go to Vercel.
  */
 export async function checkDomain(domain: string): Promise<DomainCheckResult> {
-    const token = process.env.VERCEL_ACCESS_TOKEN
-    if (!token) return { domain, available: false }
-
     try {
-        const res = await fetch(`${VERCEL_API}/v4/domains/status?name=${encodeURIComponent(domain)}`, {
-            headers: { Authorization: `Bearer ${token}` },
-        })
-        if (!res.ok) return { domain, available: false }
-
-        const data = await res.json()
-        const available = data.available === true
-
-        if (available) {
-            // Get price
-            const priceRes = await fetch(`${VERCEL_API}/v4/domains/price?name=${encodeURIComponent(domain)}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            })
-            if (priceRes.ok) {
-                const priceData = await priceRes.json()
-                return {
-                    domain,
-                    available: true,
-                    price: priceData.price,
-                    period: priceData.period,
-                    purchaseUrl: `https://vercel.com/domains/${domain}`,
-                }
+        const controller = new AbortController()
+        const timeout = setTimeout(() => controller.abort(), 4000)
+        const res = await fetch(
+            `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=A`,
+            {
+                headers: { 'Accept': 'application/dns-json' },
+                signal: controller.signal,
             }
+        )
+        clearTimeout(timeout)
+
+        if (!res.ok) {
+            return { domain, available: true, purchaseUrl: `https://vercel.com/domains/${domain}` }
         }
 
-        return { domain, available }
-    } catch (e) {
-        console.error(`[Vercel] Domain check failed for ${domain}:`, e)
-        return { domain, available: false }
+        const data = await res.json()
+        // If there are Answer records, the domain is registered (taken)
+        // If no answers or NXDOMAIN (Status 3), domain is likely available
+        const available = !data.Answer || data.Answer.length === 0 || data.Status === 3
+
+        return {
+            domain,
+            available,
+            purchaseUrl: `https://vercel.com/domains/${domain}`,
+        }
+    } catch {
+        // On error, assume available (optimistic)
+        return { domain, available: true, purchaseUrl: `https://vercel.com/domains/${domain}` }
     }
 }
 

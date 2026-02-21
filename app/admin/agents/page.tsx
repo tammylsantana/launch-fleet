@@ -376,7 +376,7 @@ export default function AdminAgentsPage() {
                         }}>{group.label}</span>
                         {group.items.map((item, i) => (
                             <a key={item.label} href={item.href}
-                                {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                                {...('external' in item && item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                                 style={{
                                     display: 'flex', alignItems: 'center', gap: 4,
                                     padding: '4px 10px', borderRadius: 6,
@@ -388,7 +388,7 @@ export default function AdminAgentsPage() {
                                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                             >
                                 {item.label}
-                                {item.external && <span style={{ color: '#AEAEB2', fontSize: 10 }}>{Icons.externalLink}</span>}
+                                {'external' in item && item.external && <span style={{ color: '#AEAEB2', fontSize: 10 }}>{Icons.externalLink}</span>}
                             </a>
                         ))}
                         <div style={{ width: 1, height: 16, background: 'var(--separator)', margin: '0 8px' }} />
@@ -400,7 +400,7 @@ export default function AdminAgentsPage() {
                     fontSize: 12, fontWeight: 600, color: '#007AFF',
                     textDecoration: 'none', background: '#007AFF0D',
                 }}>
-                    {Icons.agents} Agents
+                    {Icons.pipeline} Agents
                 </a>
             </nav>
 

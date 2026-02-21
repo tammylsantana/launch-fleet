@@ -21,13 +21,17 @@ async function searchBrave(query: string, count = 5): Promise<BraveResult[]> {
         const params = new URLSearchParams({
             q: query, count: String(count), text_decorations: 'false', search_lang: 'en',
         })
+        const controller = new AbortController()
+        const timeout = setTimeout(() => controller.abort(), 5000)
         const res = await fetch(`https://api.search.brave.com/res/v1/web/search?${params}`, {
             headers: {
                 'Accept': 'application/json',
                 'Accept-Encoding': 'gzip',
                 'X-Subscription-Token': apiKey,
             },
+            signal: controller.signal,
         })
+        clearTimeout(timeout)
         if (!res.ok) { console.error(`[Brave] ${res.status}`); return [] }
 
         const data = await res.json()

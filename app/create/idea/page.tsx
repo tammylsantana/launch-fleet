@@ -33,6 +33,16 @@ export default function IdeaPage() {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
+    const startNewApp = () => {
+        localStorage.removeItem('launchfleet_session')
+        setMessages([
+            { role: 'agent', content: 'Starting fresh! Tell me about your new app idea — what does it do, who is it for, and what problem does it solve?' },
+        ])
+        setInput('')
+        setIdeaLocked(false)
+        setMarketReport(null)
+    }
+
     const sendMessage = async () => {
         if (!input.trim() || isLoading) return
         const userMsg = input.trim()
@@ -40,11 +50,12 @@ export default function IdeaPage() {
         setMessages(prev => [...prev, { role: 'user', content: userMsg }])
         setIsLoading(true)
 
-        // Always save the user's idea to session immediately so all downstream stages have it
+        // ALWAYS save/update the idea to session on first user message
         const session = JSON.parse(localStorage.getItem('launchfleet_session') || '{}')
-        if (!session.idea) {
+        const userMsgCount = messages.filter(m => m.role === 'user').length
+        if (userMsgCount === 0) {
+            // First message = the idea. Always overwrite.
             localStorage.setItem('launchfleet_session', JSON.stringify({
-                ...session,
                 idea: userMsg,
                 ideaText: userMsg,
                 stage: 'idea',
@@ -96,9 +107,14 @@ export default function IdeaPage() {
                 borderBottom: '1px solid var(--separator)',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             }}>
-                <Link href="/create" style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 700, fontSize: 'var(--fs-h3)' }}>
-                    LaunchFleet
-                </Link>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)' }}>
+                    <Link href="/create" style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 700, fontSize: 'var(--fs-h3)' }}>
+                        LaunchFleet
+                    </Link>
+                    <button onClick={startNewApp} className="btn btn-ghost btn-sm" style={{ fontSize: '12px' }}>
+                        ✦ New App
+                    </button>
+                </div>
                 <div className="stage-nav" style={{ borderBottom: 'none', padding: 0 }}>
                     {STAGES.map((s, i) => (
                         <Link key={s.id} href={s.path} className={`stage-pill ${s.id === 'idea' ? 'active' : ''}`}>
@@ -140,19 +156,21 @@ export default function IdeaPage() {
                     {/* Input */}
                     {!ideaLocked ? (
                         <div style={{ padding: 'var(--space-md) var(--space-lg)', borderTop: '1px solid var(--separator)' }}>
-                            <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
-                                <input
+                            <form onSubmit={e => { e.preventDefault(); sendMessage() }} style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'flex-end' }}>
+                                <textarea
                                     className="input"
                                     value={input}
                                     onChange={e => setInput(e.target.value)}
-                                    onKeyDown={e => e.key === 'Enter' && sendMessage()}
+                                    onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() } }}
                                     placeholder="Describe your app idea..."
                                     disabled={isLoading}
+                                    rows={3}
+                                    style={{ resize: 'none', lineHeight: '1.5', border: '1.5px solid #ccc', borderRadius: '12px', padding: '12px 16px', fontSize: '15px' }}
                                 />
-                                <button className="btn btn-primary" onClick={sendMessage} disabled={isLoading}>
+                                <button type="submit" className="btn btn-primary" disabled={isLoading || !input.trim()} style={{ minHeight: '72px' }}>
                                     <Send size={18} />
                                 </button>
-                            </div>
+                            </form>
                         </div>
                     ) : (
                         <div style={{ padding: 'var(--space-md) var(--space-lg)', borderTop: '1px solid var(--separator)', textAlign: 'center' }}>

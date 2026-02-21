@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Check, X, ExternalLink, ChevronRight, RefreshCw, Search, Lightbulb, Tag, Palette, Wrench, Monitor, Globe, Store, Rocket, Loader2 } from 'lucide-react'
 
@@ -38,6 +38,12 @@ export default function NamePage() {
     const [isGenerating, setIsGenerating] = useState(false)
     const [isChecking, setIsChecking] = useState(false)
     const [confirmed, setConfirmed] = useState(false)
+    const [sessionIdea, setSessionIdea] = useState<string>('')
+
+    useEffect(() => {
+        const session = JSON.parse(localStorage.getItem('launchfleet_session') || '{}')
+        setSessionIdea(session.idea || session.ideaText || '')
+    }, [])
 
     const generateNames = async () => {
         setIsGenerating(true)
@@ -152,6 +158,16 @@ export default function NamePage() {
                     </p>
                 </div>
 
+                {/* Session context banner */}
+                {sessionIdea ? (
+                    <div style={{ padding: '12px 16px', background: 'rgba(0,122,255,0.06)', border: '1px solid rgba(0,122,255,0.15)', borderRadius: '12px', marginBottom: 'var(--space-lg)', fontSize: '14px', color: 'var(--text-secondary)' }}>
+                        <strong style={{ color: 'var(--text-primary)' }}>Generating names for:</strong> {sessionIdea.length > 120 ? sessionIdea.slice(0, 120) + '...' : sessionIdea}
+                    </div>
+                ) : (
+                    <div style={{ padding: '12px 16px', background: 'rgba(255,149,0,0.08)', border: '1px solid rgba(255,149,0,0.2)', borderRadius: '12px', marginBottom: 'var(--space-lg)', fontSize: '14px' }}>
+                        <strong>⚠ No app idea loaded.</strong> <Link href="/create/idea" style={{ color: '#007AFF', textDecoration: 'underline' }}>Start with the Idea page</Link> so names match your concept.
+                    </div>
+                )}
                 {/* Custom name check */}
                 <div className="card" style={{ marginBottom: 'var(--space-xl)', display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-end' }}>
                     <div className="form-group" style={{ flex: 1 }}>

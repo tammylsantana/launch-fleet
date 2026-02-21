@@ -161,6 +161,8 @@ export async function callAgent(
         skillContent ? `\n\nSKILLS:\n${skillContent}` : '',
     ].filter(Boolean).join('\n\n')
 
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 15000)
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -176,7 +178,9 @@ export async function callAgent(
             max_tokens: options.maxTokens || 2000,
             temperature: options.temperature ?? 0.7,
         }),
+        signal: controller.signal,
     })
+    clearTimeout(timeout)
 
     if (!response.ok) {
         const err = await response.text()
@@ -210,6 +214,8 @@ export async function callAgentChat(
         skillContent ? `\n\nSKILLS:\n${skillContent}` : '',
     ].filter(Boolean).join('\n\n')
 
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 15000)
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -225,7 +231,9 @@ export async function callAgentChat(
             max_tokens: options.maxTokens || 3000,
             temperature: options.temperature ?? 0.7,
         }),
+        signal: controller.signal,
     })
+    clearTimeout(timeout)
 
     if (!response.ok) throw new Error(`Agent ${agentId} chat failed: ${response.status}`)
 

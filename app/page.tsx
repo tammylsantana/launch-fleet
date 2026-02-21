@@ -519,7 +519,7 @@ export default function Home() {
                 .btn--full { width: 100%; }
 
                 /* ─── Metrics ─── */
-                .metrics { padding: 60px 0; border-bottom: 1px solid rgba(0,0,0,0.04); background: rgba(255,255,255,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+                .metrics { padding: 60px 0; border-bottom: 1px solid rgba(0,0,0,0.04); background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative; z-index: 2; }
                 .metrics__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
                 .metrics__item { text-align: center; padding: 0 20px; }
                 .metrics__item:not(:last-child) { border-right: 1px solid rgba(0,0,0,0.06); }
@@ -527,12 +527,12 @@ export default function Home() {
                 .metrics__label { display: block; font-size: 0.72rem; font-weight: 400; color: #86868b; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
 
                 /* ─── Section ─── */
-                .section { padding: 100px 0; position: relative; background: rgba(255,255,255,0.65); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border-top: 1px solid rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.3); }
-                .section--blue { background: rgba(210,230,255,0.45); }
-                .section--violet { background: rgba(230,215,255,0.45); }
-                .section--rose { background: rgba(255,220,230,0.4); }
-                .section--cyan { background: rgba(210,245,255,0.4); }
-                .section--amber { background: rgba(255,240,210,0.4); }
+                .section { padding: 100px 0; position: relative; z-index: 2; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); border-top: 1px solid rgba(255,255,255,0.7); border-bottom: 1px solid rgba(255,255,255,0.5); }
+                .section--blue { background: rgba(235,245,255,0.95); }
+                .section--violet { background: rgba(243,237,255,0.95); }
+                .section--rose { background: rgba(255,240,245,0.95); }
+                .section--cyan { background: rgba(237,250,255,0.95); }
+                .section--amber { background: rgba(255,248,235,0.95); }
                 .section__eyebrow { font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: #86868b; margin-bottom: 10px; }
                 .section__h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; margin-bottom: 14px; color: #1d1d1f; }
                 .section__desc { font-size: 0.95rem; color: #6e6e73; line-height: 1.6; max-width: 520px; margin-bottom: 48px; font-weight: 400; }
@@ -541,7 +541,7 @@ export default function Home() {
 
                 /* ─── Steps Grid ─── */
                 .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 40px; }
-                .step-card { position: relative; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.06); border-radius: 14px; padding: 28px 24px; overflow: hidden; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
+                .step-card { position: relative; background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 14px; padding: 28px 24px; overflow: hidden; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
                 .step-card:hover { border-color: rgba(0,0,0,0.12); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
                 .step-card__accent { position: absolute; top: 0; left: 0; width: 3px; height: 100%; border-radius: 3px 0 0 3px; }
                 .step-card__num { font-size: 0.65rem; font-weight: 500; color: #86868b; letter-spacing: 0.1em; display: block; margin-bottom: 12px; }
@@ -550,21 +550,21 @@ export default function Home() {
 
                 /* ─── Features ─── */
                 .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.06); border-radius: 12px; overflow: hidden; margin-top: 40px; }
-                .feat { background: rgba(255,255,255,0.92); padding: 28px 24px; transition: background 0.2s; }
+                .feat { background: #fff; padding: 28px 24px; transition: background 0.2s; }
                 .feat:hover { background: rgba(255,255,255,0.98); }
                 .feat h3 { font-size: 0.86rem; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em; color: #1d1d1f; }
                 .feat p { font-size: 0.82rem; color: #86868b; line-height: 1.6; font-weight: 400; }
 
                 /* ─── Pricing ─── */
                 .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 700px; margin: 40px auto 0; }
-                .price { border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 32px 28px; position: relative; background: rgba(255,255,255,0.92); }
+                .price { border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 32px 28px; position: relative; background: #fff; display: flex; flex-direction: column; }
                 .price--featured { border: 2px solid #1d1d1f; }
                 .price__badge { position: absolute; top: -12px; left: 26px; background: #1d1d1f; color: #fff; padding: 5px 16px; font-size: 0.62rem; font-weight: 500; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.06em; }
                 .price__tier { font-size: 0.76rem; font-weight: 500; color: #86868b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
                 .price__amount { font-size: 2.4rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1; margin-bottom: 10px; color: #1d1d1f; }
                 .price__amount span { font-size: 0.88rem; font-weight: 400; color: #86868b; letter-spacing: 0; }
                 .price__desc { font-size: 0.84rem; color: #86868b; line-height: 1.55; margin-bottom: 22px; font-weight: 400; }
-                .price__list { list-style: none; margin-bottom: 24px; }
+                .price__list { list-style: none; margin-bottom: 24px; flex: 1; }
                 .price__list li { padding: 7px 0; font-size: 0.84rem; color: #424245; border-bottom: 1px solid rgba(0,0,0,0.04); font-weight: 400; }
                 .price__list li:last-child { border: none; }
 
@@ -583,7 +583,7 @@ export default function Home() {
                 .wl-count { font-size: 0.76rem; color: #86868b; margin-top: 14px; }
 
                 /* ─── Footer ─── */
-                .footer { border-top: 1px solid rgba(0,0,0,0.06); padding: 44px 0 36px; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+                .footer { border-top: 1px solid rgba(0,0,0,0.06); padding: 44px 0 36px; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative; z-index: 2; }
                 .footer__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
                 .footer__brand { font-weight: 600; font-size: 1rem; letter-spacing: -0.02em; color: #1d1d1f; }
                 .footer__links { display: flex; gap: 28px; }
@@ -606,6 +606,7 @@ export default function Home() {
                     .hero__h1 { font-size: 2.2rem; }
                     .hero__sub br { display: none; }
                     .section { padding: 80px 0; }
+                    .steps-grid { grid-template-columns: repeat(2, 1fr); }
                     .metrics__grid { grid-template-columns: repeat(2, 1fr); gap: 28px 0; }
                     .metrics__item:not(:last-child) { border-right: none; }
                     .metrics__item:nth-child(odd) { border-right: 1px solid #eee; }

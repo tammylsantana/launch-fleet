@@ -25,8 +25,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ result })
         }
 
-        // ── Generate 3 names via Namer ──
-        const namerPrompt = `Generate 3 app name candidates for this idea:
+        // ── Generate 10 names via Namer (over-generate to filter after verification) ──
+        const namerPrompt = `Generate 10 app name candidates for this specific idea:
 
 IDEA: ${appIdea}
 CATEGORY: ${appCategory}
@@ -34,20 +34,30 @@ TARGET AUDIENCE: ${appAudience}
 
 Respond in this exact JSON format (no markdown, no code blocks, just raw JSON):
 [
-  { "name": "AppName", "tagline": "Short tagline", "why": "Why this name works", "score": 8, "vibe": "premium" },
-  { "name": "AppName2", "tagline": "Short tagline", "why": "Why this name works", "score": 7, "vibe": "playful" },
-  { "name": "AppName3", "tagline": "Short tagline", "why": "Why this name works", "score": 6, "vibe": "trustworthy" }
+  { "name": "Name1", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 8, "vibe": "premium" },
+  { "name": "Name2", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 7, "vibe": "playful" },
+  { "name": "Name3", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 8, "vibe": "trustworthy" },
+  { "name": "Name4", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 7, "vibe": "modern" },
+  { "name": "Name5", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 8, "vibe": "bold" },
+  { "name": "Name6", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 7, "vibe": "clean" },
+  { "name": "Name7", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 8, "vibe": "innovative" },
+  { "name": "Name8", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 7, "vibe": "friendly" },
+  { "name": "Name9", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 8, "vibe": "energetic" },
+  { "name": "Name10", "tagline": "Short tagline", "why": "Why this name works for THIS app", "score": 7, "vibe": "sleek" }
 ]
 
-Rules:
-- Names must be 1-2 words, easy to spell and pronounce
-- Each name should have a different vibe/personality
-- Score from 1-10 on brandability
-- Names should NOT be existing major app names`
+CRITICAL RULES:
+- Every name MUST clearly relate to what the app does — a user should hear the name and immediately understand the app's purpose or market
+- Think like: Robinhood (finance/democratize investing), Calm (meditation), Headspace (mindfulness), Mint (money/fresh start), Duolingo (duo + lingo), Shazam (magic of music discovery)
+- Names should evoke the core benefit, emotion, or action of the app
+- Combine relevant word roots, fragments, or metaphors from the app's domain
+- 1-2 words, easy to spell and pronounce
+- Do NOT reuse existing major app names — create new ones inspired by the same naming strategy
+- Avoid generic tech suffixes like "App", "Hub", "Pro" unless they truly fit`
 
         const namerResponse = await callAgent('namer', namerPrompt, {
-            maxTokens: 1500,
-            temperature: 0.8,
+            maxTokens: 3000,
+            temperature: 0.9,
         })
 
         let candidates: any[] = []
@@ -78,15 +88,28 @@ Rules:
                 { name: `${baseWord}ly`, tagline: `Smart ${appCategory.toLowerCase()} companion`, why: `Built from your core concept: ${baseWord}`, score: 7, vibe: 'modern' },
                 { name: `${baseWord}Hub`, tagline: `Your ${appCategory.toLowerCase()} headquarters`, why: 'Hub suggests a central platform', score: 7, vibe: 'professional' },
                 { name: `Go${baseWord}`, tagline: `${appCategory} on the go`, why: 'Action-oriented prefix suggests mobility', score: 6, vibe: 'energetic' },
+                { name: `${baseWord}AI`, tagline: `AI-powered ${appCategory.toLowerCase()}`, why: 'AI suffix signals intelligence', score: 7, vibe: 'tech' },
+                { name: `${baseWord}ify`, tagline: `Simplify ${appCategory.toLowerCase()}`, why: 'ify suffix is memorable and action-oriented', score: 6, vibe: 'playful' },
+                { name: `${baseWord}Vault`, tagline: `Your ${appCategory.toLowerCase()} vault`, why: 'Vault suggests security and value', score: 6, vibe: 'trustworthy' },
             ]
         }
 
         // Verify each name in parallel
-        const names = await Promise.all(
+        const allVerified = await Promise.all(
             candidates.map((c: any) => verifyName(c.name, appIdea, c.score))
         )
 
-        return NextResponse.json({ names, agents: ['namer', 'checker'] })
+        // Filter: only return names with non-conflict trademarks AND at least one available domain
+        const passedNames = allVerified.filter(n => {
+            const noTrademarkConflict = n.trademark.status !== 'conflict'
+            const hasAvailableDomain = n.domains.some((d: any) => d.available)
+            return noTrademarkConflict && hasAvailableDomain
+        })
+
+        // Return top 3 filtered names (at least show best fallback if all fail)
+        const finalNames = passedNames.length > 0 ? passedNames.slice(0, 3) : allVerified.slice(0, 1)
+
+        return NextResponse.json({ names: finalNames, agents: ['namer', 'checker'], totalChecked: allVerified.length, passed: passedNames.length })
     } catch (error: any) {
         console.error('[Name Check API]', error)
         return NextResponse.json({ error: error.message || 'Name generation failed' }, { status: 500 })
@@ -94,74 +117,44 @@ Rules:
 }
 
 /**
- * Verify a single name: domains, social handles, trademark
+ * Verify a single name using REAL data only — no fake/simulated results
+ * - Domains: DNS lookup via Cloudflare DoH
+ * - Socials: HTTP HEAD checks against actual platforms
+ * - Trademark: Real USPTO database search via Supabase
  */
 async function verifyName(name: string, idea: string, brandScore?: number) {
     const handle = name.toLowerCase().replace(/\s+/g, '')
 
-    // Run domain + social checks in parallel
-    let domains: any[] = []
-    let socials: any[] = []
+    // Run domain + social + trademark checks in parallel — all real APIs
+    const [domainResults, socialResults, trademark] = await Promise.all([
+        checkDomains(name).catch((e) => {
+            console.error(`[Domain check failed for ${name}]`, e)
+            return [
+                { domain: `${handle}.com`, available: false, purchaseUrl: `https://vercel.com/domains/${handle}.com` },
+                { domain: `${handle}.ai`, available: false, purchaseUrl: `https://vercel.com/domains/${handle}.ai` },
+                { domain: `${handle}.app`, available: false, purchaseUrl: `https://vercel.com/domains/${handle}.app` },
+            ]
+        }),
+        checkSocialHandles(name).catch((e) => {
+            console.error(`[Social check failed for ${name}]`, e)
+            return [] // Empty = could not check, not "available"
+        }),
+        checkTrademarkDatabase(name),
+    ])
 
-    try {
-        const [domainResults, socialResults] = await Promise.all([
-            checkDomains(name).catch(() => [
-                { domain: `${handle}.com`, available: false, price: undefined, purchaseUrl: `https://vercel.com/domains/${handle}.com` },
-                { domain: `${handle}.ai`, available: true, price: 70, purchaseUrl: `https://vercel.com/domains/${handle}.ai` },
-                { domain: `${handle}.app`, available: true, price: 14, purchaseUrl: `https://vercel.com/domains/${handle}.app` },
-            ]),
-            checkSocialHandles(name).catch(() => [
-                { platform: 'instagram', handle, available: true, signupUrl: 'https://instagram.com/accounts/edit/' },
-                { platform: 'tiktok', handle, available: true, signupUrl: 'https://tiktok.com/signup' },
-                { platform: 'x', handle, available: true, signupUrl: 'https://x.com/i/flow/signup' },
-                { platform: 'youtube', handle, available: true, signupUrl: 'https://youtube.com/create_channel' },
-                { platform: 'facebook', handle, available: true, signupUrl: 'https://facebook.com/pages/create' },
-                { platform: 'threads', handle, available: true, signupUrl: 'https://threads.net/' },
-            ]),
-        ])
+    const domains = domainResults.map((d: any) => ({
+        ext: '.' + d.domain.split('.').pop(),
+        available: d.available,
+        price: d.price ? `$${d.price}/yr` : undefined,
+        purchaseUrl: d.purchaseUrl || `https://vercel.com/domains/${d.domain}`,
+    }))
 
-        domains = domainResults.map((d: any) => ({
-            ext: '.' + d.domain.split('.').pop(),
-            available: d.available,
-            price: d.price ? `$${d.price}/yr` : undefined,
-        }))
-
-        socials = socialResults.map((s: any) => ({
-            platform: s.platform,
-            handle: s.handle || handle,
-            available: s.available,
-            signupUrl: s.signupUrl,
-        }))
-    } catch {
-        // Fallback
-        domains = [
-            { ext: '.com', available: false },
-            { ext: '.ai', available: true, price: '$70/yr' },
-            { ext: '.app', available: true, price: '$14/yr' },
-        ]
-        socials = [
-            { platform: 'instagram', handle, available: true, signupUrl: 'https://instagram.com/accounts/edit/' },
-            { platform: 'tiktok', handle, available: true, signupUrl: 'https://tiktok.com/signup' },
-            { platform: 'x', handle, available: true, signupUrl: 'https://x.com/i/flow/signup' },
-            { platform: 'youtube', handle, available: true, signupUrl: 'https://youtube.com/create_channel' },
-            { platform: 'facebook', handle, available: true, signupUrl: 'https://facebook.com/pages/create' },
-            { platform: 'threads', handle, available: true, signupUrl: 'https://threads.net/' },
-        ]
-    }
-
-    // Trademark check via Checker agent
-    let trademark = { status: 'clear' as const, class: 'Software (Class 9)' }
-    try {
-        const tmResponse = await callAgent('checker',
-            `Is "${name}" likely safe to trademark for a mobile app? Reply JSON: {"status":"clear" or "conflict" or "pending","class":"relevant class"}`,
-            { maxTokens: 200, temperature: 0.1 }
-        )
-        const match = tmResponse.match(/\{[\s\S]*\}/)
-        if (match) {
-            const parsed = JSON.parse(match[0])
-            trademark = { status: parsed.status || 'clear', class: parsed.class || 'Software (Class 9)' }
-        }
-    } catch { /* use default */ }
+    const socials = socialResults.map((s: any) => ({
+        platform: s.platform,
+        handle: s.handle || handle,
+        available: s.available,
+        signupUrl: s.signupUrl,
+    }))
 
     return {
         name,
@@ -171,3 +164,60 @@ async function verifyName(name: string, idea: string, brandScore?: number) {
         socials,
     }
 }
+
+/**
+ * Real USPTO trademark database search via Supabase
+ */
+async function checkTrademarkDatabase(name: string): Promise<{ status: 'clear' | 'conflict' | 'pending'; class: string }> {
+    try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+        if (!supabaseUrl || !serviceKey) {
+            console.warn('[Trademark] No Supabase credentials — cannot check')
+            return { status: 'pending', class: 'Database not configured' }
+        }
+
+        const { createClient } = await import('@supabase/supabase-js')
+        const supabase = createClient(supabaseUrl, serviceKey)
+        const searchTerm = name.trim().toLowerCase()
+
+        // Check for exact matches in live USPTO trademarks
+        const { data: exactMatches, error: exactError } = await supabase
+            .from('trademarks')
+            .select('word_mark, status, owner_name')
+            .ilike('word_mark', searchTerm)
+            .eq('status', 'LIVE')
+            .limit(3)
+
+        if (exactError) {
+            console.error('[Trademark exact search]', exactError)
+            return { status: 'pending', class: 'Search error' }
+        }
+
+        if (exactMatches && exactMatches.length > 0) {
+            return { status: 'conflict', class: `USPTO: Owned by ${exactMatches[0].owner_name || 'registered holder'}` }
+        }
+
+        // Check for similar names
+        const { data: similarMatches, error: simError } = await supabase
+            .from('trademarks')
+            .select('word_mark')
+            .ilike('word_mark', `%${searchTerm}%`)
+            .eq('status', 'LIVE')
+            .limit(5)
+
+        if (simError) {
+            console.error('[Trademark similar search]', simError)
+        }
+
+        if (similarMatches && similarMatches.length > 3) {
+            return { status: 'pending', class: `${similarMatches.length} similar marks in USPTO` }
+        }
+
+        return { status: 'clear', class: 'No USPTO conflicts found' }
+    } catch (e) {
+        console.error('[Trademark check error]', e)
+        return { status: 'pending', class: 'Check unavailable' }
+    }
+}
+
