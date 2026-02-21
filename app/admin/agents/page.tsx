@@ -249,7 +249,7 @@ async function postGateway(action: string, jobId?: string) {
    ═══════════════════════════════════════════════════════════════════ */
 export default function AdminAgentsPage() {
     const [selectedAgent, setSelectedAgent] = useState<string | null>(null)
-    const [departmentTab, setDepartmentTab] = useState<'chat' | 'skills' | 'tools' | 'assets'>('chat')
+    const [departmentTab, setDepartmentTab] = useState<'chat' | 'skills' | 'tools' | 'assets' | 'terminal'>('chat')
     const [health, setHealth] = useState<any>(null)
     const [liveAgents, setLiveAgents] = useState<any[]>([])
     const [cronJobs, setCronJobs] = useState<any[]>([])
@@ -639,8 +639,8 @@ export default function AdminAgentsPage() {
    ═══════════════════════════════════════════════════════════════════ */
 function AgentDepartment({ agent, tab, setTab, onBack, isLive }: {
     agent: typeof WIZARD_AGENTS[0]
-    tab: 'chat' | 'skills' | 'tools' | 'assets'
-    setTab: (t: 'chat' | 'skills' | 'tools' | 'assets') => void
+    tab: 'chat' | 'skills' | 'tools' | 'assets' | 'terminal'
+    setTab: (t: 'chat' | 'skills' | 'tools' | 'assets' | 'terminal') => void
     onBack: () => void
     isLive: boolean
 }) {
@@ -708,6 +708,7 @@ function AgentDepartment({ agent, tab, setTab, onBack, isLive }: {
                         { key: 'skills' as const, label: 'Skills', icon: Icons.zap },
                         { key: 'tools' as const, label: 'Tools', icon: Icons.tool },
                         { key: 'assets' as const, label: 'Assets', icon: Icons.folder },
+                        ...(agent.id === 'builder' ? [{ key: 'terminal' as const, label: 'Terminal', icon: Icons.code }] : []),
                     ].map(t => (
                         <button
                             key={t.key}
@@ -734,6 +735,7 @@ function AgentDepartment({ agent, tab, setTab, onBack, isLive }: {
                 {tab === 'skills' && <SkillsPanel agent={agent} />}
                 {tab === 'tools' && <ToolsPanel agent={agent} />}
                 {tab === 'assets' && <AssetsPanel agent={agent} />}
+                {tab === 'terminal' && <TerminalPanel agent={agent} />}
             </div>
         </div>
     )
@@ -1539,6 +1541,167 @@ function AssetsPanel({ agent }: { agent: typeof WIZARD_AGENTS[0] }) {
                     )}
                 </div>
             )}
+        </div>
+    )
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TERMINAL PANEL — Builder's interactive terminal for coding apps
+   ═══════════════════════════════════════════════════════════════════ */
+function TerminalPanel({ agent }: { agent: typeof WIZARD_AGENTS[0] }) {
+    const [commandHistory, setCommandHistory] = useState<Array<{ cmd: string; output: string; ts: string }>>([])
+    const [currentCmd, setCurrentCmd] = useState('')
+    const [isRunning, setIsRunning] = useState(false)
+    const outputRef = useRef<HTMLDivElement>(null)
+
+    const quickCommands = [
+        { label: 'Create Project', cmd: 'npx create-expo-app@latest ./my-app --template blank-typescript' },
+        { label: 'Install Deps', cmd: 'cd my-app && npm install expo-blur expo-haptics expo-linear-gradient zustand @shopify/flash-list react-native-reanimated' },
+        { label: 'Start Dev', cmd: 'cd my-app && npx expo start' },
+        { label: 'Build iOS', cmd: 'cd my-app && eas build --platform ios --profile preview' },
+        { label: 'List Devices', cmd: 'xcrun simctl list devices available | head -20' },
+        { label: 'Expo Doctor', cmd: 'cd my-app && npx expo-doctor' },
+    ]
+
+    const runCommand = async (cmd: string) => {
+        if (!cmd.trim() || isRunning) return
+        setIsRunning(true)
+        const ts = new Date().toLocaleTimeString()
+
+        try {
+            const res = await fetch('/api/terminal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: cmd }),
+            })
+            const data = await res.json()
+            setCommandHistory(prev => [...prev, { cmd, output: data.output || data.error || 'Command executed', ts }])
+        } catch {
+            setCommandHistory(prev => [...prev, { cmd, output: '⚠ Terminal API not available. Deploy with terminal endpoint enabled.', ts }])
+        } finally {
+            setIsRunning(false)
+            setCurrentCmd('')
+            setTimeout(() => outputRef.current?.scrollTo(0, outputRef.current.scrollHeight), 50)
+        }
+    }
+
+    return (
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#1A1A2E' }}>
+            {/* Terminal header */}
+            <div style={{
+                padding: '12px 20px', borderBottom: '1px solid #2D2D44',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', gap: 6 }}>
+                        <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#FF5F57' }} />
+                        <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#FEBC2E' }} />
+                        <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#28C840' }} />
+                    </div>
+                    <span style={{ color: '#8B8BA7', fontSize: 12, fontWeight: 600, marginLeft: 8 }}>
+                        builder@launchfleet ~ /projects
+                    </span>
+                </div>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                    {quickCommands.map(qc => (
+                        <button
+                            key={qc.label}
+                            onClick={() => runCommand(qc.cmd)}
+                            disabled={isRunning}
+                            style={{
+                                padding: '4px 10px', borderRadius: 6, border: '1px solid #3D3D5C',
+                                background: '#2D2D44', color: '#A0A0C0', fontSize: 10, fontWeight: 600,
+                                cursor: isRunning ? 'wait' : 'pointer', fontFamily: 'var(--font)',
+                                transition: 'all 0.15s',
+                            }}
+                        >
+                            {qc.label}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Terminal output */}
+            <div
+                ref={outputRef}
+                style={{
+                    flex: 1, overflow: 'auto', padding: 20,
+                    fontFamily: '"SF Mono", "Fira Code", "Consolas", monospace',
+                    fontSize: 13, lineHeight: 1.6, color: '#E0E0F0',
+                }}
+            >
+                {/* Welcome message */}
+                <div style={{ color: '#28C840', marginBottom: 16 }}>
+                    ╔══════════════════════════════════════════════╗{'\n'}
+                    ║  Builder Terminal — Expo Project Workspace   ║{'\n'}
+                    ║  Expo CLI + EAS CLI installed and ready      ║{'\n'}
+                    ╚══════════════════════════════════════════════╝
+                </div>
+                <div style={{ color: '#8B8BA7', marginBottom: 20, fontSize: 12 }}>
+                    Use the quick commands above or type your own below.
+                    {'\n'}Working directory: ~/Documents/LaunchFleet Projects/
+                </div>
+
+                {/* Command history */}
+                {commandHistory.map((entry, i) => (
+                    <div key={i} style={{ marginBottom: 16 }}>
+                        <div style={{ display: 'flex', gap: 8 }}>
+                            <span style={{ color: '#28C840' }}>$</span>
+                            <span style={{ color: '#E0E0F0' }}>{entry.cmd}</span>
+                            <span style={{ color: '#4D4D6D', fontSize: 11, marginLeft: 'auto' }}>{entry.ts}</span>
+                        </div>
+                        <pre style={{
+                            margin: '4px 0 0 18px', whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+                            color: entry.output.startsWith('⚠') ? '#FEBC2E' : '#A0A0C0',
+                            fontSize: 12,
+                        }}>
+                            {entry.output}
+                        </pre>
+                    </div>
+                ))}
+
+                {/* Active spinner */}
+                {isRunning && (
+                    <div style={{ display: 'flex', gap: 8, color: '#5E5CE6' }}>
+                        <span style={{ animation: 'pulse 1s infinite' }}>●</span>
+                        <span>Running...</span>
+                    </div>
+                )}
+            </div>
+
+            {/* Command input */}
+            <div style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '12px 20px', borderTop: '1px solid #2D2D44',
+                background: '#16162A',
+            }}>
+                <span style={{ color: '#28C840', fontFamily: '"SF Mono", monospace', fontSize: 14, fontWeight: 700 }}>$</span>
+                <input
+                    value={currentCmd}
+                    onChange={e => setCurrentCmd(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') runCommand(currentCmd) }}
+                    placeholder="Type a command..."
+                    disabled={isRunning}
+                    style={{
+                        flex: 1, background: 'none', border: 'none', outline: 'none',
+                        color: '#E0E0F0', fontSize: 14,
+                        fontFamily: '"SF Mono", "Fira Code", "Consolas", monospace',
+                    }}
+                />
+                <button
+                    onClick={() => runCommand(currentCmd)}
+                    disabled={isRunning || !currentCmd.trim()}
+                    style={{
+                        padding: '6px 14px', borderRadius: 6, border: 'none',
+                        background: currentCmd.trim() ? '#5E5CE6' : '#2D2D44',
+                        color: '#fff', fontSize: 12, fontWeight: 600,
+                        cursor: currentCmd.trim() && !isRunning ? 'pointer' : 'default',
+                        fontFamily: 'var(--font)',
+                    }}
+                >
+                    Run
+                </button>
+            </div>
         </div>
     )
 }

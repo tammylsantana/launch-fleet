@@ -106,6 +106,18 @@ export default function NamePage() {
             nameComplete: true,
         }))
         setConfirmed(true)
+
+        // Notify all agents that app idea is locked — they can start preparing
+        fetch('/api/agent-comms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'broadcast',
+                from: 'namer',
+                message: `App name confirmed: "${selectedName}". Idea: ${session.ideaText || session.idea || 'See session'}. All agents prepare for pipeline.`,
+                session: { ...session, appName: selectedName, nameData: chosen },
+            }),
+        }).catch(() => { /* non-blocking */ })
     }
 
     const getVercelDomainUrl = (name: string, ext: string) => {
