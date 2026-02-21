@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ChevronRight, Check, Lightbulb, Tag, Palette, Wrench, Monitor, Globe, Store, Rocket, Save } from 'lucide-react'
 
@@ -133,19 +133,89 @@ export default function StorePage() {
             const data = await res.json()
             if (data.fields) setFormData(prev => ({ ...prev, ...data.fields }))
         } catch {
-            // Pre-fill with session data
-            const session = JSON.parse(localStorage.getItem('launchfleet_session') || '{}')
-            setFormData(prev => ({
-                ...prev,
-                appName: session.appName || '',
-                bundleId: session.bundleId || '',
-                supportUrl: session.deployUrl || '',
-                marketingUrl: session.deployUrl || '',
-            }))
+            // Fallback handled by useEffect pre-fill
         } finally {
             setIsAutoFilling(false)
         }
     }
+
+    // Auto-fill all deterministic fields from session on mount
+    useEffect(() => {
+        const session = JSON.parse(localStorage.getItem('launchfleet_session') || '{}')
+        const name = session.appName || session.selectedName || ''
+        const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+        const idea = session.ideaText || session.idea || ''
+        const year = new Date().getFullYear()
+
+        const preFilled: Record<string, string> = {}
+
+        // General
+        if (name) preFilled.appName = name
+        if (idea) preFilled.subtitle = idea.length > 30 ? idea.slice(0, 27) + '...' : idea
+        if (slug) preFilled.bundleId = `com.launchfleet.${slug}`
+        if (slug) preFilled.sku = `LF-${slug}-${year}`
+        preFilled.copyrightHolder = `${year} LaunchFleet`
+        if (session.deployUrl) {
+            preFilled.supportUrl = session.deployUrl
+            preFilled.marketingUrl = session.deployUrl
+        }
+        preFilled.contentRights = 'Does not contain third-party content'
+        if (idea) preFilled.whatsNew = 'Initial release.'
+
+        // Pricing defaults
+        preFilled.price = 'Free'
+        preFilled.availability = 'All territories'
+        preFilled.preOrder = 'No'
+        preFilled.iap = 'None'
+
+        // Privacy defaults
+        preFilled.dataCollection = 'App does not collect any data'
+        preFilled.dataLinked = 'No'
+        preFilled.trackingEnabled = 'No tracking'
+        preFilled.privacyManifest = 'Included in build'
+
+        // Age Rating defaults (all None/No)
+        preFilled.violenceCartoon = 'None'
+        preFilled.violenceRealistic = 'None'
+        preFilled.sexualContent = 'None'
+        preFilled.profanity = 'None'
+        preFilled.drugs = 'None'
+        preFilled.matureThemes = 'None'
+        preFilled.gambling = 'None'
+        preFilled.horror = 'None'
+        preFilled.medicalInfo = 'None'
+        preFilled.contestAndBets = 'No'
+        preFilled.unrestrictedWeb = 'No'
+        preFilled.ageTier = '4+'
+
+        // AI Transparency defaults
+        preFilled.usesGenAI = 'No'
+        preFilled.aiLabeling = 'N/A'
+        preFilled.aiModeration = 'N/A'
+        preFilled.deepfakeProtection = 'Not applicable'
+
+        // Export compliance defaults
+        preFilled.usesEncryption = 'Yes — Standard HTTPS only'
+        preFilled.encryptionExempt = 'Yes'
+        preFilled.frenchEncryption = 'Not required'
+
+        // Review contact — pre-fill from session if available
+        if (session.contactEmail) preFilled.contactEmail = session.contactEmail
+        if (session.contactName) {
+            const parts = session.contactName.split(' ')
+            preFilled.contactFirst = parts[0] || ''
+            preFilled.contactLast = parts.slice(1).join(' ') || ''
+        }
+
+        // Only pre-fill fields that aren't already set
+        setFormData(prev => {
+            const merged = { ...preFilled }
+            Object.entries(prev).forEach(([k, v]) => {
+                if (v) merged[k] = v
+            })
+            return merged
+        })
+    }, [])
 
     const updateField = (id: string, value: string) => {
         setFormData(prev => ({ ...prev, [id]: value }))
