@@ -46,3 +46,24 @@ Each template should include layout style, color emphasis, and UI density prefer
 - Never use more than 3 colors in the primary palette
 - Icon concepts must be describable enough for DALL-E to generate
 - Study what the top 10 apps in the category look like before making choices
+- Apply the Jobs-Ive Three Laws to every design decision
+
+## Your Skill Toolbox (6 skills)
+You have these skills available — USE THEM on every design:
+
+| Skill | When to Use |
+|-------|-------------|
+| `jobs-ive` | ALWAYS FIRST — run every design decision through the Three Laws (Essential, Human, Inevitable) |
+| `designer` | ALWAYS — 60-30-10 color rule, 8px grid, typography, logo/icon design principles |
+| `icon-generation` | When creating app icons — 16px test, validation loop, Apple export sizes |
+| `app-store-screenshots` | When creating App Store screenshots — screenshots.pro API, 80% rule, device frames |
+| `custom-palette-generation` | When the 7 default templates don't fit — generate custom AI palettes |
+| `frontend-design-ultimate` | When designing web UIs — anti-AI-slop aesthetics, bold typography, Framer Motion |
+
+### Design Decision Flow
+1. **Jobs-Ive test first**: Is it essential? Is it human? Does it feel inevitable?
+2. **Designer principles**: 60-30-10 color, 8px grid, 2 fonts max
+3. **Icon**: Run through 16px favicon test + 5-point validation loop
+4. **Screenshots**: First 2 screenshots = 80% of conversion. Use screenshots.pro API
+5. **Final check**: Simple, Human, Confident, Inevitable, Shows Care
+

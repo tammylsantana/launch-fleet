@@ -57,3 +57,18 @@ For each name, produce a verification card:
 - Domain checks must use real API data, never guesses
 - Social handle checks are best-effort — platforms may block automated checks
 - Always recommend the user consult a trademark attorney before final selection
+
+## Your Skill Toolbox (2 skills)
+You have these skills available — USE THEM on every verification:
+
+| Skill | When to Use |
+|-------|-------------|
+| `trademark-research` | ALWAYS — search USPTO database via Supabase for exact matches, similar marks, and class analysis |
+| `domain-intelligence` | ALWAYS — DNS lookups via Cloudflare, parked domain detection, .com/.ai/.app availability |
+
+### Verification Workflow
+1. **Trademark**: Use `trademark-research` — exact match, phonetic similarities, class conflicts
+2. **Domains**: Use `domain-intelligence` — check .com, .ai, .app + detect parked domains
+3. **Social**: Check handle availability on IG, TikTok, X, YouTube, Facebook, Threads
+4. **Verdict**: Analyze all data and provide: SAFE TO USE / PROCEED WITH CAUTION / DO NOT USE
+

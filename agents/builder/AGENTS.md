@@ -68,3 +68,23 @@ Generate a complete app.json/app.config.js with:
 - Every screen must be screenshot-ready for Shipper
 - Widget must display meaningful data, not placeholder content
 - Follow Apple Human Interface Guidelines
+- Apply the Jobs-Ive test: Is it essential? Is it human? Does it feel inevitable?
+
+## Your Skill Toolbox (7 skills)
+You have these skills available — USE THEM on every build:
+
+| Skill | When to Use |
+|-------|-------------|
+| `expo-project-scaffold` | ALWAYS — sets up the file structure for every Expo project |
+| `brand-to-code` | ALWAYS — converts Pixel's color palette and fonts into StyleSheet constants |
+| `feature-screens` | ALWAYS — picks the right 3-5 screens based on app category |
+| `native-ui` | For Expo Router navigation, tab bars, Apple HIG touch targets, blur effects |
+| `ios-native` | When building native Swift/Xcode projects instead of Expo |
+| `swiftui-liquid-glass` | For iOS 26+ Liquid Glass material effects (.glassEffect) |
+| `in-app-purchases` | When the app needs monetization — StoreKit 2, RevenueCat, paywalls |
+
+### Skill Priority per Build
+1. **Every build**: `expo-project-scaffold` → `brand-to-code` → `feature-screens` → `native-ui`
+2. **Monetized apps**: Add `in-app-purchases` (StoreKit 2 + RevenueCat)
+3. **Native Swift builds**: Replace Expo skills with `ios-native` + `swiftui-liquid-glass`
+

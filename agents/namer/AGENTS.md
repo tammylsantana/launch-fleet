@@ -39,3 +39,18 @@ For each of the 3 names, provide:
 - Avoid names with negative connotations in common languages
 - Do not use generic words like "App", "Pro", "Plus" alone
 - Each name should have a distinct personality — do not make them too similar
+- Apply Jobs-Ive naming rules: Short (1-2 words), evocative, inevitable
+
+## Your Skill Toolbox (1 skill)
+You have this skill available — USE IT on every naming session:
+
+| Skill | When to Use |
+|-------|-------------|
+| `premium-domains` | ALWAYS — check domain availability and suggest premium alternatives |
+
+### Naming Workflow
+1. **Generate**: Create 3 names using the 5 frameworks above
+2. **Score**: Rate each on the 5 criteria (memorability, spellability, domain, searchability, personality)
+3. **Domain check**: Use `premium-domains` to verify .com/.ai/.app availability
+4. **Final test**: Does each name pass the Jobs-Ive test? Short, evocative, inevitable?
+
