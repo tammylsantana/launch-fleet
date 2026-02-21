@@ -93,7 +93,7 @@ function saveVerified(names: VerifiedName[]) {
  */
 export async function POST(req: NextRequest) {
     try {
-        const { category, forceRecheck } = await req.json()
+        const { category, forceRecheck, skipSocials } = await req.json()
 
         const existing = loadVerified()
         const existingNames = new Set(existing.map(n => n.name))
@@ -155,29 +155,32 @@ Reply with ONLY "PASS" or "FAIL" followed by a one-line reason.`, {
                     continue
                 }
 
-                // Buzz (social media team) vets handle availability
-                const socialResults = await checkSocialHandles(slug)
-                const availableSocials = socialResults.filter(s => s.available).length
+                // Social checks — skip during seeding, run on the day when user picks
+                let socialResults: { platform: string; available: boolean }[] = []
+                if (!skipSocials) {
+                    // Buzz (social media team) vets handle availability
+                    const rawSocials = await checkSocialHandles(slug)
+                    socialResults = rawSocials.map(s => ({ platform: s.platform, available: s.available }))
+                    const availableSocials = rawSocials.filter(s => s.available).length
 
-                // Buzz reviews: is this name good for social media branding?
-                let buzzApproved = true
-                try {
-                    const buzzReview = await callAgent('buzz', `Quick check: is the handle "@${slug}" good for social media branding? Consider: is it easy to type, not easily confused with another brand, and professional enough for ${candidate.category}. Reply with just YES or NO and a one-line reason.`, {
-                        maxTokens: 100,
-                        temperature: 0.3,
-                    })
-                    if (buzzReview.toUpperCase().startsWith('NO')) {
-                        buzzApproved = false
-                        results.push({ name: candidate.name, passed: false, reason: `Buzz flagged: ${buzzReview.slice(0, 80)}` })
+                    // Buzz reviews: is this name good for social media branding?
+                    try {
+                        const buzzReview = await callAgent('buzz', `Quick check: is the handle "@${slug}" good for social media branding? Consider: is it easy to type, not easily confused with another brand, and professional enough for ${candidate.category}. Reply with just YES or NO and a one-line reason.`, {
+                            maxTokens: 100,
+                            temperature: 0.3,
+                        })
+                        if (buzzReview.toUpperCase().startsWith('NO')) {
+                            results.push({ name: candidate.name, passed: false, reason: `Buzz flagged: ${buzzReview.slice(0, 80)}` })
+                            continue
+                        }
+                    } catch {
+                        // Buzz unavailable — continue with raw check
+                    }
+
+                    if (availableSocials < 3) {
+                        results.push({ name: candidate.name, passed: false, reason: `Only ${availableSocials}/6 social handles available` })
                         continue
                     }
-                } catch {
-                    // Buzz unavailable — continue with raw check
-                }
-
-                if (availableSocials < 3) {
-                    results.push({ name: candidate.name, passed: false, reason: `Only ${availableSocials}/6 social handles available` })
-                    continue
                 }
 
                 // In-house Wizard trademark database check
