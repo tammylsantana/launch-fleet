@@ -92,6 +92,9 @@ const Icons = {
     image: (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
     ),
+    clipboard: (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><rect x="8" y="2" width="8" height="4" rx="1" /></svg>
+    ),
 }
 
 /* ── Agent definitions ──────────────────────────────────────────── */
@@ -225,6 +228,38 @@ BUILDER (raccoon eyes): "Code compiles. Tests pass. Mostly."
 SHIPPER: "Mostly?"
 
 BUILDER: "The dark mode has a... personality. Sometimes it decides to be really dark. Like, screen-off dark."`,
+    },
+    {
+        id: 'ozzie', name: 'Ozzie', stage: 0, label: 'Organize',
+        color: '#FFD60A', icon: Icons.clipboard, photo: '/agents/ozzie.png',
+        title: 'Fleet Organizer',
+        desc: 'Pipeline orchestration & team coordination',
+        voiceName: 'Daniel', voiceId: 'onwK4e9ZLuTAKqWW03F9',
+        skills: ['fleet-ontology'],
+        tools: ['Pipeline Tracker', 'Fleet Ontology', 'Data Handoff Manager', 'Quality Gate Checker'],
+        telegram: '@WizardOzzieBot',
+        geniePrompt: 'A calm, confident man in his early 40s standing at a large whiteboard covered in flowcharts, sticky notes, and arrows connecting different team members. He wears a yellow polo shirt and holds a coffee mug that says "Plan the Work, Work the Plan." Peaceful smile despite controlled chaos around him. Documentary-style office lighting. The Office TV show aesthetic.',
+        sitcomScript: `OZZIE (standing at whiteboard with elaborate flowchart): "OK team, daily standup. Scout?"
+
+SCOUT: "47 pages of research. Ready for handoff."
+
+OZZIE: "Namer?"
+
+NAMER: "I have 200 names. All starting with 'Snout.'"
+
+OZZIE (deep breath): "We talked about this. Checker?"
+
+CHECKER: "Everything Namer suggested is trademarked. Everything. I checked twice."
+
+OZZIE (talking head, rubbing temples): "Managing this team is like herding cats. Extremely talented, occasionally brilliant cats. Who all think they're the lead cat."
+
+BUZZ (bursting in): "I already posted the launch announcement!"
+
+OZZIE: "Buzz. We don't have a name yet."
+
+BUZZ: "I left it blank! It just says 'THE APP IS COMING.' Very mysterious."
+
+OZZIE (staring at camera): "...I need more coffee."`,
     },
 ]
 
