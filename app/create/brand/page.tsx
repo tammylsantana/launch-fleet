@@ -204,6 +204,51 @@ export default function BrandPage() {
                                 <AppPreview template={template} />
                             </div>
 
+                            {/* Widget previews — coordinated with palette */}
+                            <div style={{
+                                padding: '12px 16px', background: '#FAFAFA',
+                                borderTop: '1px solid #F2F2F7',
+                            }}>
+                                <div style={{ fontSize: 9, fontWeight: 600, color: '#86868B', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                                    Matching Widgets
+                                </div>
+                                <div style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
+                                    {/* Small widget */}
+                                    <div style={{
+                                        width: 44, height: 44, borderRadius: 10,
+                                        background: template.colorPalette.bg,
+                                        border: `1.5px solid ${template.colorPalette.accent}30`,
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    }}>
+                                        <div style={{ width: 16, height: 16, borderRadius: 4, background: template.colorPalette.accent, opacity: 0.8 }} />
+                                    </div>
+                                    {/* Medium widget */}
+                                    <div style={{
+                                        width: 92, height: 44, borderRadius: 10,
+                                        background: template.colorPalette.bg,
+                                        border: `1.5px solid ${template.colorPalette.accent}30`,
+                                        display: 'flex', alignItems: 'center', gap: 4, padding: '0 8px',
+                                    }}>
+                                        <div style={{ width: 16, height: 16, borderRadius: 4, background: template.colorPalette.accent, opacity: 0.8, flexShrink: 0 }} />
+                                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                                            <div style={{ height: 4, background: template.colorPalette.text, borderRadius: 2, opacity: 0.15, width: '80%' }} />
+                                            <div style={{ height: 3, background: template.colorPalette.text, borderRadius: 2, opacity: 0.1, width: '60%' }} />
+                                        </div>
+                                    </div>
+                                    {/* Large widget */}
+                                    <div style={{
+                                        width: 92, height: 92, borderRadius: 10,
+                                        background: template.colorPalette.bg,
+                                        border: `1.5px solid ${template.colorPalette.accent}30`,
+                                        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, padding: 6,
+                                    }}>
+                                        <div style={{ width: 24, height: 24, borderRadius: 6, background: template.colorPalette.accent, opacity: 0.8 }} />
+                                        <div style={{ width: '70%', height: 4, background: template.colorPalette.text, borderRadius: 2, opacity: 0.15 }} />
+                                        <div style={{ width: '50%', height: 3, background: template.colorPalette.text, borderRadius: 2, opacity: 0.1 }} />
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Info section */}
                             <div style={{ padding: '16px' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>

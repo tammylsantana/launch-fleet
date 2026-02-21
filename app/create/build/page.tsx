@@ -121,7 +121,7 @@ export default function BuildPage() {
         }
     }
 
-    const TABS = ['brief', 'api-keys', 'resources', 'widget']
+    const TABS = ['brief', 'api-keys', 'resources']
 
     return (
         <div style={{ minHeight: '100vh', background: '#fff' }}>
@@ -154,7 +154,7 @@ export default function BuildPage() {
                 <div className="tabs" style={{ marginBottom: 'var(--space-xl)' }}>
                     {TABS.map(tab => (
                         <button key={tab} className={`tab ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>
-                            {tab === 'brief' ? 'App Brief' : tab === 'api-keys' ? 'API Keys' : tab === 'resources' ? 'Resources' : 'Widget'}
+                            {tab === 'brief' ? 'App Brief' : tab === 'api-keys' ? 'API Keys' : 'Resources'}
                         </button>
                     ))}
                 </div>
@@ -332,62 +332,7 @@ export default function BuildPage() {
                     </div>
                 )}
 
-                {/* Widget tab */}
-                {activeTab === 'widget' && (
-                    <div>
-                        <h2 style={{ marginBottom: 'var(--space-lg)' }}>Native iPhone Widget</h2>
-                        <p className="subhead" style={{ marginBottom: 'var(--space-xl)' }}>
-                            A matching WidgetKit extension is generated with your app. Preview your widget sizes.
-                        </p>
 
-                        <div style={{ display: 'flex', gap: 'var(--space-xl)', flexWrap: 'wrap', justifyContent: 'center' }}>
-                            {/* Small widget */}
-                            <div style={{ textAlign: 'center' }}>
-                                <div style={{
-                                    width: 155, height: 155, borderRadius: 22,
-                                    background: brand?.colorPalette?.bg || '#F2F2F7',
-                                    border: '1px solid var(--separator)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: brand?.colorPalette?.text || '#1D1D1F',
-                                    fontSize: 'var(--fs-footnote)',
-                                }}>
-                                    Small (2x2)
-                                </div>
-                                <span className="caption" style={{ marginTop: 'var(--space-sm)', display: 'block' }}>Small</span>
-                            </div>
-
-                            {/* Medium widget */}
-                            <div style={{ textAlign: 'center' }}>
-                                <div style={{
-                                    width: 329, height: 155, borderRadius: 22,
-                                    background: brand?.colorPalette?.bg || '#F2F2F7',
-                                    border: '1px solid var(--separator)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: brand?.colorPalette?.text || '#1D1D1F',
-                                    fontSize: 'var(--fs-footnote)',
-                                }}>
-                                    Medium (4x2)
-                                </div>
-                                <span className="caption" style={{ marginTop: 'var(--space-sm)', display: 'block' }}>Medium</span>
-                            </div>
-
-                            {/* Large widget */}
-                            <div style={{ textAlign: 'center' }}>
-                                <div style={{
-                                    width: 329, height: 345, borderRadius: 22,
-                                    background: brand?.colorPalette?.bg || '#F2F2F7',
-                                    border: '1px solid var(--separator)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: brand?.colorPalette?.text || '#1D1D1F',
-                                    fontSize: 'var(--fs-footnote)',
-                                }}>
-                                    Large (4x4)
-                                </div>
-                                <span className="caption" style={{ marginTop: 'var(--space-sm)', display: 'block' }}>Large</span>
-                            </div>
-                        </div>
-                    </div>
-                )}
 
                 {/* Build action */}
                 <div style={{ marginTop: 'var(--space-3xl)', textAlign: 'center' }}>
