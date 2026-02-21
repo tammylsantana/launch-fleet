@@ -79,8 +79,20 @@ const RESOURCE_RECS = [
 
 export default function BuildPage() {
     const [activeTab, setActiveTab] = useState('brief')
-    const [savedKeys, setSavedKeys] = useState<Record<string, string>>({})
-    const [keyValues, setKeyValues] = useState<Record<string, string>>({})
+    const [savedKeys, setSavedKeys] = useState<Record<string, string>>(() => {
+        if (typeof window !== 'undefined') {
+            const stored = localStorage.getItem('launchfleet_build_keys')
+            if (stored) return JSON.parse(stored)
+        }
+        return {}
+    })
+    const [keyValues, setKeyValues] = useState<Record<string, string>>(() => {
+        if (typeof window !== 'undefined') {
+            const stored = localStorage.getItem('launchfleet_build_keys')
+            if (stored) return JSON.parse(stored)
+        }
+        return {}
+    })
     const [isBuilding, setIsBuilding] = useState(false)
     const [buildComplete, setBuildComplete] = useState(false)
     const [session, setSession] = useState<Record<string, unknown>>({})
@@ -100,7 +112,11 @@ export default function BuildPage() {
 
     const saveKey = (id: string) => {
         if (!keyValues[id]) return
-        setSavedKeys(prev => ({ ...prev, [id]: keyValues[id] }))
+        setSavedKeys(prev => {
+            const next = { ...prev, [id]: keyValues[id] }
+            localStorage.setItem('launchfleet_build_keys', JSON.stringify(next))
+            return next
+        })
     }
 
     const startBuild = async () => {

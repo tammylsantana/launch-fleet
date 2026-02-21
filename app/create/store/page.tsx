@@ -117,7 +117,13 @@ const ALL_FIELDS: Record<string, Array<{ id: string; label: string; type: string
 
 export default function StorePage() {
     const [activeTab, setActiveTab] = useState('general')
-    const [formData, setFormData] = useState<Record<string, string>>({})
+    const [formData, setFormData] = useState<Record<string, string>>(() => {
+        if (typeof window !== 'undefined') {
+            const stored = localStorage.getItem('launchfleet_store_form')
+            if (stored) return JSON.parse(stored)
+        }
+        return {}
+    })
     const [isAutoFilling, setIsAutoFilling] = useState(false)
     const [confirmed, setConfirmed] = useState(false)
 
@@ -213,12 +219,17 @@ export default function StorePage() {
             Object.entries(prev).forEach(([k, v]) => {
                 if (v) merged[k] = v
             })
+            localStorage.setItem('launchfleet_store_form', JSON.stringify(merged))
             return merged
         })
     }, [])
 
     const updateField = (id: string, value: string) => {
-        setFormData(prev => ({ ...prev, [id]: value }))
+        setFormData(prev => {
+            const next = { ...prev, [id]: value }
+            localStorage.setItem('launchfleet_store_form', JSON.stringify(next))
+            return next
+        })
     }
 
     const confirmStore = () => {
